@@ -1,48 +1,53 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+
+import type { PlotParams } from 'react-plotly.js';
+import type { ScatterData, PieData } from 'plotly.js';
 import dynamic from 'next/dynamic';
 
-
 // Dynamically import Plotly to avoid SSR issues
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+const Plot = dynamic<PlotParams>(() => import('react-plotly.js'), { ssr: false });
+
+type ChartData = Partial<ScatterData> | Partial<PieData> | null;
+
+function generateData(type: string): ChartData {
+  switch (type) {
+    case 'sales':
+      return {
+        x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        y: [20, 14, 23, 25, 22, 16],
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: { color: 'blue' },
+        name: 'Sales Data'
+      };
+    case 'ml_performance':
+      return {
+        x: ['Accuracy', 'Precision', 'Recall', 'F1-Score'],
+        y: [0.92, 0.89, 0.94, 0.91],
+        type: 'bar',
+        marker: { color: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'] },
+        name: 'Model Performance'
+      };
+    case 'customer_segments':
+      return {
+        labels: ['Premium', 'Standard', 'Basic', 'Trial'],
+        values: [35, 40, 20, 5],
+        type: 'pie',
+        marker: { colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'] },
+        name: 'Customer Segments'
+      };
+    default:
+      return null;
+  }
+}
 
 const InteractiveDashboard = () => {
   const [selectedDataset, setSelectedDataset] = useState('sales');
-  const [chartData, setChartData] = useState<any>(null);
 
-  // Generate sample data for different scenarios
-  const generateData = (type: string) => {
-    switch (type) {
-      case 'sales':
-        return {
-          x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          y: [20, 14, 23, 25, 22, 16],
-          type: 'scatter',
-          mode: 'lines+markers',
-          marker: { color: 'blue' },
-          name: 'Sales Data'
-        };
-      case 'ml_performance':
-        return {
-          x: ['Accuracy', 'Precision', 'Recall', 'F1-Score'],
-          y: [0.92, 0.89, 0.94, 0.91],
-          type: 'bar',
-          marker: { color: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'] },
-          name: 'Model Performance'
-        };
-      case 'customer_segments':
-        return {
-          labels: ['Premium', 'Standard', 'Basic', 'Trial'],
-          values: [35, 40, 20, 5],
-          type: 'pie',
-          marker: { colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'] },
-          name: 'Customer Segments'
-        };
-      default:
-        return null;
-    }
-  };
+  const [chartData, setChartData] = useState<ChartData>(null);
+
 
   useEffect(() => {
     setChartData(generateData(selectedDataset));
@@ -52,19 +57,19 @@ const InteractiveDashboard = () => {
     switch (selectedDataset) {
       case 'sales':
         return {
-          title: 'Monthly Sales Trend Analysis',
-          xaxis: { title: 'Month' },
-          yaxis: { title: 'Sales (K$)' }
+          title: { text: 'Monthly Sales Trend Analysis' },
+          xaxis: { title: { text: 'Month' } },
+          yaxis: { title: { text: 'Sales (K$)' } }
         };
       case 'ml_performance':
         return {
-          title: 'Machine Learning Model Performance Metrics',
-          xaxis: { title: 'Metrics' },
-          yaxis: { title: 'Score', range: [0, 1] }
+          title: { text: 'Machine Learning Model Performance Metrics' },
+          xaxis: { title: { text: 'Metrics' } },
+          yaxis: { title: { text: 'Score' }, range: [0, 1] }
         };
       case 'customer_segments':
         return {
-          title: 'Customer Segmentation Analysis'
+          title: { text: 'Customer Segmentation Analysis' }
         };
       default:
         return {};

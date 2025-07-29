@@ -40,7 +40,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, featured }: ProjectCardProps) {
   // Determine thumbnail path
-  const { thumbPath, fallback } = useMemo(() => {
+  const { thumbPath } = useMemo(() => {
     let thumbnail = project.thumbnail;
     if (!thumbnail && project.id) {
       thumbnail = `${project.id}-thumbnail.jpg`;

@@ -21,16 +21,16 @@ const projects = [
 
 const Projects = () => {
   return (
-    <section id="projects" className="section}>
+    <section id="projects" className="section">
       <h2>Projects</h2>
       <div>
         {projects.map((project, index) => (
-          <div key={index} className="projectCard}>
+          <div key={index} className="projectCard">
             <h3>{project.title}</h3>
             <p>{project.description}</p>
-            <div className="technologies}>
+            <div className="technologies">
               {project.technologies.map((tech, i) => (
-                <span key={i} className="techTag}>{tech}</span>
+                <span key={i} className="techTag">{tech}</span>
               ))}
             </div>
           </div>

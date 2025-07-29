@@ -1,5 +1,8 @@
 "use client";
 
+import React from "react";
+import Image from "next/image";
+
 export default function Intro() {
   return (
     <section
@@ -16,7 +19,7 @@ export default function Intro() {
     >
       {/* Profile Image */}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <img
+        <Image
           src="https://avatars.githubusercontent.com/u/126697615?v=4"
           alt="Profile"
           style={{

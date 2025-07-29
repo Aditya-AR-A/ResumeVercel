@@ -15,12 +15,6 @@ interface Metric {
   value: string;
 }
 
-interface Link {
-  name: string;
-  url: string;
-  icon?: string;
-}
-
 // Project-specific types
 interface DeploymentInfo {
   type: 'cloud' | 'self-hosted' | 'edge';

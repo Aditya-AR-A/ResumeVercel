@@ -40,7 +40,7 @@ interface CertificateCardProps {
 
 export function CertificateCard({ cert, featured }: CertificateCardProps) {
   // Determine thumbnail filename
-  const { thumbPath, fallback } = useMemo(() => {
+  const { thumbPath } = useMemo(() => {
     let thumbnail = cert.thumbnail;
     if (!thumbnail && cert.file) {
       thumbnail = cert.file.replace(/\.(pdf|mhtml)$/i, ".png");

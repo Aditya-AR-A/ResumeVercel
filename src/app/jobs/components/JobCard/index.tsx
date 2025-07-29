@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from './styles.module.css';
 import { Job } from '@/types/jobs';
-import { Project } from '@/types/projects';
+import { Project, isValidProject } from '@/types/projects';
 import { formatDate } from '@/utils/dateUtils';
 
 // Robust company logo image with fallback to /default.png
@@ -50,9 +50,9 @@ export function JobCard({ job, featured = false }: JobCardProps) {
       try {
         const mod = await import("@/data/projects.json");
         const allProjects = mod.default || mod;
-        const jobProjects = allProjects.filter((p: Project) => 
-          job.projectIds?.includes(p.id)
-        );
+        const jobProjects = (allProjects as unknown[])
+          .filter(isValidProject)
+          .filter((p) => job.projectIds?.includes(p.id));
         setProjects(jobProjects);
       } catch (error) {
         console.error('Error loading projects:', error);

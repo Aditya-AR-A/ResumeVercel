@@ -5,15 +5,6 @@ import Jobs from "./jobs/Jobs";
 import Projects from "./projects/Projects";
 import Link from "next/link";
 
-const navLinks = [
-  { id: "intro", label: "Intro" },
-  { id: "jobs", label: "Experience", href: "/jobs" },
-  { id: "projects", label: "Projects", href: "/projects" },
-  { id: "certifications", label: "Certifications", href: "/certifications" },
-];
-
-const NAV_HEIGHT = 74; // px, adjust if needed
-
 export default function Home() {
   return (
     <div className={styles.page}>

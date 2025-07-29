@@ -10,7 +10,14 @@ const InteractiveMLModel = () => {
     creditScore: 700,
     loanAmount: 200000
   });
-  const [prediction, setPrediction] = useState<any>(null);
+  type Prediction = {
+  approved: boolean;
+  probability: number;
+  riskScore: number;
+  debtToIncomeRatio: number;
+  factors: Record<string, string>;
+} | null;
+const [prediction, setPrediction] = useState<Prediction>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Simulate a trained ML model for loan approval prediction
@@ -228,7 +235,7 @@ const InteractiveMLModel = () => {
               borderRadius: '8px',
               color: '#666'
             }}>
-              Adjust the parameters and click "Predict" to see the model's analysis
+              Adjust the parameters and click &quot;Predict&quot; to see the model&#39;s analysis
             </div>
           )}
         </div>

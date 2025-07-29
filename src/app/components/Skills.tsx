@@ -3,10 +3,10 @@ import React from 'react';
 
 const Skills = () => {
   return (
-    <section id="skills" className="section}>
+    <section id="skills" className="section">
       <h2>Skills</h2>
-      <div className="skillsContainer}>
-        <div className="skillCategory}>
+      <div className="skillsContainer">
+        <div className="skillCategory">
           <h3>Programming Languages</h3>
           <ul>
             <li>Python</li>
@@ -14,7 +14,7 @@ const Skills = () => {
             <li>SQL</li>
           </ul>
         </div>
-        <div className="skillCategory}>
+        <div className="skillCategory">
           <h3>Data Science & Machine Learning</h3>
           <ul>
             <li>TensorFlow</li>
@@ -24,7 +24,7 @@ const Skills = () => {
             <li>NumPy</li>
           </ul>
         </div>
-        <div className="skillCategory}>
+        <div className="skillCategory">
           <h3>Web Development</h3>
           <ul>
             <li>React</li>

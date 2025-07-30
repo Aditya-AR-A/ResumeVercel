@@ -1,6 +1,6 @@
 "use client";
 import { useMemo } from "react";
-import projectsData from "./projects.json";
+import projectsData from "@/data/projects.json";
 import { ProjectCard } from "./components/ProjectCard";
 import styles from "./Projects.module.css";
 

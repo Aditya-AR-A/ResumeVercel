@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./theme.css";
+import layoutData from "@/data/layout.json";
+import { LayoutConfig } from "@/types/layout";
+import React from 'react';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,9 +16,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const config: LayoutConfig = layoutData;
+
 export const metadata: Metadata = {
-  title: "Aditya",
-  description: "Portfolio",
+  title: config.metadata.title,
+  description: config.metadata.description,
 };
 
 import Navbar from "./components/Navbar";

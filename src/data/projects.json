@@ -16,7 +16,9 @@
       "Pandas",
       "Plotly",
       "Seaborn",
-      "Jupyter"
+      "Jupyter",
+      "EDA",
+      "Regression"
     ],
     "links": {
       "notebook": "https://colab.research.google.com/drive/1XdrINdSetdRp22WV6SnGdLWgVMMt7J-8?usp=sharing"
@@ -37,10 +39,42 @@
     }
   },
   {
+    "id": "chess-helper",
+    "name": "Real-Time Chess Helper using YOLOv8",
+    "type": "computer-vision",
+    "description": "Built a robust real-time chessboard state recognition system using YOLOv8, capable of detecting and classifying chess pieces from live camera feeds at over 30 FPS. Achieved 98.7% mAP@50 IoU on diverse chessboard configurations using advanced training techniques and a curated Kaggle dataset. Enabled automated gameplay analysis and integration with chess engines for move prediction and AR learning tools.",
+    "shortDescription": "AI-powered chess analysis and training tool",
+    "category": "Computer Vision",
+    "featured": true,
+    "startDate": "2023-02-15",
+    "status": "completed",
+    "skills": [
+      "YOLOv8",
+      "Deep Learning",
+      "Computer Vision",
+      "Python",
+      "Kaggle",
+      "JavaScript",
+      "React",
+      "Chess.js",
+      "Stockfish",
+      "WebAssembly"
+    ],
+    "links": {
+      "github": "https://github.com/username/chess-helper",
+      "live": "https://chess-helper.example.com"
+    },
+    "deployment": {
+      "type": "cloud",
+      "platform": "Vercel",
+      "status": "active"
+    }
+  },
+  {
     "id": "gender-emotion-detection",
     "name": "Gender, Nationality & Emotion Detection",
     "type": "computer-vision",
-    "description": "Deep learning system that simultaneously detects gender, nationality, and emotion from facial images using convolutional neural networks (CNN).",
+    "description": "Deep learning system that simultaneously detects gender, nationality, and emotion from facial images using convolutional neural networks (CNN). Achieved 98%+ accuracy in multi-class detection.",
     "shortDescription": "CNN-based facial analysis system with 98%+ accuracy",
     "thumbnail": "/projects/gender-emotion/thumbnail.jpg",
     "category": "Deep Learning",
@@ -67,12 +101,12 @@
   },
   {
     "id": "linkedin-sentiment",
-    "name": "LinkedIn Post Sentiment Analysis",
+    "name": "LinkedIn Feed Sentiment Analysis",
     "type": "nlp",
-    "description": "Natural Language Processing system that analyzes sentiment and engagement patterns in LinkedIn posts using advanced NLP techniques.",
+    "description": "Natural Language Processing system that analyzes sentiment and engagement patterns in LinkedIn posts using advanced NLP techniques. Automated web scraping and sentiment analysis of LinkedIn posts, delivering 95%+ accuracy in content classification.",
     "shortDescription": "NLP-based LinkedIn post analyzer",
     "category": "Natural Language Processing",
-    "featured": true,
+    "featured": false,
     "startDate": "2023-04-15",
     "status": "completed",
     "skills": [
@@ -81,7 +115,8 @@
       "Transformers",
       "Sentiment Analysis",
       "NLP",
-      "Data Visualization"
+      "Data Visualization",
+      "Web Scraping"
     ],
     "model": {
       "type": "nlp",
@@ -95,8 +130,8 @@
   {
     "id": "copilot-extension",
     "name": "VS Code Copilot Extension",
-    "type": "web-app",
-    "description": "Custom VS Code extension enhancing GitHub Copilot functionality with additional features and improved developer experience.",
+    "type": "developer-tools",
+    "description": "Designed and implemented a VS Code extension integrating Copilot for intelligent code suggestions, supporting 16+ languages and frameworks. Enhanced developer experience with customizable autocompletion and intuitive UI, adopted by 500+ users.",
     "shortDescription": "Enhanced VS Code extension for GitHub Copilot",
     "category": "Developer Tools",
     "featured": true,
@@ -107,7 +142,8 @@
       "VS Code API",
       "Node.js",
       "GitHub API",
-      "Extension Development"
+      "Extension Development",
+      "JavaScript"
     ],
     "links": {
       "github": "https://github.com/username/copilot-extension",
@@ -117,282 +153,6 @@
       "type": "marketplace",
       "platform": "VS Code Marketplace",
       "status": "active"
-    }
-  },
-  {
-    "id": "chess-helper",
-    "name": "Chess Analysis Helper",
-    "type": "web-app",
-    "description": "Interactive chess analysis tool that helps players improve their game through AI-powered move suggestions and pattern recognition.",
-    "shortDescription": "AI-powered chess analysis and training tool",
-    "category": "AI/Games",
-    "featured": false,
-    "startDate": "2023-02-15",
-    "status": "completed",
-    "skills": [
-      "JavaScript",
-      "React",
-      "Chess.js",
-      "Stockfish",
-      "WebAssembly"
-    ],
-    "links": {
-      "github": "https://github.com/username/chess-helper",
-      "live": "https://chess-helper.example.com"
-    },
-    "deployment": {
-      "type": "cloud",
-      "platform": "Vercel",
-      "status": "active"
-    }
-  },
-  {
-    "id": "ecommerce-platform",
-    "name": "E-commerce Platform Redesign",
-    "type": "web-app",
-    "description": "A complete redesign and modernization of the company's e-commerce platform. Implemented modern React frontend with Next.js, GraphQL API layer, and microservices architecture.",
-    "shortDescription": "Modern e-commerce platform with React, GraphQL, and microservices",
-    "thumbnail": "/projects/ecommerce-thumb.jpg",
-    "category": "Web Development",
-    "featured": true,
-    "startDate": "2023-02-01",
-    "endDate": "2023-08-30",
-    "status": "completed",
-    "skills": [
-      "React",
-      "Next.js",
-      "GraphQL",
-      "Node.js",
-      "PostgreSQL",
-      "Docker",
-      "Kubernetes"
-    ],
-    "links": {
-      "live": "https://example.com/ecommerce",
-      "github": "https://github.com/username/ecommerce",
-      "demo": "https://example.com/ecommerce-demo",
-      "documentation": "https://example.com/ecommerce-docs"
-    },
-    "deployment": {
-      "type": "cloud",
-      "platform": "AWS",
-      "url": "https://example.com",
-      "status": "active"
-    },
-    "images": [
-      {
-        "name": "Dashboard",
-        "file": "/projects/ecommerce/dashboard.jpg",
-        "description": "Main admin dashboard interface"
-      }
-    ],
-    "metrics": [
-      {
-        "label": "Performance Improvement",
-        "value": "40%"
-      }
-    ]
-  },
-  {
-    "id": "chat-ai-assistant",
-    "name": "AI Chat Assistant",
-    "type": "llm-app",
-    "description": "An AI-powered chat assistant built with LangChain and GPT-4, featuring custom knowledge bases and real-time response streaming.",
-    "shortDescription": "Intelligent chat assistant with custom knowledge integration",
-    "thumbnail": "/projects/ai-chat-thumb.jpg",
-    "category": "AI/ML",
-    "featured": true,
-    "startDate": "2023-05-01",
-    "status": "active",
-    "skills": [
-      "Python",
-      "LangChain",
-      "OpenAI",
-      "FastAPI",
-      "React",
-      "Redis"
-    ],
-    "links": {
-      "live": "https://chat.example.com",
-      "github": "https://github.com/username/ai-chat",
-      "api": "https://api.chat.example.com/docs"
-    },
-    "deployment": {
-      "type": "cloud",
-      "platform": "Vercel",
-      "apiPlatform": "Railway",
-      "url": "https://chat.example.com",
-      "status": "active"
-    },
-    "model": {
-      "type": "llm",
-      "base": "GPT-4",
-      "customizations": [
-        "Custom knowledge embedding",
-        "Domain-specific fine-tuning"
-      ],
-      "metrics": {
-        "averageResponseTime": "2.3s",
-        "accuracy": "94%"
-      }
-    },
-    "demo": {
-      "type": "interactive",
-      "url": "https://chat.example.com/demo"
-    }
-  },
-  {
-    "id": "object-detection",
-    "name": "Real-time Object Detection System",
-    "type": "computer-vision",
-    "description": "Real-time object detection system using YOLOv8 for security camera feeds, featuring person tracking and anomaly detection.",
-    "shortDescription": "AI-powered security camera monitoring system",
-    "thumbnail": "/projects/detection-thumb.jpg",
-    "category": "Computer Vision",
-    "featured": true,
-    "startDate": "2023-03-15",
-    "status": "active",
-    "skills": [
-      "Python",
-      "YOLOv8",
-      "OpenCV",
-      "TensorRT",
-      "CUDA",
-      "FastAPI"
-    ],
-    "links": {
-      "github": "https://github.com/username/detection-system",
-      "demo": "https://youtube.com/watch?v=demo",
-      "paper": "https://arxiv.org/abs/paper"
-    },
-    "model": {
-      "type": "computer-vision",
-      "framework": "YOLOv8",
-      "optimizations": [
-        "TensorRT acceleration",
-        "CUDA optimization"
-      ],
-      "metrics": {
-        "fps": "30-45",
-        "mAP": "89.5",
-        "inferenceTime": "22ms"
-      },
-      "hardware": "NVIDIA RTX 3080"
-    },
-    "demo": {
-      "type": "video",
-      "url": "https://youtube.com/watch?v=demo"
-    },
-    "research": {
-      "publications": [
-        {
-          "title": "Efficient Real-time Object Detection",
-          "url": "https://arxiv.org/abs/paper",
-          "date": "2023-06"
-        }
-      ]
-    }
-  },
-  {
-    "id": "sales-analytics",
-    "name": "Sales Analytics Dashboard",
-    "type": "data-visualization",
-    "description": "Interactive sales analytics dashboard built with Power BI, featuring real-time data integration and predictive analytics.",
-    "shortDescription": "Comprehensive sales analytics and forecasting",
-    "thumbnail": "/projects/dashboard-thumb.jpg",
-    "category": "Data Analytics",
-    "featured": false,
-    "startDate": "2023-01-10",
-    "endDate": "2023-02-28",
-    "status": "completed",
-    "skills": [
-      "Power BI",
-      "DAX",
-      "SQL",
-      "Python",
-      "Azure"
-    ],
-    "links": {
-      "powerbi": "https://app.powerbi.com/dashboard",
-      "documentation": "/documents/dashboard-guide.pdf"
-    },
-    "visualization": {
-      "type": "power-bi",
-      "features": [
-        "Real-time data refresh",
-        "Predictive analytics",
-        "Custom DAX measures"
-      ],
-      "metrics": {
-        "dataPoints": "1M+",
-        "refreshRate": "15min",
-        "userBase": "200+"
-      }
-    },
-    "demo": {
-      "type": "embedded",
-      "powerbiEmbedUrl": "https://app.powerbi.com/embed/dashboard",
-      "screenshots": [
-        {
-          "name": "Overview",
-          "file": "/projects/dashboard/overview.jpg"
-        }
-      ]
-    }
-  },
-  {
-    "id": "sentiment-analysis",
-    "name": "Social Media Sentiment Analyzer",
-    "type": "ml-service",
-    "description": "Machine learning service that analyzes social media sentiment in real-time using custom-trained BERT models.",
-    "shortDescription": "Real-time social media sentiment analysis",
-    "thumbnail": "/projects/sentiment-thumb.jpg",
-    "category": "Natural Language Processing",
-    "featured": true,
-    "startDate": "2023-04-01",
-    "status": "active",
-    "skills": [
-      "Python",
-      "PyTorch",
-      "Hugging Face",
-      "FastAPI",
-      "Redis",
-      "Docker"
-    ],
-    "links": {
-      "api": "https://api.sentiment.example.com",
-      "docs": "https://docs.sentiment.example.com",
-      "github": "https://github.com/username/sentiment"
-    },
-    "model": {
-      "type": "nlp",
-      "base": "BERT",
-      "customizations": [
-        "Domain adaptation",
-        "Multi-language support"
-      ],
-      "metrics": {
-        "accuracy": "92%",
-        "f1Score": "0.89",
-        "latency": "150ms"
-      },
-      "training": {
-        "dataset": "Custom social media corpus",
-        "size": "1M+ samples"
-      }
-    },
-    "api": {
-      "type": "rest",
-      "endpoints": [
-        "/analyze",
-        "/batch",
-        "/stats"
-      ],
-      "documentation": "https://docs.sentiment.example.com"
-    },
-    "demo": {
-      "type": "interactive",
-      "url": "https://demo.sentiment.example.com"
     }
   }
 ]

@@ -4,6 +4,7 @@ import { loadJson } from '@/utils/loadJson'
 import Card from '@/components/Card'
 import Section from '@/components/Section'
 import Button from '@/components/Button'
+import SkillTag from '@/components/SkillTag';
 import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
 
 export default async function Home() {
@@ -32,6 +33,7 @@ export default async function Home() {
               height={128}
               className="w-32 h-32 rounded-full mx-auto mb-8 shadow-lg"
               priority
+              style={{ objectFit: 'cover' }}
             />
             <h1 className="text-5xl md:text-6xl font-bold mb-4 heading-gradient">
               {introData.name}
@@ -122,9 +124,7 @@ export default async function Home() {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {job.skills.map((skill) => (
-                    <span key={skill} className="skill-tag">
-                      {skill}
-                    </span>
+                    <SkillTag key={skill} skill={skill} />
                   ))}
                 </div>
               </div>
@@ -148,10 +148,10 @@ export default async function Home() {
                 <Image
                   src={`/certificate_thumbnails/${certificate.file.replace('.pdf', '.png')}`}
                   alt={certificate.name}
-                  layout="responsive"
                   width={800}
                   height={600}
                   className="w-full h-auto object-contain rounded-lg shadow-lg"
+                  priority
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                   <p className="text-white text-lg font-semibold px-4">{certificate.description}</p>

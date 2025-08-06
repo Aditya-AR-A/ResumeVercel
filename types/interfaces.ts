@@ -68,6 +68,9 @@ export interface SkillTooltipProps {
   level?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
   yearsOfExperience?: number;
   children?: ReactNode;
+  projects?: Project[];
+  jobs?: Job[];
+  certificates?: Certificate[];
 }
 
 export interface ButtonProps {

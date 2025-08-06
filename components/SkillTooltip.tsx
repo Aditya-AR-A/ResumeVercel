@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import { SkillTooltipProps } from '@/types/interfaces';
+import SkillTooltipContent from './SkillTooltipContent';
+import projectsData from '@/data/projects.json';
+import jobsData from '@/data/jobs.json';
+import certificatesData from '@/data/certificates.json';
 
 export default function SkillTooltip({
   skill,
@@ -9,6 +13,12 @@ export default function SkillTooltip({
   children
 }: SkillTooltipProps) {
   const [isVisible, setIsVisible] = useState(false)
+
+  const relatedProjects = projectsData.filter((project) => project.skills.includes(skill));
+  const relatedJobs = jobsData
+    .filter((job) => job.skills.includes(skill))
+    .map((job) => ({ ...job, isCurrent: job.isCurrent ?? false }));
+  const relatedCertificates = certificatesData.filter((certificate) => certificate.skills.includes(skill));
 
   const getLevelColor = () => {
     switch (level) {
@@ -38,6 +48,11 @@ export default function SkillTooltip({
     )
   }
 
+  console.log('Tooltip visibility:', isVisible);
+  console.log('Related Projects:', relatedProjects);
+  console.log('Related Jobs:', relatedJobs);
+  console.log('Related Certificates:', relatedCertificates);
+
   return (
     <div 
       className="relative inline-block"
@@ -51,25 +66,13 @@ export default function SkillTooltip({
         </span>
       )}
       
-      {isVisible && (description || yearsOfExperience) && (
+      {isVisible && (
         <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-10">
-          <div className="bg-gray-900 text-white text-sm rounded-lg py-2 px-3 shadow-lg max-w-xs">
-            <div className="font-semibold mb-1">{skill}</div>
-            {description && (
-              <div className="text-gray-300 mb-1">{description}</div>
-            )}
-            {yearsOfExperience && (
-              <div className="text-gray-400 text-xs">
-                {yearsOfExperience} {yearsOfExperience === 1 ? 'year' : 'years'} experience
-              </div>
-            )}
-            <div className="text-gray-400 text-xs capitalize">{level} level</div>
-            
-            {/* Tooltip arrow */}
-            <div className="absolute top-full left-1/2 transform -translate-x-1/2">
-              <div className="border-4 border-transparent border-t-gray-900"></div>
-            </div>
-          </div>
+          <SkillTooltipContent 
+            projects={relatedProjects} 
+            jobs={relatedJobs} 
+            certificates={relatedCertificates} 
+          />
         </div>
       )}
     </div>

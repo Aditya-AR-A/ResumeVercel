@@ -1,21 +1,8 @@
 import React from 'react'
-import Image from 'next/image'
 import { loadJson } from '@/utils/loadJson'
 import Card from '@/components/Card'
 import Section from '@/components/Section'
-
-interface Project {
-  id: string
-  name: string
-  description: string
-  shortDescription: string
-  thumbnail?: string
-  category: string
-  featured: boolean
-  skills: string[]
-  demoUrl?: string
-  githubUrl?: string
-}
+import { Project } from '@/types/interfaces'
 
 export default async function ProjectsPage() {
   const projects: Project[] = loadJson('projects_new.json')
@@ -38,7 +25,7 @@ export default async function ProjectsPage() {
             All Projects
           </h1>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Explore my complete portfolio of data science, machine learning, and development projects.
+            Explore all the projects I have worked on, categorized for your convenience.
           </p>
         </div>
       </Section>

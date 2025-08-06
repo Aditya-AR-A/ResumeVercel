@@ -1,18 +1,8 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Link from 'next/link';
-
-export interface ButtonProps {
-  children: ReactNode;
-  onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset';
-  className?: string;
-  disabled?: boolean;
-  href?: string;
-  target?: '_blank' | '_self' | '_parent' | '_top';
-  rel?: string;
-}
+import { ButtonProps } from '@/types/interfaces';
 
 export default function Button({
   children,

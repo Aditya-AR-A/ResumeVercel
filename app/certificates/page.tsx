@@ -2,30 +2,20 @@ import React from 'react'
 import { loadJson } from '@/utils/loadJson'
 import Card from '@/components/Card'
 import Section from '@/components/Section'
-
-interface Certificate {
-  name: string
-  provider: string
-  issueDate: string
-  file: string
-  description?: string
-  field?: string
-  skills?: string[]
-  featured?: boolean
-}
+import { Certificate } from '@/types/interfaces';
 
 export default async function CertificatesPage() {
-  const certificates: Certificate[] = loadJson('certificates.json')
+  const certificates: Certificate[] = loadJson('certificates.json');
 
   // Group certificates by field/category
   const certificatesByField = certificates.reduce((acc, cert) => {
-    const field = cert.field || 'Other'
+    const field = cert.field || 'Other';
     if (!acc[field]) {
-      acc[field] = []
+      acc[field] = [];
     }
-    acc[field].push(cert)
-    return acc
-  }, {} as Record<string, Certificate[]>)
+    acc[field].push(cert);
+    return acc;
+  }, {} as Record<string, Certificate[]>);
 
   return (
     <div className="min-h-screen pt-20">
@@ -147,5 +137,5 @@ export default async function CertificatesPage() {
         </div>
       </Section>
     </div>
-  )
+  );
 }

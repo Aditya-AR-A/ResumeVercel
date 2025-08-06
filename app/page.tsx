@@ -4,60 +4,7 @@ import { loadJson } from '@/utils/loadJson'
 import Card from '@/components/Card'
 import Section from '@/components/Section'
 import Button from '@/components/Button'
-
-interface Project {
-  id: string
-  name: string
-  description: string
-  shortDescription: string
-  thumbnail?: string
-  category: string
-  featured: boolean
-  skills: string[]
-  demoUrl?: string
-  githubUrl?: string
-}
-
-interface Job {
-  id: string
-  title: string
-  company: string
-  companyLogo?: string
-  position: string
-  location: string
-  startDate: string
-  endDate?: string
-  isCurrent: boolean
-  description: string
-  skills: string[]
-}
-
-interface Certificate {
-  name: string;
-  file: string;
-  provider: string;
-  field: string;
-  skills: string[];
-  issueDate: string | null;
-  credentialId: string | null;
-  description: string;
-  featured: boolean;
-}
-
-interface IntroData {
-  profileImage: {
-    src: string
-    alt: string
-  }
-  name: string
-  title: string
-  about: string
-  socialLinks: {
-    email: string
-    github: string
-    linkedin: string
-  }
-}
+import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
 
 export default async function Home() {
   // Load data from JSON files
@@ -193,16 +140,23 @@ export default async function Home() {
 
       {/* Featured Certificates Section */}
       <Section id="certificates" className="py-16 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-8">Featured Certificates</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="space-y-12">
             {featuredCertificates.map(certificate => (
-              <Card
-                key={certificate.name}
-                title={certificate.name}
-                description={certificate.description}
-                imageUrl={`/certificates/${certificate.file}`}
-              />
+              <div key={certificate.name} className="relative w-full">
+                <Image
+                  src={`/certificate_thumbnails/${certificate.file.replace('.pdf', '.png')}`}
+                  alt={certificate.name}
+                  layout="responsive"
+                  width={800}
+                  height={600}
+                  className="w-full h-auto object-contain rounded-lg shadow-lg"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                  <p className="text-white text-lg font-semibold px-4">{certificate.description}</p>
+                </div>
+              </div>
             ))}
           </div>
           <Button className="mt-8" href="/certificates">

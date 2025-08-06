@@ -1,15 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Image from 'next/image';
-
-export interface CardProps {
-  title: string;
-  description?: string;
-  imageUrl?: string;
-  linkUrl?: string;
-  tags?: string[];
-  featured?: boolean;
-  children?: ReactNode;
-}
+import { CardProps } from '@/types/interfaces';
 
 export default function Card({
   title,
@@ -27,12 +18,12 @@ export default function Card({
       }`}
     >
       {imageUrl && (
-        <Image 
-          src={imageUrl} 
-          alt={title} 
+        <Image
+          src={imageUrl}
+          alt={title}
           width={400}
           height={160}
-          className="w-full h-40 object-cover rounded mb-4" 
+          className="w-full h-40 object-cover rounded mb-4"
         />
       )}
       <h2 className="text-xl font-bold mb-2">{title}</h2>

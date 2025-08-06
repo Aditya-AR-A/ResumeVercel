@@ -1,12 +1,5 @@
-import React, { useState, ReactNode } from 'react'
-
-export interface SkillTooltipProps {
-  skill: string
-  description?: string
-  level?: 'beginner' | 'intermediate' | 'advanced' | 'expert'
-  yearsOfExperience?: number
-  children?: ReactNode
-}
+import React, { useState } from 'react'
+import { SkillTooltipProps } from '@/types/interfaces';
 
 export default function SkillTooltip({
   skill,

@@ -1,12 +1,5 @@
-import React, { ReactNode } from 'react'
-
-export interface SectionProps {
-  id?: string
-  className?: string
-  children: ReactNode
-  containerClassName?: string
-  background?: 'default' | 'gray' | 'gradient'
-}
+import React from 'react'
+import { SectionProps } from '@/types/interfaces';
 
 export default function Section({
   id,

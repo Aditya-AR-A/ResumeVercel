@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Check Next.js project requirements",
+			"command": "npx --yes next info",
+			"group": "build",
+			"isBackground": false
+		}
+	]
+}

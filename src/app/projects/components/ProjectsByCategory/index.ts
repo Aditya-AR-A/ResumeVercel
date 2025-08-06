@@ -1,1 +1,0 @@
-export { ProjectsByCategory } from './ProjectsByCategory';

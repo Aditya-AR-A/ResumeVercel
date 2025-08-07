@@ -1,5 +1,39 @@
 [
   {
+    "id": "ds-ml-intern-plantoai-2024",
+    "title": "Data Science and ML Intern",
+    "company": "planto.ai (Coding Pro)",
+    "companyLogo": "/images/companies/plantoai.png",
+    "position": "Internship",
+    "location": "Remote",
+    "startDate": "2024-06-01",
+    "endDate": "2024-09-30",
+    "isCurrent": false,
+    "description": "Worked on the creation of the planto.ai product, a VS Code extension. Responsible for designing the GUI in VS Code and integrating LLMs for improved responses and context management during the initial phases of the project. Gained valuable experience collaborating with the team and building a real-world AI product.",
+    "responsibilities": [
+      "Designed and implemented the GUI for the planto.ai VS Code extension",
+      "Integrated LLMs for better context management and response quality",
+      "Collaborated with the team to shape the initial phases of the product",
+      "Worked primarily with TypeScript and Next.js"
+    ],
+    "skills": [
+      "TypeScript",
+      "Next.js",
+      "VS Code Extension Development",
+      "LLMs",
+      "Context Management",
+      "GUI Design",
+      "AI Integration",
+      "Team Collaboration"
+    ],
+    "projectIds": ["plantoai-extension"],
+    "links": {
+      "company": "https://codingpro.in/plantoai",
+      "project": "https://codingpro.in/plantoai"
+    },
+    "featured": true
+  },
+  {
     "id": "ai-python-dev-2025",
     "title": "AI and Python Developer",
     "company": "Addmin Web World",
@@ -36,77 +70,5 @@
       "Taxi Booking Automation"
     ],
     "featured": true
-  },
-  {
-    "id": "senior-dev-2023",
-    "title": "Senior Full Stack Developer",
-    "company": "Tech Corp",
-    "companyLogo": "/images/companies/techcorp.png",
-    "position": "Full-time",
-    "location": "New York, NY (Remote)",
-    "startDate": "2023-01-15",
-    "isCurrent": true,
-    "description": "Leading development of enterprise-scale web applications using React, Node.js, and cloud technologies.",
-    "responsibilities": [
-      "Architected and implemented scalable microservices architecture",
-      "Led a team of 5 developers in agile development processes",
-      "Improved application performance by 40% through optimization"
-    ],
-    "achievements": [
-      "Reduced deployment time by 60% by implementing CI/CD pipelines",
-      "Successfully delivered 3 major projects ahead of schedule"
-    ],
-    "skills": [
-      "React",
-      "Node.js",
-      "TypeScript",
-      "AWS",
-      "Docker",
-      "Kubernetes",
-      "MongoDB"
-    ],
-    "projectIds": ["ecommerce-platform"],
-    "links": {
-      "company": "https://techcorp.com",
-      "linkedin": "https://linkedin.com/company/techcorp"
-    },
-    "featured": true,
-    "documents": [
-      {
-        "name": "Project Case Study",
-        "file": "/documents/case-study-2023.pdf"
-      }
-    ],
-    "images": [
-      {
-        "name": "Team Photo",
-        "file": "/images/team-2023.jpg",
-        "description": "Tech Corp development team"
-      }
-    ]
-  },
-  {
-    "id": "lead-dev-2021",
-    "title": "Lead Developer",
-    "company": "StartUp Inc",
-    "companyLogo": "/images/companies/startup.png",
-    "position": "Full-time",
-    "location": "San Francisco, CA",
-    "startDate": "2021-03-01",
-    "endDate": "2022-12-31",
-    "description": "Led development of innovative AI-powered analytics platform.",
-    "responsibilities": [
-      "Designed and implemented core platform architecture",
-      "Managed agile development process and sprint planning",
-      "Mentored junior developers"
-    ],
-    "skills": [
-      "Python",
-      "React",
-      "TensorFlow",
-      "PostgreSQL",
-      "Azure"
-    ],
-    "featured": false
   }
 ]

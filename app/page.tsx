@@ -73,7 +73,7 @@ export default async function Home() {
                 featured={project.featured}
                 linkUrl={project.demoUrl || project.githubUrl}
               />
-            ))}z
+            ))}
           </div>
           <div className="text-center mt-12">
             <Button className="btn-primary" href="/projects">
@@ -155,6 +155,11 @@ export default async function Home() {
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                   <p className="text-white text-lg font-semibold px-4">{certificate.description}</p>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {certificate.skills && certificate.skills.map((skill) => (
+                    <SkillTag key={skill} skill={skill} />
+                  ))}
                 </div>
               </div>
             ))}

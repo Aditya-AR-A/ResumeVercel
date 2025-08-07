@@ -92,4 +92,5 @@ export interface CardProps {
   tags?: string[];
   featured?: boolean;
   children?: ReactNode;
+  projects?: Project[];
 }

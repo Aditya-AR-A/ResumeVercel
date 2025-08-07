@@ -79,20 +79,27 @@
   },
   {
     "id": "vs-code-extension",
-    "name": "VS Code Copilot Extension",
-    "description": "VS Code extension that enhances the development experience with AI-powered code suggestions and productivity features.",
-    "shortDescription": "AI-powered VS Code extension for enhanced productivity",
+    "name": "Planto.ai VS Code Extension",
+    "description": "Developed a comprehensive VS Code extension for Planto.ai that revolutionizes the coding experience by providing context-aware AI assistance embedded directly in the development environment. The extension features intelligent auto-completion, screenshot-to-UI code conversion, Figma-to-code transformation, and seamless integration with backend schemas for automated code generation. Built with a focus on scalability and team collaboration, supporting large development teams with advanced workflow management.",
+    "shortDescription": "AI-powered VS Code extension with context-aware coding assistance and visual-to-code automation",
     "thumbnail": "/projects/vscode-extension/thumbnail.svg",
     "category": "Developer Tools",
-    "featured": false,
+    "featured": true,
     "skills": [
       "TypeScript",
-      "VS Code API",
-      "Node.js",
-      "AI/ML",
-      "Extension Development"
+      "VS Code Extension Development",
+      "AI Integration",
+      "Context Management",
+      "React",
+      "Next.js",
+      "GUI Design",
+      "Figma API",
+      "LLMs",
+      "Team Collaboration"
     ],
-    "githubUrl": "https://github.com/Aditya-AR-A/vscode-copilot-extension"
+    "githubUrl": "https://github.com/codingpro-ai/planto-vscode",
+    "demoUrl": "https://planto.ai/",
+    "jobId": "ds-ml-intern-plantoai-2024"
   },
   {
     "id": "data-science-capstone",

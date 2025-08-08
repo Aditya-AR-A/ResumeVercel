@@ -3,7 +3,7 @@
     "id": "ds-ml-intern-plantoai-2024",
     "title": "Data Science and ML Intern",
     "company": "planto.ai (Coding Pro)",
-    "companyLogo": "/images/companies/plantoai.png",
+    "companyLogo": "https://planto.ai/images/planto-logo.png",
     "position": "Internship",
     "location": "Remote",
     "startDate": "2024-06-01",
@@ -28,8 +28,8 @@
     ],
     "projectIds": ["plantoai-extension"],
     "links": {
-      "company": "https://codingpro.in/plantoai",
-      "project": "https://codingpro.in/plantoai"
+      "company": "https://codingpro.online/",
+      "project": "https://planto.ai/"
     },
     "featured": true
   },

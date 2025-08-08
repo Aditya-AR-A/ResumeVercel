@@ -7,11 +7,9 @@ import certificatesData from '@/data/certificates.json';
 
 export default function SkillTooltip({
   skill,
-  description,
   level = 'intermediate',
-  yearsOfExperience,
   children
-}: SkillTooltipProps) {
+}: Pick<SkillTooltipProps, 'skill' | 'level' | 'children'>) {
   const [isVisible, setIsVisible] = useState(false)
 
   const relatedProjects = projectsData.filter((project) => project.skills.includes(skill));
@@ -41,17 +39,12 @@ export default function SkillTooltip({
       intermediate: 'bg-blue-500',
       advanced: 'bg-green-500',
       expert: 'bg-purple-500'
-    }
+    } as const
 
     return (
       <span className={`inline-block w-2 h-2 rounded-full mr-2 ${levelColors[level]}`} />
     )
   }
-
-  console.log('Tooltip visibility:', isVisible);
-  console.log('Related Projects:', relatedProjects);
-  console.log('Related Jobs:', relatedJobs);
-  console.log('Related Certificates:', relatedCertificates);
 
   return (
     <div 

@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import { loadJson } from '@/utils/loadJson'
 import Section from '@/components/Section'
 import Card from '@/components/Card'
@@ -34,7 +33,7 @@ export default async function ExperiencePage() {
 
   // Function to get related projects for a job
   const getRelatedProjects = (jobId: string) => {
-    return projects.filter(project => (project as any).jobId === jobId);
+    return projects.filter(project => project.jobId === jobId);
   };
 
   return (

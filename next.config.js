@@ -60,6 +60,11 @@ const nextConfig = {
         hostname: 'addminwebworld.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'planto.ai',
+        pathname: '/**',
+      },
     ],
   },
   async rewrites() {

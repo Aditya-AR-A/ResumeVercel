@@ -20,12 +20,17 @@ const SkillTag: React.FC<SkillTagProps> = ({ skill, onClick, className }) => {
   // Toggle tooltip on click
   const handleTagClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (onClick) {
+      onClick();
+    }
     setShowTooltip((prev) => !prev);
   };
 
   // Close tooltip if clicked outside
   React.useEffect(() => {
-    if (!showTooltip) return;
+    if (!showTooltip) {
+      return;
+    }
     const handleClickOutside = (event: MouseEvent) => {
       if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
         setShowTooltip(false);

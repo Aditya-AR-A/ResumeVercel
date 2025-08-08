@@ -11,6 +11,7 @@ export interface Project {
   skills: string[];
   demoUrl?: string;
   githubUrl?: string;
+  jobId?: string; // Link a project to a job when applicable
 }
 
 export interface Job {

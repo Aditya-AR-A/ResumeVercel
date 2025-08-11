@@ -18,7 +18,7 @@ export default async function CertificatesPage() {
   }, {} as Record<string, Certificate[]>);
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-8">
       {/* Header */}
       <Section className="py-16 text-center">
         <div className="container mx-auto px-4">

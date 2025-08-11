@@ -26,6 +26,7 @@ export interface Job {
   isCurrent: boolean;
   description: string;
   skills: string[];
+  featured?: boolean;
 }
 
 export interface Certificate {

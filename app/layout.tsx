@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from '@/components/Navbar'
+import Sidebar from '@/components/Sidebar'
 import { ReactNode } from 'react'
 import layoutData from '@/data/layout.json';
+import { loadJson } from '@/utils/loadJson';
+import { IntroData } from '@/types/interfaces';
 import Image from 'next/image';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -17,11 +19,12 @@ export default function RootLayout({
   children: ReactNode
 }) {
   const contactLinks = layoutData.contact;
+  const introData: IntroData = loadJson('intro.json');
 
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.className} antialiased min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800`}>
-        <Navbar />
+        <Sidebar socialLinks={introData.socialLinks} />
         <main className="relative">
           {children}
         </main>

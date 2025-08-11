@@ -1,39 +1,5 @@
 [
   {
-    "id": "ds-ml-intern-plantoai-2024",
-    "title": "Data Science and ML Intern",
-    "company": "planto.ai (Coding Pro)",
-    "companyLogo": "https://planto.ai/images/planto-logo.png",
-    "position": "Internship",
-    "location": "Remote",
-    "startDate": "2024-06-01",
-    "endDate": "2024-09-30",
-    "isCurrent": false,
-    "description": "Worked on the creation of the planto.ai product, a VS Code extension. Responsible for designing the GUI in VS Code and integrating LLMs for improved responses and context management during the initial phases of the project. Gained valuable experience collaborating with the team and building a real-world AI product.",
-    "responsibilities": [
-      "Designed and implemented the GUI for the planto.ai VS Code extension",
-      "Integrated LLMs for better context management and response quality",
-      "Collaborated with the team to shape the initial phases of the product",
-      "Worked primarily with TypeScript and Next.js"
-    ],
-    "skills": [
-      "TypeScript",
-      "Next.js",
-      "VS Code Extension Development",
-      "LLMs",
-      "Context Management",
-      "GUI Design",
-      "AI Integration",
-      "Team Collaboration"
-    ],
-    "projectIds": ["plantoai-extension"],
-    "links": {
-      "company": "https://codingpro.online/",
-      "project": "https://planto.ai/"
-    },
-    "featured": true
-  },
-  {
     "id": "ai-python-dev-2025",
     "title": "AI and Python Developer",
     "company": "Addmin Web World",
@@ -69,6 +35,78 @@
       "Hiring Automation",
       "Taxi Booking Automation"
     ],
+    "featured": true
+  },
+  {
+    "id": "freelance-data-migration-2023-2024",
+    "title": "Freelance Data Analytics & Migration Specialist",
+    "company": "Independent Contractor",
+    "position": "Freelance",
+    "location": "Remote",
+    "startDate": "2024-09-01",
+    "endDate": "2025-05-31",
+    "isCurrent": false,
+    "description": "Led comprehensive data migration and analytics modernization projects for multiple clients. Specialized in migrating legacy SAS workflows to modern SQL databases and Python-based analytics solutions. Transformed manual Excel-based reporting systems into automated, interactive dashboards using Python, Plotly, and Quarto. Successfully delivered SAS to Power BI migration projects, enabling clients to leverage modern business intelligence tools.",
+    "responsibilities": [
+      "Migrated complex SAS data processing workflows to SQL databases for improved performance and maintainability",
+      "Automated manual Excel-based reporting systems using Python, Plotly, and Quarto",
+      "Developed interactive dashboards and visualizations replacing static Excel charts",
+      "Led SAS to Power BI migration projects for business intelligence modernization",
+      "Created comprehensive documentation and training materials for client teams",
+      "Optimized data pipelines resulting in 70% reduction in processing time",
+      "Implemented data validation and quality checks for migration accuracy"
+    ],
+    "skills": [
+      "SAS",
+      "SQL",
+      "Python",
+      "Plotly",
+      "Quarto",
+      "Power BI",
+      "Data Migration",
+      "Dashboard Development",
+      "Excel Automation",
+      "Data Visualization",
+      "ETL Processes",
+      "Business Intelligence",
+      "Data Analytics",
+      "Pandas",
+      "PostgreSQL"
+    ],
+    "featured": false
+  },
+  {
+    "id": "ds-ml-intern-plantoai-2024",
+    "title": "Data Science and ML Intern",
+    "company": "planto.ai (Coding Pro)",
+    "companyLogo": "https://planto.ai/images/planto-logo.png",
+    "position": "Internship",
+    "location": "Remote",
+    "startDate": "2024-06-01",
+    "endDate": "2024-09-30",
+    "isCurrent": false,
+    "description": "Worked on the creation of the planto.ai product, a VS Code extension. Responsible for designing the GUI in VS Code and integrating LLMs for improved responses and context management during the initial phases of the project. Gained valuable experience collaborating with the team and building a real-world AI product.",
+    "responsibilities": [
+      "Designed and implemented the GUI for the planto.ai VS Code extension",
+      "Integrated LLMs for better context management and response quality",
+      "Collaborated with the team to shape the initial phases of the product",
+      "Worked primarily with TypeScript and Next.js"
+    ],
+    "skills": [
+      "TypeScript",
+      "Next.js",
+      "VS Code Extension Development",
+      "LLMs",
+      "Context Management",
+      "GUI Design",
+      "AI Integration",
+      "Team Collaboration"
+    ],
+    "projectIds": ["plantoai-extension"],
+    "links": {
+      "company": "https://codingpro.online/",
+      "project": "https://planto.ai/"
+    },
     "featured": true
   }
 ]

@@ -1,7 +1,7 @@
 import React from 'react'
 import { loadJson } from '@/utils/loadJson'
 import Section from '@/components/Section'
-import Card from '@/components/Card'
+import JobCard from '@/components/JobCard'
 import { Project } from '@/types/interfaces'
 
 interface Job {
@@ -17,13 +17,13 @@ interface Job {
   description: string
   responsibilities?: string[]
   skills: string[]
-  featured?: boolean
+  featured: boolean
 }
 
 export default async function ExperiencePage() {
   const jobs: Job[] = loadJson('jobs.json')
   const projects: Project[] = loadJson('projects_new.json')
-  
+
   // Sort jobs by startDate descending (most recent first)
   const sortedJobs = jobs.slice().sort((a, b) => {
     const aDate = new Date(a.startDate).getTime();
@@ -37,7 +37,7 @@ export default async function ExperiencePage() {
   };
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-8">
       {/* Header */}
       <Section className="py-16 text-center">
         <div className="container mx-auto px-4">
@@ -53,16 +53,13 @@ export default async function ExperiencePage() {
       {/* Experience Timeline */}
       <Section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="max-w-5xl mx-auto space-y-8">
             {sortedJobs.map((job) => (
-              <Card
+              <JobCard
                 key={job.id}
-                title={job.title}
-                description={`${job.company} • ${job.location} • ${job.startDate} - ${job.isCurrent ? 'Present' : job.endDate}`}
-                imageUrl={job.companyLogo}
-                tags={job.skills}
-                featured={job.featured}
+                {...job}
                 projects={getRelatedProjects(job.id)}
+                compact={false}
               />
             ))}
           </div>

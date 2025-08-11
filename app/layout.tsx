@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
+import { ThemeProvider } from '@/components/ThemeProvider'
 import { ReactNode } from 'react'
 import layoutData from '@/data/layout.json';
 import { loadJson } from '@/utils/loadJson';
@@ -23,36 +24,60 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme') || 'system';
+                  var actualTheme = theme;
+                  
+                  if (theme === 'system') {
+                    actualTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  }
+                  
+                  document.documentElement.classList.add(actualTheme);
+                } catch (e) {
+                  document.documentElement.classList.add('light');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.className} antialiased min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800`}>
-        <Sidebar socialLinks={introData.socialLinks} />
-        <main className="relative">
-          {children}
-        </main>
-        <footer className="bg-gray-900 text-white py-8">
-          <div className="container mx-auto px-4 text-center">
-            <p>&copy; 2025 Aditya Raj. All rights reserved.</p>
-            <div className="flex justify-center space-x-6 mt-4">
-              {contactLinks.map((link) => (
-                <a 
-                  key={link.platform}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={link.className}
-                >
-                  <Image
-                    src={link.icon}
-                    alt={link.platform}
-                    width={24}
-                    height={24}
-                    className="inline-block mr-2"
-                  />
-                  {link.platform}
-                </a>
-              ))}
+        <ThemeProvider>
+          <Sidebar socialLinks={introData.socialLinks} />
+          <main className="relative">
+            {children}
+          </main>
+          <footer className="bg-gray-900 text-white py-8">
+            <div className="container mx-auto px-4 text-center">
+              <p>&copy; 2025 Aditya Raj. All rights reserved.</p>
+              <div className="flex justify-center space-x-6 mt-4">
+                {contactLinks.map((link) => (
+                  <a 
+                    key={link.platform}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={link.className}
+                  >
+                    <Image
+                      src={link.icon}
+                      alt={link.platform}
+                      width={24}
+                      height={24}
+                      className="inline-block mr-2"
+                    />
+                    {link.platform}
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
-        </footer>
+          </footer>
+        </ThemeProvider>
       </body>
     </html>
   )

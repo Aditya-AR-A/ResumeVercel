@@ -35,6 +35,9 @@
       "Hiring Automation",
       "Taxi Booking Automation"
     ],
+    "projectIds": [
+      "llm-agent-integration"
+    ],
     "featured": true
   },
   {

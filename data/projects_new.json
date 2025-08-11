@@ -1,5 +1,32 @@
 [
   {
+    "id": "llm-agent-integration",
+    "name": "LLM-Powered Call Agent Integration System",
+    "description": "Enterprise-level AI agent system integrating LLMs with real-time call transcription and automated decision making. Built a comprehensive workflow where LLMs process client-specific prompts and execute appropriate actions based on conversation context. Features FastAPI backend with WebSocket support, SIP configuration for automated call handling, LiveKit integration for real-time audio processing, and OpenAI API for intelligent transcription and response generation.",
+    "shortDescription": "Real-time AI call agent with LLM decision-making and automated workflows",
+    "thumbnail": "/projects/llm-agent/thumbnail.svg",
+    "category": "AI/ML Engineering",
+    "featured": true,
+    "skills": [
+      "Python",
+      "FastAPI",
+      "WebSockets",
+      "LLMs",
+      "OpenAI API",
+      "LiveKit",
+      "SIP Protocol",
+      "Real-time Transcription",
+      "Prompt Engineering",
+      "Agent Workflows",
+      "API Integration",
+      "Voice Processing",
+      "Decision Trees",
+      "Client Customization"
+    ],
+    "githubUrl": "#",
+    "jobId": "ai-python-dev-2025"
+  },
+  {
     "id": "real-estate-price",
     "name": "Real Estate Price Prediction",
     "description": "Machine learning project focused on predicting real estate prices using advanced regression techniques. Features comprehensive EDA, data cleaning, and interactive visualizations.",

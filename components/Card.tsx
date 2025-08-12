@@ -28,16 +28,26 @@ export default function Card({
         </div>
       )}
       {imageUrl && (
-        <Image
-          src={imageUrl}
-          alt={title}
-          width={400}
-          height={160}
-          className="w-full h-40 object-cover rounded-lg mb-4"
-        />
+        <div className="flex flex-col md:flex-row gap-6 mb-4">
+          <Image
+            src={imageUrl}
+            alt={title}
+            width={400}
+            height={160}
+            className="w-full md:w-64 h-40 md:h-32 object-cover rounded-lg flex-shrink-0"
+          />
+          <div className="flex-1">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{title}</h2>
+            {description && <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{description}</p>}
+          </div>
+        </div>
       )}
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{title}</h2>
-      {description && <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{description}</p>}
+      {!imageUrl && (
+        <>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{title}</h2>
+          {description && <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{description}</p>}
+        </>
+      )}
       {tags && (
         <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag) => (

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CommandInterface from './CommandInterface';
 import AnimatedNavbar from './AnimatedNavbar';
+import Hero from './Hero';
 import DynamicContentManager, { ViewType } from './DynamicContentManager';
 import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
 

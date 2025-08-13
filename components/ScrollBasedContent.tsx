@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import CommandInterface from './CommandInterface';
 import AnimatedNavbar from './AnimatedNavbar';
 import Hero from './Hero';
@@ -23,6 +23,8 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
 }) => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [commandInput, setCommandInput] = useState('');
+  // Navbar visibility with hysteresis to prevent flicker near thresholds
+  const [navVisible, setNavVisible] = useState(false);
   // Track refs for sections (including hero as index 0)
   const sectionRefs = useRef<HTMLElement[]>([]);
   
@@ -31,7 +33,9 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
   
   const handleViewChange = (view: ViewType) => {
     // Optimistically set current view so UI highlights immediately
-    if (view !== currentView) setCurrentView(view);
+    if (view !== currentView) {
+      setCurrentView(view);
+    }
     const viewIndex = viewSequence.indexOf(view);
     if (viewIndex >= 0 && sectionRefs.current[viewIndex]) {
       sectionRefs.current[viewIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -59,7 +63,9 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
       let bestIdx = -1;
       let bestRatio = 0;
       sectionRefs.current.forEach((el, idx) => {
-        if (!el) return;
+        if (!el) {
+          return;
+        }
         const rect = el.getBoundingClientRect();
         const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
         const ratio = visible / Math.min(vh, rect.height || vh);
@@ -117,36 +123,61 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
     }
   }, [currentView]);
 
-  const isNavbarVisible = currentView !== 'home';
+  // Compute navbar visibility based on hero visibility ratio (with hysteresis)
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const hero = sectionRefs.current[0];
+        if (!hero) {
+          return;
+        }
+        const vh = window.innerHeight || 1;
+        const rect = hero.getBoundingClientRect();
+        const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
+        const ratio = visible / Math.min(vh, rect.height || vh);
+        // Hysteresis thresholds
+        const SHOW_NAV = 0.35; // show when hero mostly off-screen
+        const HIDE_NAV = 0.55; // hide when hero more visible again
+        if (!navVisible && ratio < SHOW_NAV) {
+          setNavVisible(true);
+        } else if (navVisible && ratio > HIDE_NAV) {
+          setNavVisible(false);
+        }
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+  }, [navVisible]);
 
   return (
+    <LayoutGroup id="app-shared-layout">
     <div className="scroll-smooth">
       <AnimatePresence>
-        {isNavbarVisible && (
-          <motion.div
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            exit={{ y: -100 }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 30
-            }}
-          >
-            <AnimatedNavbar 
-              isVisible={isNavbarVisible} 
-              onViewChange={handleViewChange}
-              currentView={currentView}
-              commandValue={commandInput}
-              onCommandChange={setCommandInput}
-            />
-          </motion.div>
-        )}
+        <motion.div
+          initial={{ y: -100 }}
+          animate={{ y: navVisible ? 0 : -100 }}
+          exit={{ y: -100 }}
+          transition={{ duration: 0.55, ease: 'easeInOut' }}
+          style={{ pointerEvents: navVisible ? 'auto' : 'none' }}
+        >
+          <AnimatedNavbar 
+            isVisible={navVisible} 
+            onViewChange={handleViewChange}
+            currentView={currentView}
+            commandValue={commandInput}
+            onCommandChange={setCommandInput}
+            brandName={introData.name}
+          />
+        </motion.div>
       </AnimatePresence>
 
       {/* Hero + Interactive (combined) */}
       <motion.div
-        ref={el => { if (el) sectionRefs.current[0] = el; }}
+  ref={el => { if (el) { sectionRefs.current[0] = el; } }}
         data-view="home"
         className="min-h-screen snap-start"
         initial={false}
@@ -155,9 +186,8 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
           scale: currentView === 'home' ? 1 : 0.99,
           filter: currentView === 'home' ? 'blur(0px)' : 'blur(0.3px)'
         }}
-  // Keep pointer events enabled so user can still interact even if dimmed
-  style={{ pointerEvents: 'auto' }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
+        style={{ pointerEvents: 'auto' }}
+        transition={{ duration: 0.6, ease: 'easeInOut' }}
       >
         <section className="h-[75vh] flex items-center">
           <div className="container mx-auto px-4">
@@ -174,7 +204,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                     </div>
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                       Hi, I&apos;m{' '}
-                      <span className="heading-gradient">{introData.name}</span>
+                      <motion.span className="heading-gradient" layoutId="brand-name">{introData.name}</motion.span>
                     </h1>
                     <h2 className="text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 font-medium">
                       {introData.title}
@@ -233,11 +263,15 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                 </div>
 
                 {/* Right Column - Command Interface */}
-                {/** Only render command interface here while navbar not visible to enable smooth shared transition */}
-                {!isNavbarVisible && (
-                  <motion.div layoutId="command-interface" className="w-full">
+                {!navVisible && (
+                  <motion.div 
+                    layout 
+                    layoutId="command-interface" 
+                    className="w-full"
+                    transition={{ layout: { duration: 0.55, ease: 'easeInOut' } }}
+                  >
                     <CommandInterface 
-                      variant="full" 
+                      variant="full"
                       onViewChange={handleViewChange}
                       currentView={currentView}
                       value={commandInput}
@@ -267,7 +301,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
               filter: currentView === view ? 'blur(0px)' : 'blur(0.3px)'
             }}
             style={{ pointerEvents: 'auto' }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            transition={{ duration: 0.6, ease: 'easeInOut' }}
           >
             <motion.div
               className="w-full"
@@ -277,7 +311,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                 scale: currentView === view ? 1 : 0.985,
                 opacity: currentView === view ? 1 : 0.85
               }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               <DynamicContentManager
                 currentView={view}
@@ -309,7 +343,8 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
           ))}
         </div>
       </div>
-    </div>
+  </div>
+  </LayoutGroup>
   );
 };
 

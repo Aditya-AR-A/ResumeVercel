@@ -11,9 +11,10 @@ interface NavbarProps {
   currentView?: ViewType;
   commandValue?: string;
   onCommandChange?: (v: string) => void;
+  brandName?: string;
 }
 
-const AnimatedNavbar = ({ isVisible, onViewChange, currentView, commandValue, onCommandChange }: NavbarProps) => {
+const AnimatedNavbar = ({ isVisible, onViewChange, currentView, commandValue, onCommandChange, brandName }: NavbarProps) => {
   return (
     <AnimatePresence>
       {isVisible && (
@@ -26,7 +27,7 @@ const AnimatedNavbar = ({ isVisible, onViewChange, currentView, commandValue, on
         >
           <div className="container mx-auto px-4 py-2">
             <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4">
                 {/* Sidebar toggle first */}
                 <button
                   id="sidebar-inline-toggle"
@@ -41,12 +42,13 @@ const AnimatedNavbar = ({ isVisible, onViewChange, currentView, commandValue, on
                   </div>
                 </button>
                 <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.15 }}
-                  className="text-xl font-bold heading-gradient"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.15 }}
+          className="text-xl font-bold heading-gradient"
+          layoutId="brand-name"
                 >
-                  Aditya AR
+          {brandName || 'Aditya AR'}
                 </motion.div>
               </div>
               <motion.div
@@ -54,6 +56,7 @@ const AnimatedNavbar = ({ isVisible, onViewChange, currentView, commandValue, on
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
                 className="w-1/2"
+                layoutId="command-interface"
               >
                 <CommandInterface 
                   variant="navbar" 

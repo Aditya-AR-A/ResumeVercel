@@ -3,12 +3,17 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CommandInterface from './CommandInterface';
+import { ViewType } from './DynamicContentManager';
 
 interface NavbarProps {
   isVisible: boolean;
+  onViewChange?: (view: ViewType) => void;
+  currentView?: ViewType;
+  commandValue?: string;
+  onCommandChange?: (v: string) => void;
 }
 
-const AnimatedNavbar = ({ isVisible }: NavbarProps) => {
+const AnimatedNavbar = ({ isVisible, onViewChange, currentView, commandValue, onCommandChange }: NavbarProps) => {
   return (
     <AnimatePresence>
       {isVisible && (
@@ -20,12 +25,25 @@ const AnimatedNavbar = ({ isVisible }: NavbarProps) => {
           className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-lg z-50"
         >
           <div className="container mx-auto px-4 py-2">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <div className="flex items-center space-x-4">
+                {/* Sidebar toggle first */}
+                <button
+                  id="sidebar-inline-toggle"
+                  onClick={() => document.getElementById('sidebar-toggle')?.click()}
+                  className="p-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  aria-label="Open menu"
+                >
+                  <div className="w-5 h-5 flex flex-col justify-between">
+                    <span className="block h-0.5 bg-gray-700 dark:bg-gray-300" />
+                    <span className="block h-0.5 bg-gray-700 dark:bg-gray-300" />
+                    <span className="block h-0.5 bg-gray-700 dark:bg-gray-300" />
+                  </div>
+                </button>
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ delay: 0.2 }}
+                  transition={{ delay: 0.15 }}
                   className="text-xl font-bold heading-gradient"
                 >
                   Aditya AR
@@ -37,7 +55,13 @@ const AnimatedNavbar = ({ isVisible }: NavbarProps) => {
                 transition={{ delay: 0.3 }}
                 className="w-1/2"
               >
-                <CommandInterface variant="navbar" />
+                <CommandInterface 
+                  variant="navbar" 
+                  onViewChange={onViewChange}
+                  currentView={currentView}
+                  value={commandValue}
+                  onValueChange={onCommandChange}
+                />
               </motion.div>
             </div>
           </div>

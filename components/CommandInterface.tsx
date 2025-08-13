@@ -2,25 +2,68 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { ViewType } from './DynamicContentManager';
 
 interface CommandInterfaceProps {
   variant: 'navbar' | 'full';
+  onViewChange?: (view: ViewType) => void;
+  currentView?: ViewType;
+  value?: string; // external controlled value
+  onValueChange?: (v: string) => void; // external setter
 }
 
-const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant }) => {
-  const [input, setInput] = useState('');
+const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChange, currentView = 'home', value, onValueChange }) => {
+  const isControlled = typeof value === 'string' && typeof onValueChange === 'function';
+  const [uncontrolled, setUncontrolled] = useState('');
+  const input = isControlled ? value! : uncontrolled;
+  const setInput = (v: string) => {
+    if (isControlled) {
+      onValueChange!(v);
+    } else {
+      setUncontrolled(v);
+    }
+  };
+  const [lastCommand, setLastCommand] = useState('');
 
   const handleExecute = () => {
-    const command = input.toLowerCase();
-    if (command.includes('project')) {
-      document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-    } else if (command.includes('experience')) {
-      document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
-    } else if (command.includes('certificate')) {
-      document.getElementById('certificates')?.scrollIntoView({ behavior: 'smooth' });
-    } else if (command.includes('contact')) {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    const command = input.toLowerCase().trim();
+    setLastCommand(command);
+    
+    if (!onViewChange) {
+      // Fallback to old scroll behavior if no view change handler
+      if (command.includes('project')) {
+        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (command.includes('experience')) {
+        document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (command.includes('certificate')) {
+        document.getElementById('certificates')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (command.includes('contact')) {
+        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
     }
+
+    // Dynamic view switching
+    if (command.includes('project')) {
+      onViewChange('projects');
+    } else if (command.includes('experience') || command.includes('work')) {
+      onViewChange('experience');
+    } else if (command.includes('certificate') || command.includes('cert')) {
+      onViewChange('certificates');
+    } else if (command.includes('contact') || command.includes('email')) {
+      onViewChange('contact');
+    } else if (command.includes('about') || command.includes('me') || command.includes('bio')) {
+      onViewChange('about');
+    } else if (command.includes('home') || command.includes('main') || command.includes('start')) {
+      onViewChange('home');
+    } else {
+      // If command doesn't match, show a helpful message
+      setInput(`Try: "show projects", "about me", "contact me"`);
+      setTimeout(() => setInput(''), 2000);
+      return;
+    }
+    
+  setInput(''); // Clear input after successful command (works for controlled & uncontrolled)
   };
 
   return (
@@ -37,7 +80,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant }) => {
           <input
             type="text"
             className="flex-1 p-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
-            placeholder="Try: 'show projects', 'show experience'..."
+            placeholder={`Try: "show projects", "about me" | Current: ${currentView}`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleExecute()}

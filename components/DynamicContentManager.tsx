@@ -1,0 +1,85 @@
+"use client";
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import ExperienceView from './views/ExperienceView';
+import ProjectsView from './views/ProjectsView';
+import CertificatesView from './views/CertificatesView';
+import ContactView from './views/ContactView';
+import AboutView from './views/AboutView';
+import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
+
+export type ViewType = 'home' | 'about' | 'experience' | 'projects' | 'certificates' | 'contact';
+
+interface DynamicContentManagerProps {
+  currentView: ViewType;
+  introData: IntroData;
+  projects: Project[];
+  jobs: Job[];
+  certificates: Certificate[];
+}
+
+const DynamicContentManager: React.FC<DynamicContentManagerProps> = ({
+  currentView,
+  introData,
+  projects,
+  jobs,
+  certificates
+}) => {
+  // Move the function logic into the client component
+  const getRelatedProjects = (jobId: string) => {
+    return projects.filter(project => project.jobId === jobId);
+  };
+  const renderView = () => {
+    switch (currentView) {
+      case 'about':
+        return <AboutView key="about" />;
+      case 'experience':
+        return <ExperienceView key="experience" jobs={jobs} getRelatedProjects={getRelatedProjects} />;
+      case 'projects':
+        return <ProjectsView key="projects" projects={projects} />;
+      case 'certificates':
+        return <CertificatesView key="certificates" certificates={certificates} />;
+      case 'contact':
+        return <ContactView key="contact" introData={introData} />;
+      case 'home':
+      default:
+        return (
+          <div key="home" className="flex items-center justify-center min-h-[50vh]">
+            <div className="text-center space-y-6">
+              <h2 className="text-3xl font-bold heading-gradient">Welcome to My Portfolio</h2>
+              <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl">
+                Use the command interface above to explore my work, experience, and skills. 
+                Try commands like "show projects", "show experience", or "about me".
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 text-sm text-gray-600 dark:text-gray-400">
+                <div>💼 "show experience"</div>
+                <div>🚀 "show projects"</div>
+                <div>📜 "show certificates"</div>
+                <div>👋 "about me"</div>
+                <div>📧 "contact me"</div>
+                <div>🏠 "go home"</div>
+              </div>
+            </div>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentView}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="min-h-[60vh]"
+      >
+        {renderView()}
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+export default DynamicContentManager;

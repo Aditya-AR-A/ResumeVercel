@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import CommandInterface from './CommandInterface';
 import AnimatedNavbar from './AnimatedNavbar';
@@ -120,10 +121,13 @@ const MainContent: React.FC<MainContentProps> = ({
 
                 {/* Right Column - Profile Image */}
                 <div className="relative">
-                  <img
+                  <Image
                     src="/default.png"
                     alt="Profile Picture"
-                    className="w-[300px] h-[300px] rounded-full shadow-lg mx-auto"
+                    width={300}
+                    height={300}
+                    className="w-[300px] h-[300px] rounded-full shadow-lg mx-auto object-cover"
+                    priority
                   />
                 </div>
               </div>

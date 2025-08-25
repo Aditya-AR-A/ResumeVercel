@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import CommandInterface from './CommandInterface';
 import Button from './Button';
 import { IntroData } from '@/types/interfaces';
@@ -12,7 +12,7 @@ interface HeroProps {
   showCommand: boolean;
   commandValue: string;
   onCommandChange: (v: string) => void;
-  onViewChange?: (view: any) => void;
+  onViewChange?: (view: 'home' | 'about' | 'experience' | 'projects' | 'certificates' | 'contact') => void;
 }
 
 interface StatDef {
@@ -22,38 +22,61 @@ interface StatDef {
   accentClass?: string;
 }
 
-const stats: StatDef[] = [
+const STATS: StatDef[] = [
   { label: 'Certificates', value: 15, suffix: '+', accentClass: 'text-blue-600 dark:text-blue-400' },
   { label: 'Projects', value: 20, suffix: '+', accentClass: 'text-purple-600 dark:text-purple-400' },
   { label: 'Years Experience', value: 3, suffix: '+', accentClass: 'text-green-600 dark:text-green-400' },
   { label: 'AI Specialist', value: 1, suffix: '', accentClass: 'text-orange-600 dark:text-orange-400' }
 ];
 
-const useCountUp = (end: number, startDelay = 0) => {
-  const [val, setVal] = useState(0);
+const StatsGrid: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [values, setValues] = useState<number[]>(() => STATS.map(() => 0));
   const startedRef = useRef(false);
-  const ref = useRef<HTMLDivElement | null>(null);
-  const inView = useInView(ref, { margin: '-20% 0px -20% 0px', amount: 0.4 });
 
   useEffect(() => {
-    if (!startedRef.current && inView) {
-      startedRef.current = true;
-      const duration = 1100; // ms
-      const start = performance.now() + startDelay;
-      const step = (t: number) => {
-        if (t < start) {
-          requestAnimationFrame(step);
-          return;
+    const el = containerRef.current;
+    if (!el) return;
+    if (startedRef.current) return;
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !startedRef.current) {
+          startedRef.current = true;
+          const start = performance.now();
+            const durations = STATS.map((_, idx) => 1100 + idx * 80);
+          const tick = (t: number) => {
+            setValues(prev => prev.map((_, idx) => {
+              const d = durations[idx];
+              const progress = Math.min(1, (t - start) / d);
+              return Math.round(progress * STATS[idx].value);
+            }));
+            if (t - start < Math.max(...durations)) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          observer.disconnect();
         }
-        const progress = Math.min(1, (t - start) / duration);
-        setVal(Math.round(progress * end));
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    }
-  }, [inView, end, startDelay]);
+      });
+    }, { threshold: 0.3 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
-  return { ref, val } as const;
+  return (
+    <motion.div
+      ref={containerRef}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.45, duration: 0.6 }}
+      className="grid grid-cols-2 sm:grid-cols-4 gap-6"
+    >
+      {STATS.map((s, idx) => (
+        <div key={s.label} className="text-center">
+          <div className={`text-2xl md:text-3xl font-bold ${s.accentClass}`}>{values[idx]}{values[idx] === s.value ? s.suffix : ''}</div>
+          <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">{s.label}</div>
+        </div>
+      ))}
+    </motion.div>
+  );
 };
 
 const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCommandChange, onViewChange }) => {
@@ -130,22 +153,7 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
             </motion.p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.45, duration: 0.6 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-6"
-          >
-            {stats.map((s, idx) => {
-              const { ref, val } = useCountUp(s.value, idx * 120);
-              return (
-                <div key={s.label} className="text-center">
-                  <div ref={ref as any} className={`text-2xl md:text-3xl font-bold ${s.accentClass}`}>{val}{val === s.value ? s.suffix : ''}</div>
-                  <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">{s.label}</div>
-                </div>
-              );
-            })}
-          </motion.div>
+          <StatsGrid />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

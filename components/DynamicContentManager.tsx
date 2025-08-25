@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ExperienceView from './views/ExperienceView';
 import ProjectsView from './views/ProjectsView';
@@ -50,15 +50,15 @@ const DynamicContentManager: React.FC<DynamicContentManagerProps> = ({
               <h2 className="text-3xl font-bold heading-gradient">Welcome to My Portfolio</h2>
               <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl">
                 Use the command interface above to explore my work, experience, and skills. 
-                Try commands like "show projects", "show experience", or "about me".
+                Try commands like &quot;show projects&quot;, &quot;show experience&quot;, or &quot;about me&quot;.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 text-sm text-gray-600 dark:text-gray-400">
-                <div>💼 "show experience"</div>
-                <div>🚀 "show projects"</div>
-                <div>📜 "show certificates"</div>
-                <div>👋 "about me"</div>
-                <div>📧 "contact me"</div>
-                <div>🏠 "go home"</div>
+                <div>💼 &quot;show experience&quot;</div>
+                <div>🚀 &quot;show projects&quot;</div>
+                <div>📜 &quot;show certificates&quot;</div>
+                <div>👋 &quot;about me&quot;</div>
+                <div>📧 &quot;contact me&quot;</div>
+                <div>🏠 &quot;go home&quot;</div>
               </div>
             </div>
           </div>

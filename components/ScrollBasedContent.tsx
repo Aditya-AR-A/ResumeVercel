@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import CommandInterface from './CommandInterface';
 import AnimatedNavbar from './AnimatedNavbar';
-import Hero from './Hero';
+// Removed unused Hero import
 import DynamicContentManager, { ViewType } from './DynamicContentManager';
 import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
 
@@ -29,7 +30,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
   const sectionRefs = useRef<HTMLElement[]>([]);
   
   // Define the sequence of views
-  const viewSequence: ViewType[] = ['home', 'about', 'experience', 'projects', 'certificates', 'contact'];
+  const viewSequence: ViewType[] = useMemo(() => ['home', 'about', 'experience', 'projects', 'certificates', 'contact'], []);
   
   const handleViewChange = (view: ViewType) => {
     // Optimistically set current view so UI highlights immediately
@@ -234,11 +235,17 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
 
                 {/* Right Column - Profile Image */}
                 <div className="relative">
-                  <img
-                    src="/default.png"
-                    alt="Profile Picture"
-                    className="w-[300px] h-[300px] rounded-full shadow-lg mx-auto"
-                  />
+                  <picture>
+                    <source srcSet="/default.png" type="image/png" />
+                    <Image
+                      src="/default.png"
+                      alt="Profile Picture"
+                      width={300}
+                      height={300}
+                      className="w-[300px] h-[300px] rounded-full shadow-lg mx-auto object-cover"
+                      priority
+                    />
+                  </picture>
                 </div>
               </div>
             </div>
@@ -286,8 +293,8 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
       </motion.div>
 
       {/* Sequential Content Sections (About .. Contact) */}
-      {viewSequence.slice(1).map((view, index) => {
-        const sectionIndex = index + 1; // offset for hero
+      {viewSequence.slice(1).map((view, idx) => {
+        const sectionIndex = idx + 1; // offset for hero
         return (
           <motion.section
             key={view}
@@ -328,7 +335,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
       {/* Scroll Progress Indicator */}
   <div className="fixed right-4 top-1/2 -translate-y-1/2 z-40 hidden md:block">
         <div className="flex flex-col space-y-2">
-          {viewSequence.map((view, index) => (
+          {viewSequence.map((view) => (
             <motion.div
               key={view}
               className={`w-3 h-3 rounded-full cursor-pointer transition-colors duration-300 ${

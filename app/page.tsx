@@ -1,12 +1,6 @@
 import React from 'react'
-import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { loadJson } from '@/utils/loadJson'
-import Card from '@/components/Card'
-import Section from '@/components/Section'
-import Button from '@/components/Button'
-import SkillTag from '@/components/SkillTag';
-import JobCard from '@/components/JobCard';
 import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
 
 export default async function Home() {

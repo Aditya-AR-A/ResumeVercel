@@ -23,11 +23,10 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
       setUncontrolled(v);
     }
   };
-  const [lastCommand, setLastCommand] = useState('');
+  // Removed unused lastCommand state
 
   const handleExecute = () => {
-    const command = input.toLowerCase().trim();
-    setLastCommand(command);
+  const command = input.toLowerCase().trim();
     
     if (!onViewChange) {
       // Fallback to old scroll behavior if no view change handler

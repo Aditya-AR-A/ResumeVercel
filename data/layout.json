@@ -16,7 +16,7 @@
         "openGraph": {
             "title": "Aditya Raj - Data Scientist & Python Developer",
             "description": "Portfolio showcasing projects in data science, machine learning, and full-stack development.",
-            "url": "https://your-domain.vercel.app",
+            "url": "https://theaditya.vercel.app",
             "siteName": "Aditya Raj Portfolio",
             "images": [
                 {
@@ -49,19 +49,19 @@
             "platform": "GitHub",
             "url": "https://github.com/Aditya-AR-A",
             "className": "text-gray-400 hover:text-white transition-colors",
-            "icon": "/icons/github.svg"
+            "icon": "/github.svg"
         },
         {
             "platform": "LinkedIn",
             "url": "https://www.linkedin.com/in/aditya-raj-921a08352/",
             "className": "text-gray-400 hover:text-white transition-colors",
-            "icon": "/icons/linkedin.svg"
+            "icon": "/linkedin.svg"
         },
         {
             "platform": "Email",
             "url": "mailto:adityaraj.anshukumar50@gmail.com",
             "className": "text-gray-400 hover:text-white transition-colors",
-            "icon": "/icons/email.svg"
+            "icon": "/email.svg"
         }
     ]
 }

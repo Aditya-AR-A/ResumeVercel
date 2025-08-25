@@ -123,7 +123,7 @@ const MainContent: React.FC<MainContentProps> = ({
                 <div className="relative">
                   <Image
                     src="/default.png"
-                    alt="Profile Picture"
+                    alt="/default.png"
                     width={300}
                     height={300}
                     className="w-[300px] h-[300px] rounded-full shadow-lg mx-auto object-cover"

@@ -126,3 +126,46 @@ body.navbar-active #sidebar-toggle {
 .dark .navbar-blur {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+/* Mobile responsive fixes */
+@media (max-width: 768px) {
+  .container {
+    @apply px-4;
+  }
+  
+  /* Ensure content doesn't overflow on mobile */
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  /* Fix text sizing on mobile */
+  h1 {
+    @apply text-2xl;
+  }
+  
+  h2 {
+    @apply text-xl;
+  }
+  
+  /* Ensure images are responsive */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Fix sidebar positioning on mobile */
+  .sidebar {
+    max-width: 90vw;
+  }
+}
+
+/* Fix horizontal scrolling issues */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}

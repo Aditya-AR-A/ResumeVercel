@@ -1,13 +1,22 @@
-import React from 'react'
+"use client";
+
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Navbar() {
+  // Listen for sidebar state (kept for potential future use)
+  useEffect(() => {
+  const handler = () => {};
+    window.addEventListener('sidebar:state', handler as EventListener);
+    return () => window.removeEventListener('sidebar:state', handler as EventListener);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 navbar-blur border-b border-gray-200 dark:border-gray-700">
-      <div className="container mx-auto px-4">
+    <nav className="fixed top-0 left-0 right-0 z-40 navbar-blur border-b border-gray-200 dark:border-gray-700">
+      <div className="w-full px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo/Brand */}
-          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors">
+          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors ml-12 sm:ml-0">
             Aditya Raj
           </Link>
 
@@ -48,17 +57,8 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              type="button"
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus:text-blue-600"
-              aria-label="Open mobile menu"
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
+          {/* Mobile area intentionally left empty: floating sidebar button remains the single source */}
+          <div className="md:hidden" />
         </div>
       </div>
 

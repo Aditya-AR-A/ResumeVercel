@@ -31,7 +31,8 @@ const AnimatedNavbar = ({ isVisible, onViewChange, currentView, commandValue, on
                 {/* Sidebar toggle first */}
                 <button
                   id="sidebar-inline-toggle"
-                  onClick={() => document.getElementById('sidebar-toggle')?.click()}
+                  data-sidebar-toggle
+                  onClick={() => window.dispatchEvent(new Event('sidebar:toggle'))}
                   className="p-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   aria-label="Open menu"
                 >

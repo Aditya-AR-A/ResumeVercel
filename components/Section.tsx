@@ -11,11 +11,11 @@ export default function Section({
   const getBackgroundClasses = () => {
     switch (background) {
       case 'gray':
-        return 'bg-gray-50 dark:bg-gray-900'
+        return 'bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-sm'
       case 'gradient':
-        return 'bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800'
+        return 'bg-gradient-to-br from-blue-50/80 to-indigo-100/80 dark:from-gray-900/80 dark:to-gray-800/80 backdrop-blur-sm'
       default:
-        return 'bg-white dark:bg-gray-800'
+        return 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm'
     }
   }
 

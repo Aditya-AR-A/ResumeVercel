@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import CursorGradient from '@/components/CursorGradient'
 import { ReactNode } from 'react'
 import layoutData from '@/data/layout.json';
 import { loadJson } from '@/utils/loadJson';
@@ -46,14 +47,15 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} antialiased min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-x-hidden`}>
+      <body className={`${inter.className} antialiased min-h-screen overflow-x-hidden`}>
+        <CursorGradient />
         <ThemeProvider>
           <Sidebar socialLinks={introData.socialLinks} />
-          <main className="relative w-full max-w-full overflow-x-hidden">
+          <main className="relative w-full max-w-[90%] mx-auto overflow-x-hidden" style={{ zIndex: 10 }}>
             {children}
           </main>
           <footer className="bg-gray-900 text-white py-8">
-            <div className="container mx-auto px-4 text-center max-w-full">
+            <div className="max-w-[90%] mx-auto px-4 text-center">
               <p className="text-sm sm:text-base">&copy; 2025 Aditya Raj. All rights reserved.</p>
               <div className="flex justify-center space-x-4 mt-5 flex-wrap">
                 {/* Email */}

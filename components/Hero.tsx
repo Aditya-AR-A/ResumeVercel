@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import CommandInterface from './CommandInterface';
@@ -32,34 +32,57 @@ const STATS: StatDef[] = [
 const StatsGrid: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [values, setValues] = useState<number[]>(() => STATS.map(() => 0));
-  const startedRef = useRef(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return;
-    if (startedRef.current) return;
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !startedRef.current) {
-          startedRef.current = true;
-          const start = performance.now();
-            const durations = STATS.map((_, idx) => 1100 + idx * 80);
-          const tick = (t: number) => {
-            setValues(prev => prev.map((_, idx) => {
-              const d = durations[idx];
-              const progress = Math.min(1, (t - start) / d);
-              return Math.round(progress * STATS[idx].value);
-            }));
-            if (t - start < Math.max(...durations)) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-          observer.disconnect();
-        }
-      });
-    }, { threshold: 0.3 });
+    if (!el || hasAnimated) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setHasAnimated(true);
+            
+            // Start animation for each stat with staggered timing
+            STATS.forEach((stat, idx) => {
+              const delay = idx * 200; // 200ms delay between each stat
+              const duration = 1500; // 1.5s animation duration
+              
+              setTimeout(() => {
+                const startTime = performance.now();
+                const animate = (currentTime: number) => {
+                  const elapsed = currentTime - startTime;
+                  const progress = Math.min(elapsed / duration, 1);
+                  
+                  // Easing function for smooth animation
+                  const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+                  const currentValue = Math.round(easeOutCubic * stat.value);
+                  
+                  setValues(prev => {
+                    const newValues = [...prev];
+                    newValues[idx] = currentValue;
+                    return newValues;
+                  });
+                  
+                  if (progress < 1) {
+                    requestAnimationFrame(animate);
+                  }
+                };
+                requestAnimationFrame(animate);
+              }, delay);
+            });
+            
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: '0px 0px -100px 0px' }
+    );
+    
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [hasAnimated]);
 
   return (
     <motion.div
@@ -80,7 +103,6 @@ const StatsGrid: React.FC = () => {
 };
 
 const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCommandChange, onViewChange }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const [hideHint, setHideHint] = useState(false);
 
   useEffect(() => {
@@ -92,26 +114,9 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
     return () => { window.removeEventListener('scroll', onScroll); clearTimeout(timeout); };
   }, []);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const el = containerRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    el.style.setProperty('--spot-x', `${x}px`);
-    el.style.setProperty('--spot-y', `${y}px`);
-  }, []);
-
   return (
-    <div
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      className="relative flex flex-col justify-center min-h-screen overflow-hidden px-4 py-8"
-    >
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-950 dark:to-indigo-950" />
-      <div className="pointer-events-none absolute inset-0 -z-10" style={{
-        background: 'radial-gradient(600px circle at var(--spot-x,50%) var(--spot-y,50%), rgba(99,102,241,0.18), transparent 70%)'
-      }} />
+    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden px-4 py-8">
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-50/80 via-white/80 to-indigo-50/80 dark:from-gray-900/80 dark:via-gray-950/80 dark:to-indigo-950/80" />
 
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
@@ -195,7 +200,7 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
           <div className="relative">
             <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-indigo-500/30 via-purple-500/20 to-pink-500/30 blur-3xl animate-pulse-slow" />
             <Image
-              src={introData.profileImage?.src || '/default.png'}
+              src={introData.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
               alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
               width={360}
               height={360}

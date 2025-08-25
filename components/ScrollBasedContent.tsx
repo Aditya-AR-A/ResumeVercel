@@ -138,9 +138,9 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
         const rect = hero.getBoundingClientRect();
         const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
         const ratio = visible / Math.min(vh, rect.height || vh);
-        // Hysteresis thresholds
-        const SHOW_NAV = 0.35; // show when hero mostly off-screen
-        const HIDE_NAV = 0.55; // hide when hero more visible again
+        // Smoother thresholds for better transition
+        const SHOW_NAV = 0.6; // show when 40% of hero is off-screen
+        const HIDE_NAV = 0.75; // hide when hero is more visible again
         if (!navVisible && ratio < SHOW_NAV) {
           setNavVisible(true);
         } else if (navVisible && ratio > HIDE_NAV) {
@@ -159,10 +159,17 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
     <div className="scroll-smooth">
       <AnimatePresence>
         <motion.div
-          initial={{ y: -100 }}
-          animate={{ y: navVisible ? 0 : -100 }}
-          exit={{ y: -100 }}
-          transition={{ duration: 0.55, ease: 'easeInOut' }}
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ 
+            y: navVisible ? 0 : -100,
+            opacity: navVisible ? 1 : 0
+          }}
+          exit={{ y: -100, opacity: 0 }}
+          transition={{ 
+            duration: 0.4, 
+            ease: [0.4, 0.0, 0.2, 1],
+            type: "tween"
+          }}
           style={{ pointerEvents: navVisible ? 'auto' : 'none' }}
         >
           <AnimatedNavbar 
@@ -236,10 +243,9 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                 {/* Right Column - Profile Image */}
                 <div className="relative">
                   <picture>
-                    <source srcSet="/default.png" type="image/png" />
                     <Image
-                      src="/default.png"
-                      alt="Profile Picture"
+                      src={introData.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
+                      alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
                       width={300}
                       height={300}
                       className="w-[300px] h-[300px] rounded-full shadow-lg mx-auto object-cover"
@@ -270,22 +276,24 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                 </div>
 
                 {/* Right Column - Command Interface */}
-                {!navVisible && (
-                  <motion.div 
-                    layout 
-                    layoutId="command-interface" 
-                    className="w-full"
-                    transition={{ layout: { duration: 0.55, ease: 'easeInOut' } }}
-                  >
-                    <CommandInterface 
-                      variant="full"
-                      onViewChange={handleViewChange}
-                      currentView={currentView}
-                      value={commandInput}
-                      onValueChange={setCommandInput}
-                    />
-                  </motion.div>
-                )}
+                <motion.div 
+                  layout 
+                  layoutId="command-interface" 
+                  className="w-full"
+                  transition={{ layout: { duration: 0.4, ease: [0.4, 0.0, 0.2, 1] } }}
+                  animate={{
+                    opacity: navVisible ? 0.7 : 1,
+                    scale: navVisible ? 0.95 : 1
+                  }}
+                >
+                  <CommandInterface 
+                    variant="full"
+                    onViewChange={handleViewChange}
+                    currentView={currentView}
+                    value={commandInput}
+                    onValueChange={setCommandInput}
+                  />
+                </motion.div>
               </div>
             </div>
           </div>

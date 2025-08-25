@@ -72,7 +72,7 @@ export default function JobCard({
 
   if (compact) {
     return (
-      <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl border ${
+      <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl border ${
         featured ? 'border-blue-500' : 'border-transparent'
       }`}>
         <div className="flex items-start justify-between mb-4">

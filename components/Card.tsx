@@ -15,7 +15,7 @@ export default function Card({
 }: CardProps) {
   return (
     <div
-      className={`bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-lg hover:scale-105 ${
+      className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-lg hover:scale-105 ${
         featured ? 'ring-2 ring-blue-500 shadow-lg' : ''
       }`}
     >

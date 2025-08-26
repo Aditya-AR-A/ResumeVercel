@@ -8,6 +8,7 @@ import { ReactNode } from 'react'
 import layoutData from '@/data/layout.json';
 import { loadJson } from '@/utils/loadJson';
 import { IntroData } from '@/types/interfaces';
+import VantaFog from '@/components/VantaFog';
 // Using inline SVGs for footer social links to match Sidebar styling
 
 const inter = Inter({ subsets: ['latin'] })
@@ -50,6 +51,8 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased min-h-screen overflow-x-hidden`}>
         <CursorGradient />
         <ThemeProvider>
+          {/* Global animated fog background */}
+          <VantaFog className="fixed inset-0 -z-10" />
           <Sidebar socialLinks={introData.socialLinks} />
           <main className="relative w-full max-w-[90%] mx-auto overflow-x-hidden" style={{ zIndex: 10 }}>
             {children}

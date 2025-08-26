@@ -185,30 +185,36 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
 
       {/* Hero + Interactive (combined) */}
       <motion.div
-  ref={el => { if (el) { sectionRefs.current[0] = el; } }}
+        ref={el => { if (el) { sectionRefs.current[0] = el; } }}
         data-view="home"
-        className="min-h-screen snap-start"
+        className="relative min-h-screen snap-start"
         initial={false}
         animate={{ 
-          opacity: currentView === 'home' ? 1 : 0.05,
-          scale: currentView === 'home' ? 1 : 0.99,
-          filter: currentView === 'home' ? 'blur(0px)' : 'blur(0.3px)'
+          scale: currentView === 'home' ? 1 : 0.992,
+          filter: currentView === 'home' ? 'blur(0px)' : 'blur(0.25px)'
         }}
         style={{ pointerEvents: 'auto' }}
         transition={{ duration: 0.6, ease: 'easeInOut' }}
       >
-        <section className="h-[75vh] flex items-center">
+        {/* Dim overlay when hero not active instead of lowering opacity of content */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0"
+          initial={false}
+          animate={{ backgroundColor: currentView === 'home' ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.55)' }}
+          transition={{ duration: 0.6, ease: 'easeInOut' }}
+          style={{ mixBlendMode: 'multiply' }}
+        />
+        <section className="h-auto md:h-[75vh] flex items-start md:items-center py-10 md:py-0">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start md:items-center">
                 {/* Left Column - Text Content */}
-                <div className="space-y-8">
+                <div className="relative z-10 space-y-8 order-2 lg:order-1">
                   <div className="space-y-4">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
-                      <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider">
-                        Welcome to my portfolio
-                      </span>
+                      <div className="w-2 h-8 brand-gradient-bar rounded-full"></div>
+                      <span className="intro-badge">Welcome to my portfolio</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                       Hi, I&apos;m{' '}
@@ -220,38 +226,39 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                   </div>
 
                   {/* Key Stats */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">15+</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Certificates</div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold accent-cert">15+</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Certificates</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold accent-projects">20+</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold accent-experience">3+</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Years Experience</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold accent-ai">AI</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Specialist</div>
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">20+</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600 dark:text-green-400">3+</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Years Experience</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">AI</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Specialist</div>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Right Column - Profile Image */}
-                <div className="relative">
-                  <picture>
+                <div className="relative z-10 order-1 lg:order-2 flex justify-center">
+                  <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
+                    <div className="absolute -inset-3 sm:-inset-4 rounded-full bg-[radial-gradient(circle_at_35%_35%,var(--accent-gradient-start)_0%,transparent_65%)] opacity-60 blur-xl" />
                     <Image
                       src={introData.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
                       alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
-                      width={300}
-                      height={300}
-                      className="w-[300px] h-[300px] rounded-full shadow-lg mx-auto object-cover"
+                      width={288}
+                      height={288}
+                      className="w-full h-full rounded-full shadow-lg object-cover ring-1 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)]"
                       priority
                     />
-                  </picture>
+                  </div>
                 </div>
               </div>
             </div>
@@ -259,12 +266,12 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
         </section>
 
         {/* Interactive Section - 25vh */}
-        <section className="h-[25vh] flex items-center bg-gray-50 dark:bg-gray-900">
+  <section className="h-auto md:h-[25vh] flex items-start md:items-center bg-gray-50 dark:bg-gray-900 py-8 md:py-0 border-t border-gray-200/60 dark:border-gray-800/60">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
                 {/* Left Column - Description */}
-                <div className="md:col-span-2 space-y-6">
+    <div className="md:col-span-2 space-y-6 order-2 md:order-1">
                   <h2 className="text-3xl font-bold mb-4">Let&apos;s Explore Together</h2>
                   <p className="text-lg text-gray-700 dark:text-gray-300">
                     I&apos;m a passionate <strong>AI and Python Developer</strong> with expertise in building 
@@ -279,11 +286,11 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                 <motion.div 
                   layout 
                   layoutId="command-interface" 
-                  className="w-full"
+                  className="w-full order-1 md:order-2"
                   transition={{ layout: { duration: 0.4, ease: [0.4, 0.0, 0.2, 1] } }}
                   animate={{
-                    opacity: navVisible ? 0.7 : 1,
-                    scale: navVisible ? 0.95 : 1
+                    opacity: navVisible ? 0.85 : 1,
+                    scale: navVisible ? 0.97 : 1
                   }}
                 >
                   <CommandInterface 
@@ -346,11 +353,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
           {viewSequence.map((view) => (
             <motion.div
               key={view}
-              className={`w-3 h-3 rounded-full cursor-pointer transition-colors duration-300 ${
-                currentView === view 
-                  ? 'bg-blue-600' 
-                  : 'bg-gray-300 dark:bg-gray-600'
-              }`}
+              className={`w-3 h-3 rounded-full cursor-pointer transition-colors duration-300 progress-dot ${currentView === view ? 'progress-dot-active' : ''}`}
               onClick={() => handleViewChange(view)}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}

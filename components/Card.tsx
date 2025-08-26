@@ -15,14 +15,14 @@ export default function Card({
 }: CardProps) {
   return (
     <div
-      className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-lg hover:scale-105 ${
-        featured ? 'ring-2 ring-blue-500 shadow-lg' : ''
+      className={`bg-white/50 dark:bg-gray-800/40 backdrop-blur-md rounded-xl shadow-md/50 border border-white/30 dark:border-white/10 p-6 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10 hover:scale-[1.03] ${
+        featured ? 'ring-2 ring-blue-500/60 shadow-lg' : ''
       }`}
     >
       {featured && (
         <div className="flex items-center gap-2 mb-3">
           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-          <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+          <span className="text-xs font-semibold intro-badge">
             Featured
           </span>
         </div>
@@ -83,7 +83,7 @@ export default function Card({
                         href={project.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex items-center"
+                        className="text-xs font-medium accent-cert hover:opacity-80 transition-colors flex items-center"
                       >
                         <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -117,7 +117,7 @@ export default function Card({
           href={linkUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-4 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors font-medium"
+          className="inline-block mt-4 accent-cert hover:opacity-80 transition-colors font-medium"
         >
           Learn more →
         </a>

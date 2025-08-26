@@ -96,7 +96,7 @@ export default function JobCard({
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                 {title}
               </h3>
-              <p className="text-blue-600 dark:text-blue-400 font-semibold">
+              <p className="accent-cert font-semibold">
                 {company}
               </p>
             </div>
@@ -153,7 +153,7 @@ export default function JobCard({
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
               {title}
             </h3>
-            <p className="text-xl text-blue-600 dark:text-blue-400 font-semibold mb-1">
+            <p className="text-xl accent-cert font-semibold mb-1">
               {company}
             </p>
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
@@ -168,13 +168,13 @@ export default function JobCard({
           <div className="text-sm font-semibold text-blue-800 dark:text-blue-200">
             {formatDate(startDate)} - {isCurrent ? 'Present' : formatDate(endDate || '')}
           </div>
-          <div className="text-xs text-blue-600 dark:text-blue-300 mt-1">
+          <div className="text-xs accent-cert mt-1">
             {getDuration()}
           </div>
           {isCurrent && (
             <div className="inline-flex items-center mt-2">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-              <span className="text-xs text-green-600 dark:text-green-400 font-medium">Current</span>
+              <span className="text-xs accent-experience font-medium">Current</span>
             </div>
           )}
         </div>
@@ -276,7 +276,7 @@ export default function JobCard({
                       href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex items-center"
+                      className="text-sm font-medium accent-cert hover:opacity-80 transition-colors flex items-center"
                     >
                       <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

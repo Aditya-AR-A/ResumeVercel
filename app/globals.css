@@ -2,29 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* ======================================================================
+   THEME TOKENS (Light / Dark) - tuned for contrast over Vanta FOG bg
+   ====================================================================== */
+:root, .light {
+  /* Base surfaces */
+  --color-bg: #f5f7fa;
+  --color-bg-alt: #ffffffcc; /* translucent for layering over fog */
+  --color-surface: #ffffff; 
+  --color-surface-alt: #f1f5f9;
+  --color-border: #d9e1ea;
+
+  /* Text */
+  --color-text: #1e293b; /* slate-800 */
+  --color-text-strong: #0f172a; /* slate-900 */
+  --color-text-muted: #64748b; /* slate-500 */
+  --color-text-faint: #94a3b8; /* slate-400 */
+
+  /* Brand / Accents */
+  --accent-primary: #2563eb; /* blue-600 */
+  --accent-primary-soft: #3b82f6; /* blue-500 */
+  --accent-gradient-start: #6366f1; /* indigo-500 */
+  --accent-gradient-mid: #8b5cf6; /* violet-500 */
+  --accent-gradient-end: #ec4899; /* pink-500 */
+
+  /* Stat specific accents (light) */
+  --accent-certificates: #2563eb; /* blue-600 */
+  --accent-projects: #7c3aed; /* violet-600 */
+  --accent-experience: #059669; /* emerald-600 */
+  --accent-ai: #ea580c; /* orange-600 */
+
+  /* Utility */
+  --ring-strong: #1e3a8a; /* blue-800 */
+  --focus-outline: #6366f1;
+  --shadow-color: 207 217 230;
+
+  /* Heading shadow for legibility over fog */
+  --heading-shadow: 0 1px 2px rgba(255,255,255,0.6), 0 0 24px rgba(99,102,241,0.25);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.dark {
+  --color-bg: #05060a;
+  --color-bg-alt: #0f172acc;
+  --color-surface: #111827; /* gray-900 */
+  --color-surface-alt: #1e293b; /* slate-800 */
+  --color-border: #2c3645;
+
+  --color-text: #f1f5f9; /* slate-100 */
+  --color-text-strong: #ffffff;
+  --color-text-muted: #94a3b8; /* slate-400 */
+  --color-text-faint: #64748b; /* slate-500 */
+
+  --accent-primary: #3b82f6; /* blue-500 (lighter for dark bg) */
+  --accent-primary-soft: #60a5fa; /* blue-400 */
+  --accent-gradient-start: #818cf8; /* indigo-400 */
+  --accent-gradient-mid: #a78bfa; /* violet-400 */
+  --accent-gradient-end: #f472b6; /* pink-400 */
+
+  --accent-certificates: #60a5fa; /* blue-400 */
+  --accent-projects: #a78bfa; /* violet-400 */
+  --accent-experience: #34d399; /* emerald-400 */
+  --accent-ai: #fb923c; /* orange-400 */
+
+  --ring-strong: #1d4ed8; /* blue-700 */
+  --focus-outline: #818cf8;
+  --shadow-color: 10 14 22;
+  --heading-shadow: 0 2px 4px rgba(0,0,0,0.65), 0 0 28px rgba(129,140,248,0.35);
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
 }
+
+.dark body { color: var(--color-text); background: var(--color-bg); }
 
 @layer utilities {
   .text-balance {
@@ -96,36 +148,76 @@ body.navbar-active #sidebar-toggle {
   @apply text-gray-700 dark:text-gray-300 leading-relaxed;
 }
 
+/* Thematic heading gradient using tokens */
 .heading-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(115deg,
+    var(--accent-gradient-start) 0%,
+    var(--accent-gradient-mid) 45%,
+    var(--accent-gradient-end) 95%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
+  /* Removed bevel/text-shadow for cleaner flat look */
 }
+
+/* Responsive helpers */
+.layout-safe-pad { padding-inline: clamp(1rem, 2vw, 2rem); }
+.content-grid { display: grid; gap: clamp(1.5rem, 3vw, 3rem); align-items: center; }
+@media (min-width: 1024px) { .content-grid.cols-responsive { grid-template-columns: minmax(0,1fr) minmax(420px,520px); } }
+@media (max-width: 1023px) { .content-grid.cols-responsive { grid-template-columns: 1fr; } }
 
 /* Skills and tags */
+/* Skill tag re-theming */
 .skill-tag {
-  @apply inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2 transition-colors;
+  @apply inline-block rounded-full text-sm font-medium mr-2 mb-2 transition-colors px-3 py-1;
+  background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  color: var(--accent-primary);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 35%, transparent);
 }
-
-.skill-tag:hover {
-  @apply bg-blue-200 dark:bg-blue-800;
+.dark .skill-tag {
+  background: color-mix(in srgb, var(--accent-primary) 22%, transparent);
+  color: var(--accent-primary-soft);
+  border-color: color-mix(in srgb, var(--accent-primary-soft) 45%, transparent);
 }
+.skill-tag:hover { filter: brightness(1.1); }
 
 /* Project cards */
+/* Project cards tuned for fog layering */
 .project-card {
-  @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105;
+  @apply backdrop-blur-sm rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105;
+  background: var(--color-surface-alt)/80;
+  box-shadow: 0 4px 20px -4px rgba(var(--shadow-color) / 0.35), 0 2px 8px -2px rgba(var(--shadow-color) / 0.25);
+  border: 1px solid var(--color-border);
+}
+.dark .project-card {
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  box-shadow: 0 4px 24px -4px rgba(0,0,0,0.55), 0 2px 8px -2px rgba(0,0,0,0.4);
+  border-color: #243043;
 }
 
 /* Navbar styles */
-.navbar-blur {
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.7);
-}
+/* Navbar adaptive transparency */
+.navbar-blur { backdrop-filter: blur(10px); background: var(--color-bg-alt); border-bottom: 1px solid var(--color-border); }
+.dark .navbar-blur { background: var(--color-bg-alt); }
 
-.dark .navbar-blur {
-  background-color: rgba(0, 0, 0, 0.7);
-}
+/* Accent utilities */
+.accent-cert { color: var(--accent-certificates); }
+.accent-projects { color: var(--accent-projects); }
+.accent-experience { color: var(--accent-experience); }
+.accent-ai { color: var(--accent-ai); }
+
+/* Brand gradient bar */
+.brand-gradient-bar { background: linear-gradient(to bottom,var(--accent-gradient-start),var(--accent-gradient-mid)); }
+
+/* Progress dots */
+.progress-dot { background: #cbd5e1; }
+.dark .progress-dot { background: #475569; }
+.progress-dot-active { background: var(--accent-primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 35%, transparent); }
+.dark .progress-dot-active { background: var(--accent-primary-soft); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary-soft) 25%, transparent); }
+
+/* Badge / small uppercase intro */
+.intro-badge { color: var(--accent-primary); letter-spacing: 0.08em; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
+.dark .intro-badge { color: var(--accent-primary-soft); }
 
 /* Mobile responsive fixes */
 @media (max-width: 768px) {

@@ -16,7 +16,7 @@ export default function Navbar() {
       <div className="w-full px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo/Brand */}
-          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 transition-colors ml-12 sm:ml-0">
+          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:accent-cert transition-colors ml-12 sm:ml-0">
             Aditya Raj
           </Link>
 
@@ -24,25 +24,25 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             <Link 
               href="/projects" 
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
             >
               Projects
             </Link>
             <Link 
               href="/experience" 
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
             >
               Experience
             </Link>
             <Link 
               href="/certificates" 
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
             >
               Certificates
             </Link>
             <Link 
               href="#contact" 
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
             >
               Contact
             </Link>
@@ -67,25 +67,25 @@ export default function Navbar() {
         <div className="px-2 pt-2 pb-3 space-y-1">
           <Link
             href="/projects"
-            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
           >
             Projects
           </Link>
           <Link
             href="/experience"
-            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
           >
             Experience
           </Link>
           <Link
             href="/certificates"
-            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
           >
             Certificates
           </Link>
           <Link
             href="#contact"
-            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
           >
             Contact
           </Link>
@@ -93,7 +93,7 @@ export default function Navbar() {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="block px-3 py-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            className="block px-3 py-2 accent-cert hover:opacity-80 transition-colors"
           >
             Resume
           </a>

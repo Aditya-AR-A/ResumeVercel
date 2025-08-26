@@ -23,10 +23,10 @@ interface StatDef {
 }
 
 const STATS: StatDef[] = [
-  { label: 'Certificates', value: 15, suffix: '+', accentClass: 'text-blue-600 dark:text-blue-400' },
-  { label: 'Projects', value: 20, suffix: '+', accentClass: 'text-purple-600 dark:text-purple-400' },
-  { label: 'Years Experience', value: 3, suffix: '+', accentClass: 'text-green-600 dark:text-green-400' },
-  { label: 'AI Specialist', value: 1, suffix: '', accentClass: 'text-orange-600 dark:text-orange-400' }
+  { label: 'Certificates', value: 15, suffix: '+', accentClass: 'accent-cert' },
+  { label: 'Projects', value: 20, suffix: '+', accentClass: 'accent-projects' },
+  { label: 'Years Experience', value: 3, suffix: '+', accentClass: 'accent-experience' },
+  { label: 'AI Specialist', value: 1, suffix: '', accentClass: 'accent-ai' }
 ];
 
 const StatsGrid: React.FC = () => {
@@ -115,11 +115,32 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
   }, []);
 
   return (
-    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden px-4 py-8">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-50/80 via-white/80 to-indigo-50/80 dark:from-gray-900/80 dark:via-gray-950/80 dark:to-indigo-950/80" />
+    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden layout-safe-pad py-12">
+      <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true" />
 
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div className="space-y-8">
+      <div className="max-w-7xl mx-auto w-full content-grid cols-responsive">
+        {/* Image block first on mobile */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.6, type: 'spring', stiffness: 130 }}
+          className="relative flex justify-center order-1 lg:order-2 -mt-2 mb-4 lg:mb-0"
+        >
+          <div className="relative w-full flex items-center justify-center mx-auto max-w-[220px] sm:max-w-[260px] lg:max-w-[360px]">
+            <div className="absolute -inset-3 sm:-inset-4 md:-inset-5 lg:-inset-6 rounded-3xl bg-[radial-gradient(circle_at_32%_30%,var(--accent-gradient-start)_0%,transparent_65%)] opacity-55 blur-xl" />
+            <Image
+              src={introData.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
+              alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
+              width={320}
+              height={320}
+              priority
+              className="relative rounded-3xl shadow-xl ring-1 sm:ring-2 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)] object-cover w-full aspect-square"
+            />
+          </div>
+        </motion.div>
+
+        {/* Text block second on mobile, first on large */}
+        <div className="space-y-8 order-2 lg:order-1">
           <div className="space-y-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -127,10 +148,8 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
               transition={{ duration: 0.6 }}
               className="flex items-center gap-3 mb-2"
             >
-              <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
-              <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider">
-                Welcome to my portfolio
-              </span>
+              <div className="w-2 h-8 brand-gradient-bar rounded-full"></div>
+              <span className="intro-badge">Welcome to my portfolio</span>
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -191,24 +210,7 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
           )}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.7, type: 'spring', stiffness: 120 }}
-          className="relative flex justify-center"
-        >
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-indigo-500/30 via-purple-500/20 to-pink-500/30 blur-3xl animate-pulse-slow" />
-            <Image
-              src={introData.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
-              alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
-              width={360}
-              height={360}
-              priority
-              className="relative rounded-full shadow-xl ring-4 ring-white/50 dark:ring-gray-800/60 object-cover aspect-square"
-            />
-          </div>
-        </motion.div>
+  {/* (Image block moved above for mobile; removed duplicate here) */}
       </div>
 
       <motion.button

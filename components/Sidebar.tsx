@@ -135,7 +135,7 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
           <div className="p-6 pt-20 border-b border-gray-200 dark:border-gray-700">
             <Link 
               href="/" 
-              className="text-2xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-2xl font-bold text-gray-900 dark:text-white hover:accent-cert transition-colors"
             >
               Aditya Raj
             </Link>
@@ -154,7 +154,7 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
                     className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 group ${
                       isActive(item.href)
                         ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-l-4 border-blue-500'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:accent-cert'
                     }`}
                   >
                     <span className="text-lg">{item.label}</span>

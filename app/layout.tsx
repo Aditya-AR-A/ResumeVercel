@@ -21,39 +21,24 @@ export default function RootLayout({
 }: {
   children: ReactNode
 }) {
-  const introData: IntroData = loadJson('intro.json');
+  // Hardcoded social links since we removed introData loading
+  const socialLinks = {
+    email: "adityaraj.anshukumar50@gmail.com",
+    github: "https://github.com/Aditya-AR-A",
+    linkedin: "https://www.linkedin.com/in/aditya-raj-921a08352/"
+  };
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme') || 'system';
-                  var actualTheme = theme;
-                  
-                  if (theme === 'system') {
-                    actualTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                  }
-                  
-                  document.documentElement.classList.add(actualTheme);
-                } catch (e) {
-                  document.documentElement.classList.add('light');
-                }
-              })();
-            `,
-          }}
-        />
       </head>
       <body className={`${inter.className} antialiased min-h-screen overflow-x-hidden`}>
         <CursorGradient />
         <ThemeProvider>
           {/* Global animated fog background */}
           <VantaFog className="fixed inset-0 -z-10" />
-          <Sidebar socialLinks={introData.socialLinks} />
+          <Sidebar socialLinks={socialLinks} />
           <main className="relative w-full max-w-[90%] mx-auto overflow-x-hidden" style={{ zIndex: 10 }}>
             {children}
           </main>
@@ -63,7 +48,7 @@ export default function RootLayout({
               <div className="flex justify-center space-x-4 mt-5 flex-wrap">
                 {/* Email */}
                 <a
-                  href={`mailto:${introData.socialLinks.email}`}
+                  href={`mailto:${socialLinks.email}`}
                   aria-label="Email"
                   className="flex items-center justify-center w-10 h-10 bg-green-600 hover:bg-green-700 rounded-lg transition-colors duration-200 group"
                 >
@@ -73,7 +58,7 @@ export default function RootLayout({
                 </a>
                 {/* LinkedIn */}
                 <a
-                  href={introData.socialLinks.linkedin}
+                  href={socialLinks.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
@@ -85,7 +70,7 @@ export default function RootLayout({
                 </a>
                 {/* GitHub */}
                 <a
-                  href={introData.socialLinks.github}
+                  href={socialLinks.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"

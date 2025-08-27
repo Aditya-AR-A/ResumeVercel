@@ -2,24 +2,65 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { aiApi } from '@/utils/api';
 
 const ChatProfile: React.FC = () => {
   const [response, setResponse] = useState<string | null>(null);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleCommand = () => {
-    if (input.trim() === '') return;
+  // Debug logging for component lifecycle
+  React.useEffect(() => {
+    console.log('ChatProfile: Component mounted');
+    return () => console.log('ChatProfile: Component unmounted');
+  }, []);
 
-    // Simulate AI task execution (to be replaced with backend integration)
-    if (input.toLowerCase().includes('show projects')) {
-      setResponse('Navigating to Projects Section...');
-      // Simulate navigation or dynamic update
-      document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      setResponse(`Executing: ${input}`);
+  // Debug logging for input changes
+  React.useEffect(() => {
+    if (input) {
+      console.log('ChatProfile: Input changed to:', input);
+    }
+  }, [input]);
+
+  const handleCommand = async () => {
+    if (input.trim() === '' || isLoading) {
+      console.log('ChatProfile: Input is empty or already loading, skipping...');
+      return;
     }
 
+    const command = input.trim();
+    console.log('ChatProfile: Processing command:', command);
+
     setInput('');
+    setIsLoading(true);
+
+    try {
+      console.log('ChatProfile: Calling AI API...');
+      // Use AI API for command processing
+      const aiResponse = await aiApi.chat(`Command: ${command}`);
+      console.log('ChatProfile: AI API response:', aiResponse);
+
+      setResponse(aiResponse.response || aiResponse.message || `Processed: ${command}`);
+      console.log('ChatProfile: Response set successfully');
+
+      // Handle specific navigation commands
+      if (command.toLowerCase().includes('show projects')) {
+        console.log('ChatProfile: Navigating to projects section');
+        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (command.toLowerCase().includes('show experience') || command.toLowerCase().includes('show work')) {
+        console.log('ChatProfile: Navigating to experience section');
+        document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (command.toLowerCase().includes('show certificates') || command.toLowerCase().includes('show cert')) {
+        console.log('ChatProfile: Navigating to certificates section');
+        document.getElementById('certificates')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    } catch (error) {
+      console.error('ChatProfile: AI API Error:', error);
+      setResponse('Sorry, I encountered an error processing your command.');
+    } finally {
+      setIsLoading(false);
+      console.log('ChatProfile: Loading state set to false');
+    }
   };
 
   return (
@@ -43,17 +84,31 @@ const ChatProfile: React.FC = () => {
       <div className="w-full max-w-2xl flex items-center">
         <input
           type="text"
-          className="flex-1 p-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Type a command..."
+          className="flex-1 p-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+          placeholder={isLoading ? "Processing command..." : "Type a command..."}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleCommand()}
+          onChange={(e) => {
+            console.log('ChatProfile: onChange triggered, new value:', e.target.value);
+            setInput(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            console.log('ChatProfile: onKeyDown triggered, key:', e.key);
+            if (e.key === 'Enter') {
+              console.log('ChatProfile: Enter key pressed, calling handleCommand');
+              handleCommand();
+            }
+          }}
+          disabled={isLoading}
         />
         <button
-          className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          onClick={handleCommand}
+          className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={() => {
+            console.log('ChatProfile: Execute button clicked');
+            handleCommand();
+          }}
+          disabled={isLoading}
         >
-          Execute
+          {isLoading ? '...' : 'Execute'}
         </button>
       </div>
 

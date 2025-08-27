@@ -12,7 +12,8 @@ interface ExperienceViewProps {
 }
 
 const ExperienceView: React.FC<ExperienceViewProps> = ({ jobs, getRelatedProjects }) => {
-  const featuredJobs = jobs.filter(job => job.featured);
+  // Ensure jobs is an array and filter featured jobs
+  const featuredJobs = Array.isArray(jobs) ? jobs.filter(job => job.featured) : [];
 
   return (
     <Section className="py-16">
@@ -21,14 +22,20 @@ const ExperienceView: React.FC<ExperienceViewProps> = ({ jobs, getRelatedProject
           Professional Experience
         </h2>
         <div className="max-w-5xl mx-auto space-y-8">
-          {featuredJobs.map((job) => (
-            <JobCard
-              key={job.id}
-              {...job}
-              projects={getRelatedProjects(job.id)}
-              compact={false}
-            />
-          ))}
+          {featuredJobs.length > 0 ? (
+            featuredJobs.map((job) => (
+              <JobCard
+                key={job.id}
+                {...job}
+                projects={getRelatedProjects(job.id)}
+                compact={false}
+              />
+            ))
+          ) : (
+            <div className="text-center text-gray-500">
+              <p>No featured jobs available at the moment.</p>
+            </div>
+          )}
         </div>
         <div className="text-center mt-12">
           <Button className="btn-primary" href="/experience">

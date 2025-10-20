@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
+import { getAssetUrl } from '@/utils/assets';
 
 interface SidebarProps {
   socialLinks: {
@@ -15,6 +16,7 @@ interface SidebarProps {
 
 export default function Sidebar({ socialLinks }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const resumeLink = getAssetUrl('resume.pdf');
   const pathname = usePathname();
 
   // Close sidebar when clicking outside
@@ -87,37 +89,6 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
 
   return (
     <>
-      {/* Floating Toggle Button */}
-      <button
-        id="sidebar-toggle" /* primary floating toggle retains id for legacy CSS */
-        data-sidebar-toggle
-        onClick={toggleSidebar}
-        // Prevent the document-level mousedown outside handler from firing first (which caused double toggle)
-        onMouseDown={(e) => { e.stopPropagation(); }}
-        className="fixed top-6 left-6 z-50 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:scale-105 sm:top-6 sm:left-6 lg:top-8 lg:left-8"
-        aria-expanded={isOpen}
-        aria-controls="sidebar"
-        aria-label="Toggle navigation menu"
-      >
-        <div className="relative w-6 h-6">
-          <span
-            className={`absolute block w-6 h-0.5 bg-gray-700 dark:bg-gray-300 transition-all duration-300 ${
-              isOpen ? 'rotate-45 top-3' : 'top-1'
-            }`}
-          />
-          <span
-            className={`absolute block w-6 h-0.5 bg-gray-700 dark:bg-gray-300 transition-all duration-300 top-3 ${
-              isOpen ? 'opacity-0' : 'opacity-100'
-            }`}
-          />
-          <span
-            className={`absolute block w-6 h-0.5 bg-gray-700 dark:bg-gray-300 transition-all duration-300 ${
-              isOpen ? '-rotate-45 top-3' : 'top-5'
-            }`}
-          />
-        </div>
-      </button>
-
       {/* Overlay */}
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300" />
@@ -175,7 +146,7 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
           {/* Footer Actions */}
           <div className="p-6 border-t border-gray-200 dark:border-gray-700 space-y-3">
             <a
-              href="/resume.pdf"
+              href={resumeLink}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"

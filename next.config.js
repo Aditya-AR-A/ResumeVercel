@@ -62,8 +62,25 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'www.cispl.net.in',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'planto.ai',
         pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/assets/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8000',
+        pathname: '/assets/**',
       },
     ],
   },

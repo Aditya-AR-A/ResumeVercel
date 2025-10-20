@@ -1,138 +1,179 @@
-import React from 'react'
-import { loadJson } from '@/utils/loadJson'
-import Card from '@/components/Card'
+import { toSlug } from '@/utils/slug'
 import Section from '@/components/Section'
-import { Certificate } from '@/types/interfaces';
+import CertificateCard from '@/components/CertificateCard'
+import Button from '@/components/Button'
+import PageHero from '@/components/PageHero'
+import { dataApi } from '@/utils/api'
+import type { Certificate } from '@/types/interfaces'
+
+async function loadCertificates(): Promise<Certificate[]> {
+  try {
+    const data = await dataApi.getCertificates()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('CertificatesPage: failed to fetch certificates from API', error)
+    return []
+  }
+}
 
 export default async function CertificatesPage() {
-  const certificates: Certificate[] = loadJson('certificates.json');
+  const certificates = await loadCertificates()
+  const featuredCertificates = certificates.filter((certificate) => certificate.featured)
 
-  // Group certificates by field/category
-  const certificatesByField = certificates.reduce((acc, cert) => {
-    const field = cert.field || 'Other';
+  const certificatesByField = certificates.reduce<Record<string, Certificate[]>>((acc, certificate) => {
+    const field = certificate.field || 'Other'
     if (!acc[field]) {
-      acc[field] = [];
+      acc[field] = []
     }
-    acc[field].push(cert);
-    return acc;
-  }, {} as Record<string, Certificate[]>);
+    acc[field].push(certificate)
+    return acc
+  }, {})
+
+  const fields = Object.keys(certificatesByField).sort((a, b) => a.localeCompare(b))
+
+  const heroStats = [
+    {
+      label: 'Certificates',
+      value: certificates.length || '0',
+      suffix: certificates.length ? '+' : undefined,
+      accentClass: 'text-sky-500 dark:text-sky-400'
+    },
+    {
+      label: 'Domains',
+      value: fields.length || '0',
+      accentClass: 'text-emerald-500 dark:text-emerald-400'
+    },
+    {
+      label: 'Featured',
+      value: featuredCertificates.length || '0',
+      accentClass: 'text-violet-500 dark:text-violet-400'
+    },
+    {
+      label: 'Providers',
+      value: new Set(certificates.map(cert => cert.provider)).size || '0',
+      accentClass: 'text-amber-500 dark:text-amber-400'
+    }
+  ]
 
   return (
-    <div className="min-h-screen pt-8">
-      {/* Header */}
-      <Section className="py-16 text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 heading-gradient">
-            Certificates & Achievements
-          </h1>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            My professional certifications and achievements in data science, machine learning, and programming.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
-                {certificates.length}+
-              </div>
-              <div className="text-gray-600 dark:text-gray-400">Certificates</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 dark:text-green-400">
-                {Object.keys(certificatesByField).length}
-              </div>
-              <div className="text-gray-600 dark:text-gray-400">Fields</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-purple-600 dark:text-purple-400">
-                {certificates.filter(cert => cert.featured).length}
-              </div>
-              <div className="text-gray-600 dark:text-gray-400">Featured</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 dark:text-orange-400">
-                {new Set(certificates.map(cert => cert.provider)).size}
-              </div>
-              <div className="text-gray-600 dark:text-gray-400">Providers</div>
-            </div>
-          </div>
-        </div>
-      </Section>
+    <div className="relative min-h-screen space-y-12 py-12 lg:space-y-16 lg:py-16">
+      <PageHero
+        eyebrow="Credentials"
+        title="Certificates & Achievements"
+        description="Evidence of continuous learning and specialization across data science, AI, cloud, and advanced software engineering."
+        stats={heroStats}
+        actions={(
+          <>
+            <Button className="btn-primary" href="#contact">
+              Hire for a Project
+            </Button>
+            <Button className="btn-secondary" href="/projects">
+              View Projects
+            </Button>
+          </>
+        )}
+      />
 
-      {/* Featured Certificates */}
-      {certificates.some(cert => cert.featured) && (
-        <Section className="py-16 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12 heading-gradient">
-              Featured Certifications
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {certificates.filter(cert => cert.featured).map((cert) => (
-                <Card
-                  key={cert.name}
-                  title={cert.name}
-                  description={cert.description || `Issued by ${cert.provider}${cert.issueDate ? ` • ${cert.issueDate}` : ''}`}
-                  imageUrl={`/certificate_thumbnails/${cert.file.replace('.pdf', '.png')}`}
-                  linkUrl={`/Cerificates/${cert.file}`}
-                  tags={cert.skills?.slice(0, 4)}
-                  featured={cert.featured}
-                />
-              ))}
+      {featuredCertificates.length > 0 && (
+        <Section
+          background="gradient"
+          className="py-12 lg:py-16"
+          containerClassName="max-w-6xl"
+        >
+          <div className="space-y-10">
+            <div className="space-y-3 text-center">
+              <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:border-white/10 dark:text-slate-200">
+                Spotlight
+              </span>
+              <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
+                Featured Certifications
+              </h2>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Deep dives where I led initiatives, specialized in advanced tooling, or achieved elite recognition.
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2">
+              {featuredCertificates.map((certificate, index) => {
+                const slug = toSlug(certificate.name)
+
+                return (
+                  <CertificateCard
+                    key={certificate.name}
+                    certificate={certificate}
+                    href={`/certificates/${slug}`}
+                    variant="showcase"
+                    priority={index === 0}
+                  />
+                )
+              })}
             </div>
           </div>
         </Section>
       )}
 
-      {/* Certificates by Field */}
-      {Object.entries(certificatesByField).map(([field, fieldCertificates], index) => (
-        <Section key={field} className={`py-16 ${index % 2 === 0 ? '' : 'bg-gray-50 dark:bg-gray-900'}`}>
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12 heading-gradient">
-              {field}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {fieldCertificates.map((cert) => (
-                <Card
-                  key={cert.name}
-                  title={cert.name}
-                  description={cert.description || `Issued by ${cert.provider}${cert.issueDate ? ` • ${cert.issueDate}` : ''}`}
-                  imageUrl={`/certificate_thumbnails/${cert.file.replace('.pdf', '.png')}`}
-                  linkUrl={`/Cerificates/${cert.file}`}
-                  tags={cert.skills?.slice(0, 4)}
-                  featured={cert.featured}
-                />
-              ))}
-            </div>
-          </div>
-        </Section>
-      ))}
+      {fields.map((field, index) => {
+        const fieldCertificates = certificatesByField[field]
 
-      {/* Call to Action */}
-      <Section className="py-16 text-center">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4 heading-gradient">
-            Continuous Learning
+        return (
+          <Section
+            key={field}
+            background={index % 2 === 0 ? 'default' : 'gray'}
+            className="py-12 lg:py-16"
+            containerClassName="max-w-6xl"
+          >
+            <div className="space-y-10">
+              <div className="space-y-3 text-center">
+                <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:border-white/10 dark:text-slate-200">
+                  Specialization
+                </span>
+                <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
+                  {field}
+                </h2>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  {fieldCertificates.length} certification{fieldCertificates.length === 1 ? '' : 's'} advancing this focus area.
+                </p>
+              </div>
+
+              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {fieldCertificates.map((certificate, index) => {
+                  const slug = toSlug(certificate.name)
+
+                  return (
+                    <CertificateCard
+                      key={certificate.name}
+                      certificate={certificate}
+                      href={`/certificates/${slug}`}
+                      variant="showcase"
+                      priority={index === 0}
+                    />
+                  )
+                })}
+              </div>
+            </div>
+          </Section>
+        )
+      })}
+
+      <Section
+        background="gradient"
+        className="py-12 text-center lg:py-16"
+        containerClassName="max-w-5xl"
+      >
+        <div className="space-y-6">
+          <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
+            Continuous learning is the advantage
           </h2>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            I&apos;m always expanding my skills and knowledge. Let&apos;s discuss how my expertise can help your projects.
+          <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg">
+            Let&apos;s partner on your toughest data, automation, or AI problems. I bring fresh research, practical experience, and proven results to every engagement.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="#contact"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
-            >
-              Get In Touch
-            </a>
-            <a
-              href="/projects"
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
-            >
-              View Projects
-            </a>
-            <a
-              href="/"
-              className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
-            >
+            <Button className="btn-primary" href="#contact">
+              Start a Conversation
+            </Button>
+            <Button className="btn-secondary" href="/">
               Back to Home
-            </a>
+            </Button>
           </div>
         </div>
       </Section>

@@ -1,104 +1,213 @@
 "use client";
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
+import CommandInterface from './CommandInterface'
+import type { ViewType } from './DynamicContentManager'
+import { getAssetUrl } from '@/utils/assets'
+
+const NAV_LINKS = [
+  { label: 'Projects', href: '/projects' },
+  { label: 'Experience', href: '/experience' },
+  { label: 'Certificates', href: '/certificates' },
+  { label: 'Contact', href: '/#contact' },
+]
 
 export default function Navbar() {
-  // Listen for sidebar state (kept for potential future use)
+  const router = useRouter()
+  const pathname = usePathname()
+  const resumeLink = useMemo(() => getAssetUrl('resume.pdf'), [])
+
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isCommandOpen, setIsCommandOpen] = useState(false)
+
   useEffect(() => {
-  const handler = () => {};
-    window.addEventListener('sidebar:state', handler as EventListener);
-    return () => window.removeEventListener('sidebar:state', handler as EventListener);
-  }, []);
+    const handleScroll = () => setIsScrolled(window.scrollY > 32)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    if (!isCommandOpen) {
+      return undefined
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsCommandOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isCommandOpen])
+
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return
+    }
+
+    if (isCommandOpen) {
+      const previous = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = previous
+      }
+    }
+  }, [isCommandOpen])
+
+  const handleCommandViewChange = (view: ViewType) => {
+    const routeMap: Partial<Record<ViewType, string>> = {
+      home: '/',
+      projects: '/projects',
+      experience: '/experience',
+      certificates: '/certificates',
+      contact: '/#contact',
+      about: '/#about',
+    }
+
+    const target = routeMap[view]
+    if (target) {
+      router.push(target)
+    }
+
+    setIsCommandOpen(false)
+  }
+
+  const isActiveLink = (href: string) => {
+    if (href.startsWith('/#')) {
+      return pathname === '/'
+    }
+    return pathname === href || pathname.startsWith(`${href}/`)
+  }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 navbar-blur border-b border-gray-200 dark:border-gray-700">
-      <div className="w-full px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo/Brand */}
-          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:accent-cert transition-colors ml-12 sm:ml-0">
-            Aditya Raj
-          </Link>
+    <>
+      <motion.nav
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="pointer-events-auto fixed left-0 right-0 top-0 z-50"
+      >
+        <div className="px-4 pt-4 sm:px-6 lg:px-8">
+          <div
+            className={`relative mx-auto flex max-w-6xl items-center justify-between gap-6 rounded-2xl border border-white/10 px-5 py-3 transition-all duration-300 backdrop-blur-2xl ${
+              isScrolled
+                ? 'bg-white/75 shadow-[0_20px_70px_rgba(15,23,42,0.28)] dark:bg-slate-950/70'
+                : 'bg-white/40 shadow-[0_10px_45px_rgba(15,23,42,0.18)] dark:bg-slate-950/50'
+            }`}
+          >
+            <div className="flex items-center gap-4">
+              <button
+                id="sidebar-inline-toggle"
+                data-sidebar-toggle
+                onClick={() => window.dispatchEvent(new Event('sidebar:toggle'))}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/20 text-slate-600 transition hover:border-white/30 hover:bg-white/30 dark:text-slate-200"
+                aria-label="Toggle sidebar"
+              >
+                <span className="sr-only">Toggle sidebar</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M4 7h16" />
+                  <path d="M4 12h16" />
+                  <path d="M4 17h16" />
+                </svg>
+              </button>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link 
-              href="/projects" 
-              className="text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
-            >
-              Projects
-            </Link>
-            <Link 
-              href="/experience" 
-              className="text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
-            >
-              Experience
-            </Link>
-            <Link 
-              href="/certificates" 
-              className="text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
-            >
-              Certificates
-            </Link>
-            <Link 
-              href="#contact" 
-              className="text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
-            >
-              Contact
-            </Link>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-            >
-              Resume
-            </a>
+              <Link href="/" className="heading-gradient text-lg font-semibold sm:text-xl">
+                Aditya Raj
+              </Link>
+            </div>
+
+            <div className="hidden items-center gap-6 md:flex">
+              {NAV_LINKS.map((link) => (
+                <div key={link.href} className="relative">
+                  <Link
+                    href={link.href}
+                    className={`text-sm font-medium transition duration-200 ${
+                      isActiveLink(link.href)
+                        ? 'text-slate-900 dark:text-white'
+                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                  {isActiveLink(link.href) && (
+                    <motion.span
+                      layoutId="nav-active-indicator"
+                      className="absolute inset-x-0 -bottom-2 h-0.5 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setIsCommandOpen(true)}
+                className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/20 px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-white/30 hover:bg-white/30 dark:text-slate-200"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M5 12h14" />
+                  <path d="M12 5l7 7-7 7" />
+                </svg>
+                Command
+              </button>
+              <a
+                href={resumeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(59,130,246,0.35)] transition hover:shadow-[0_20px_45px_rgba(59,130,246,0.45)]"
+              >
+                Resume
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M7 7h10v10" />
+                  <path d="M7 17 17 7" />
+                </svg>
+              </a>
+            </div>
           </div>
-
-          {/* Mobile Menu Button */}
-          {/* Mobile area intentionally left empty: floating sidebar button remains the single source */}
-          <div className="md:hidden" />
         </div>
-      </div>
+      </motion.nav>
 
-      {/* Mobile Menu (hidden by default - would need state management for full functionality) */}
-      <div className="md:hidden hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          <Link
-            href="/projects"
-            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
+      <AnimatePresence>
+        {isCommandOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 px-4 py-8 backdrop-blur"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            Projects
-          </Link>
-          <Link
-            href="/experience"
-            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
-          >
-            Experience
-          </Link>
-          <Link
-            href="/certificates"
-            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
-          >
-            Certificates
-          </Link>
-          <Link
-            href="#contact"
-            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:accent-cert transition-colors"
-          >
-            Contact
-          </Link>
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block px-3 py-2 accent-cert hover:opacity-80 transition-colors"
-          >
-            Resume
-          </a>
-        </div>
-      </div>
-    </nav>
+            <motion.div
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="w-full max-w-2xl rounded-3xl border border-white/15 bg-white/10 p-6 shadow-[0_30px_120px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:bg-slate-950/80"
+            >
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Command Palette</h2>
+                  <p className="text-sm text-slate-500 dark:text-slate-300">Type a command like “show projects” or “contact me”.</p>
+                </div>
+                <button
+                  onClick={() => setIsCommandOpen(false)}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-slate-500 transition hover:border-white/30 hover:bg-white/20 dark:text-slate-300"
+                  aria-label="Close command palette"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M6 6l12 12" />
+                    <path d="M6 18L18 6" />
+                  </svg>
+                </button>
+              </div>
+              <CommandInterface variant="full" onViewChange={handleCommandViewChange} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }

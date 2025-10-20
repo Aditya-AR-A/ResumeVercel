@@ -1,13 +1,23 @@
-import React from 'react'
-import { loadJson } from '@/utils/loadJson'
 import Card from '@/components/Card'
 import Section from '@/components/Section'
-import { Project } from '@/types/interfaces'
+import Button from '@/components/Button'
+import PageHero from '@/components/PageHero'
+import { dataApi } from '@/utils/api'
+import type { Project } from '@/types/interfaces'
+
+async function loadProjects(): Promise<Project[]> {
+  try {
+    const data = await dataApi.getProjects()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('ProjectsPage: failed to fetch projects from API', error)
+    return []
+  }
+}
 
 export default async function ProjectsPage() {
-  const projects: Project[] = loadJson('projects_new.json')
+  const projects = await loadProjects()
 
-  // Group projects by category
   const projectsByCategory = projects.reduce((acc, project) => {
     if (!acc[project.category]) {
       acc[project.category] = []
@@ -16,66 +26,111 @@ export default async function ProjectsPage() {
     return acc
   }, {} as Record<string, Project[]>)
 
+  const categoryNames = Object.keys(projectsByCategory).sort((a, b) => a.localeCompare(b))
+
+  const heroStats = [
+    {
+      label: 'Projects',
+      value: projects.length || '0',
+      suffix: projects.length ? '+' : undefined,
+      accentClass: 'text-sky-500 dark:text-sky-400'
+    },
+    {
+      label: 'Categories',
+      value: categoryNames.length || '0',
+      accentClass: 'text-violet-500 dark:text-violet-400'
+    },
+    {
+      label: 'Featured',
+      value: projects.filter(project => project.featured).length || '0',
+      accentClass: 'text-amber-500 dark:text-amber-400'
+    },
+    {
+      label: 'Tech Stack',
+      value: new Set(projects.flatMap(project => project.skills)).size || '0',
+      accentClass: 'text-emerald-500 dark:text-emerald-400'
+    }
+  ]
+
   return (
-    <div className="min-h-screen pt-8">
-      {/* Header */}
-      <Section className="py-16 text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 heading-gradient">
-            All Projects
-          </h1>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Explore all the projects I have worked on, categorized for your convenience.
-          </p>
-        </div>
-      </Section>
+    <div className="relative min-h-screen space-y-12 py-12 lg:space-y-16 lg:py-16">
+      <PageHero
+        eyebrow="Projects"
+        title="All Projects"
+        description="Every build, experiment, and deployment that shaped my journey across AI, automation, and product engineering."
+        stats={heroStats}
+        actions={(
+          <>
+            <Button className="btn-primary" href="#contact">
+              Start a Project
+            </Button>
+            <Button className="btn-secondary" href="/experience">
+              View Experience
+            </Button>
+          </>
+        )}
+      />
 
-      {/* Projects by Category */}
-      {Object.entries(projectsByCategory).map(([category, categoryProjects]) => (
-        <Section key={category} className="py-16 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12 heading-gradient">
-              {category}
-            </h2>
-            <div className="max-w-4xl mx-auto space-y-6">
-              {categoryProjects.map((project) => (
-                <Card
-                  key={project.id}
-                  title={project.name}
-                  description={project.shortDescription}
-                  imageUrl={project.thumbnail}
-                  tags={project.skills.slice(0, 4)}
-                  featured={project.featured}
-                  linkUrl={project.demoUrl || project.githubUrl}
-                />
-              ))}
+      {categoryNames.map((category, index) => {
+        const categoryProjects = projectsByCategory[category] ?? []
+
+        return (
+          <Section
+            key={category}
+            background={index % 2 === 0 ? 'default' : 'gradient'}
+            className="py-12 lg:py-16"
+            containerClassName="max-w-6xl"
+          >
+            <div className="space-y-10">
+              <div className="space-y-3 text-center">
+                <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:border-white/10 dark:text-slate-200">
+                  Category
+                </span>
+                <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
+                  {category}
+                </h2>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  Showcasing {categoryProjects.length} project{categoryProjects.length === 1 ? '' : 's'} in this track.
+                </p>
+              </div>
+
+              <div className="grid gap-8 lg:grid-cols-2">
+                {categoryProjects.map((project) => (
+                  <Card
+                    key={project.id}
+                    title={project.name}
+                    description={project.shortDescription}
+                    imageUrl={project.thumbnail}
+                    tags={project.skills.slice(0, 4)}
+                    featured={project.featured}
+                    linkUrl={`/projects/${project.id}`}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </Section>
-      ))}
+          </Section>
+        )
+      })}
 
-      {/* Call to Action */}
-      <Section className="py-16 text-center">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4 heading-gradient">
-            Interested in Collaborating?
+      <Section
+        background="gradient"
+        className="py-12 text-center lg:py-16"
+        containerClassName="max-w-5xl"
+      >
+        <div className="space-y-6">
+          <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
+            Interested in collaborating?
           </h2>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            I&apos;m always open to discussing new projects and opportunities.
+          <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg">
+            I love partnering with founders, product teams, and researchers to bring intelligent experiences to life. Let&apos;s build something ambitious together.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="#contact"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
-            >
+            <Button className="btn-primary" href="#contact">
               Get In Touch
-            </a>
-            <a
-              href="/"
-              className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
-            >
+            </Button>
+            <Button className="btn-secondary" href="/">
               Back to Home
-            </a>
+            </Button>
           </div>
         </div>
       </Section>

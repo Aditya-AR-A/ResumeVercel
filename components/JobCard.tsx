@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import SkillTag from './SkillTag';
+import FeaturedBadge from './FeaturedBadge';
 import { Project } from '@/types/interfaces';
 
 interface JobCardProps {
@@ -19,6 +21,7 @@ interface JobCardProps {
   featured?: boolean;
   projects?: Project[];
   compact?: boolean; // For different layouts
+  href?: string;
 }
 
 export default function JobCard({
@@ -35,7 +38,8 @@ export default function JobCard({
   skills,
   featured,
   projects,
-  compact = false
+  compact = false,
+  href,
 }: JobCardProps) {
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -70,8 +74,7 @@ export default function JobCard({
     return `${years}y ${remainingMonths}m`;
   };
 
-  if (compact) {
-    return (
+  const compactContent = (
       <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl border ${
         featured ? 'border-blue-500' : 'border-transparent'
       }`}>
@@ -92,13 +95,14 @@ export default function JobCard({
                 </svg>
               </div>
             )}
-            <div>
+            <div className="flex flex-col">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                 {title}
               </h3>
               <p className="accent-cert font-semibold">
                 {company}
               </p>
+              {featured && <FeaturedBadge className="mt-2 w-max" />}
             </div>
           </div>
           <div className="text-right">
@@ -124,10 +128,9 @@ export default function JobCard({
           {description}
         </p>
       </div>
-    );
-  }
+  );
 
-  return (
+  const fullContent = (
     <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl border ${
       featured ? 'border-blue-500 ring-2 ring-blue-100 dark:ring-blue-900' : 'border-gray-200 dark:border-gray-700'
     }`}>
@@ -149,13 +152,14 @@ export default function JobCard({
               </svg>
             </div>
           )}
-          <div>
+          <div className="flex flex-col">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
               {title}
             </h3>
             <p className="text-xl accent-cert font-semibold mb-1">
               {company}
             </p>
+            {featured && <FeaturedBadge className="w-max" />}
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
               <span className="text-sm">{location}</span>
               <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
@@ -305,4 +309,16 @@ export default function JobCard({
       )}
     </div>
   );
+
+  const cardContent = compact ? compactContent : fullContent;
+
+  if (href) {
+    return (
+      <Link href={href} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 rounded-xl">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 }

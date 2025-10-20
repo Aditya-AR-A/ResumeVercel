@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import CommandInterface from './CommandInterface';
 import Button from './Button';
 import { IntroData } from '@/types/interfaces';
+import { getAssetUrl } from '@/utils/assets';
 
 interface HeroProps {
   introData: IntroData;
@@ -105,6 +106,8 @@ const StatsGrid: React.FC = () => {
 const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCommandChange, onViewChange }) => {
   const [hideHint, setHideHint] = useState(false);
 
+  const resumeLink = getAssetUrl('resume.pdf');
+
   useEffect(() => {
     const onScroll = () => {
       if (window.scrollY > 32) setHideHint(true);
@@ -118,15 +121,15 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden layout-safe-pad py-12">
       <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true" />
 
-      <div className="max-w-7xl mx-auto w-full content-grid cols-responsive">
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 sm:gap-12 lg:gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
         {/* Image block first on mobile */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.6, type: 'spring', stiffness: 130 }}
-          className="relative flex justify-center order-1 lg:order-2 -mt-2 mb-4 lg:mb-0"
+          className="order-1 -mt-2 mb-4 flex justify-center lg:order-2 lg:mb-0"
         >
-          <div className="relative w-full flex items-center justify-center mx-auto max-w-[220px] sm:max-w-[260px] lg:max-w-[360px]">
+          <div className="relative mx-auto flex w-full max-w-[220px] items-center justify-center sm:max-w-[260px] md:max-w-[300px] lg:max-w-[360px]">
             <div className="absolute -inset-3 sm:-inset-4 md:-inset-5 lg:-inset-6 rounded-3xl bg-[radial-gradient(circle_at_32%_30%,var(--accent-gradient-start)_0%,transparent_65%)] opacity-55 blur-xl" />
             <Image
               src={introData.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
@@ -140,7 +143,7 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
         </motion.div>
 
         {/* Text block second on mobile, first on large */}
-        <div className="space-y-8 order-2 lg:order-1">
+  <div className="order-2 space-y-8 lg:order-1 lg:max-w-2xl">
           <div className="space-y-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -187,7 +190,7 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
           >
             <Button className="btn-primary" onClick={() => onViewChange?.('projects')}>View Projects</Button>
             <Button className="btn-secondary" onClick={() => onViewChange?.('experience')}>Experience</Button>
-            <Button className="btn-secondary" href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</Button>
+            <Button className="btn-secondary" href={resumeLink} target="_blank" rel="noopener noreferrer">Resume</Button>
             <Button className="btn-secondary" onClick={() => onViewChange?.('contact')}>Contact</Button>
           </motion.div>
 

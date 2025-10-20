@@ -29,7 +29,7 @@ const ProjectsView: React.FC<ProjectsViewProps> = ({ projects }) => {
                 imageUrl={project.thumbnail}
                 tags={project.skills.slice(0, 4)}
                 featured={project.featured}
-                linkUrl={project.demoUrl || project.githubUrl}
+                linkUrl={`/projects/${project.id}`}
               />
             ))
           ) : (

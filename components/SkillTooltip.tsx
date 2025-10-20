@@ -1,9 +1,15 @@
-import React, { useState } from 'react'
-import { SkillTooltipProps } from '@/types/interfaces';
+"use client";
+
+import React, { useEffect, useMemo, useState } from 'react'
+import { SkillTooltipProps, Project, Job, Certificate } from '@/types/interfaces';
 import SkillTooltipContent from './SkillTooltipContent';
-import projectsData from '@/data/projects.json';
-import jobsData from '@/data/jobs.json';
-import certificatesData from '@/data/certificates.json';
+import { dataApi } from '@/utils/api';
+
+type RelatedData = {
+  projects: Project[]
+  jobs: Job[]
+  certificates: Certificate[]
+}
 
 export default function SkillTooltip({
   skill,
@@ -11,12 +17,63 @@ export default function SkillTooltip({
   children
 }: Pick<SkillTooltipProps, 'skill' | 'level' | 'children'>) {
   const [isVisible, setIsVisible] = useState(false)
+  const [data, setData] = useState<RelatedData>({ projects: [], jobs: [], certificates: [] })
+  const [hasFetched, setHasFetched] = useState(false)
 
-  const relatedProjects = projectsData.filter((project) => project.skills.includes(skill));
-  const relatedJobs = jobsData
-    .filter((job) => job.skills.includes(skill))
-    .map((job) => ({ ...job, isCurrent: job.isCurrent ?? false }));
-  const relatedCertificates = certificatesData.filter((certificate) => certificate.skills.includes(skill));
+  useEffect(() => {
+    if (!isVisible || hasFetched) {
+      return
+    }
+
+    let isMounted = true
+
+    const fetchData = async () => {
+      try {
+        const [projectsResponse, jobsResponse, certificatesResponse] = await Promise.all([
+          dataApi.getProjects().catch(() => []),
+          dataApi.getJobs().catch(() => []),
+          dataApi.getCertificates().catch(() => [])
+        ])
+
+        if (!isMounted) {
+          return
+        }
+
+        setData({
+          projects: Array.isArray(projectsResponse) ? projectsResponse : [],
+          jobs: Array.isArray(jobsResponse) ? jobsResponse : [],
+          certificates: Array.isArray(certificatesResponse) ? certificatesResponse : []
+        })
+        setHasFetched(true)
+      } catch (error) {
+        console.error('SkillTooltip: failed to load related data', error)
+      }
+    }
+
+    fetchData()
+
+    return () => {
+      isMounted = false
+    }
+  }, [isVisible, hasFetched])
+
+  const relatedProjects = useMemo(
+    () => data.projects.filter((project) => project.skills.includes(skill)),
+    [data.projects, skill]
+  )
+
+  const relatedJobs = useMemo(
+    () =>
+      data.jobs
+        .filter((job) => job.skills.includes(skill))
+        .map((job) => ({ ...job, isCurrent: job.isCurrent ?? false })),
+    [data.jobs, skill]
+  )
+
+  const relatedCertificates = useMemo(
+    () => data.certificates.filter((certificate) => certificate.skills.includes(skill)),
+    [data.certificates, skill]
+  )
 
   const getLevelColor = () => {
     switch (level) {

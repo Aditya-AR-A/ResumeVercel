@@ -8,16 +8,18 @@ export default function Section({
   containerClassName = '',
   background = 'default'
 }: SectionProps) {
+  const baseClasses = 'relative overflow-hidden rounded-3xl border border-white/10 shadow-[0_30px_80px_rgba(15,23,42,0.28)] backdrop-blur-2xl dark:border-white/5';
+
   const getBackgroundClasses = () => {
     switch (background) {
       case 'gray':
-        return 'bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-sm'
+        return `${baseClasses} bg-slate-100/60 dark:bg-slate-950/50`;
       case 'gradient':
-        return 'bg-gradient-to-br from-blue-50/80 to-indigo-100/80 dark:from-gray-900/80 dark:to-gray-800/80 backdrop-blur-sm'
+        return `${baseClasses} bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.28),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(236,72,153,0.25),transparent_55%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(236,72,153,0.18),transparent_55%)]`;
       default:
-        return 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm'
+        return `${baseClasses} bg-white/65 dark:bg-slate-950/60`;
     }
-  }
+  };
 
   return (
     <section
@@ -28,5 +30,5 @@ export default function Section({
         {children}
       </div>
     </section>
-  )
+  );
 }

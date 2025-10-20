@@ -29,6 +29,7 @@ const ExperienceView: React.FC<ExperienceViewProps> = ({ jobs, getRelatedProject
                 {...job}
                 projects={getRelatedProjects(job.id)}
                 compact={false}
+                href={`/experience/${job.id}`}
               />
             ))
           ) : (

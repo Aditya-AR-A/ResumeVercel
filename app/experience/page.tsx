@@ -1,28 +1,32 @@
-import React from 'react'
-import { loadJson } from '@/utils/loadJson'
 import Section from '@/components/Section'
 import JobCard from '@/components/JobCard'
-import { Project } from '@/types/interfaces'
+import Button from '@/components/Button'
+import PageHero from '@/components/PageHero'
+import { dataApi } from '@/utils/api'
+import type { Job, Project } from '@/types/interfaces'
 
-interface Job {
-  id: string
-  title: string
-  company: string
-  companyLogo?: string
-  position: string
-  location: string
-  startDate: string
-  endDate?: string
-  isCurrent: boolean
-  description: string
-  responsibilities?: string[]
-  skills: string[]
-  featured: boolean
+async function loadJobs(): Promise<Job[]> {
+  try {
+    const data = await dataApi.getJobs()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('ExperiencePage: failed to fetch jobs from API', error)
+    return []
+  }
+}
+
+async function loadProjects(): Promise<Project[]> {
+  try {
+    const data = await dataApi.getProjects()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('ExperiencePage: failed to fetch projects from API', error)
+    return []
+  }
 }
 
 export default async function ExperiencePage() {
-  const jobs: Job[] = loadJson('jobs.json')
-  const projects: Project[] = loadJson('projects_new.json')
+  const [jobs, projects] = await Promise.all([loadJobs(), loadProjects()])
 
   // Sort jobs by startDate descending (most recent first)
   const sortedJobs = jobs.slice().sort((a, b) => {
@@ -31,63 +35,101 @@ export default async function ExperiencePage() {
     return bDate - aDate;
   });
 
-  // Function to get related projects for a job
-  const getRelatedProjects = (jobId: string) => {
-    return projects.filter(project => project.jobId === jobId);
-  };
+  const getRelatedProjects = (jobId: string) =>
+    projects.filter((project) => project.jobId === jobId || project.relatedJobIds?.includes(jobId));
+
+  const heroStats = [
+    {
+      label: 'Roles',
+      value: jobs.length || '0',
+      accentClass: 'text-sky-500 dark:text-sky-400'
+    },
+    {
+      label: 'Companies',
+      value: new Set(jobs.map(job => job.company)).size || '0',
+      accentClass: 'text-emerald-500 dark:text-emerald-400'
+    },
+    {
+      label: 'Featured Projects',
+      value: projects.filter(project => project.featured).length || '0',
+      accentClass: 'text-violet-500 dark:text-violet-400'
+    },
+    {
+      label: 'Active Roles',
+      value: sortedJobs.filter(job => job.isCurrent).length || '0',
+      helperText: 'Currently engaged',
+      accentClass: 'text-amber-500 dark:text-amber-400'
+    }
+  ]
 
   return (
-    <div className="min-h-screen pt-8">
-      {/* Header */}
-      <Section className="py-16 text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 heading-gradient">
-            Professional Experience
-          </h1>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            My journey in data science, machine learning, and software development.
-          </p>
-        </div>
-      </Section>
+    <div className="relative min-h-screen space-y-12 py-12 lg:space-y-16 lg:py-16">
+      <PageHero
+        eyebrow="Experience"
+        title="Professional Journey"
+        description="Highlights from building intelligent systems, shipping AI products, and scaling teams from idea to launch."
+        stats={heroStats}
+        actions={(
+          <>
+            <Button className="btn-primary" href="/projects">
+              Explore Projects
+            </Button>
+            <Button className="btn-secondary" href="#contact">
+              Let&apos;s Connect
+            </Button>
+          </>
+        )}
+      />
 
-      {/* Experience Timeline */}
-      <Section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto space-y-8">
+      <Section
+        className="py-12 lg:py-16"
+        containerClassName="max-w-5xl"
+      >
+        <div className="space-y-10">
+          <div className="space-y-3 text-center">
+            <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:border-white/10 dark:text-slate-200">
+              Work History
+            </span>
+            <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
+              Roles & Impact
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Every position combines research, engineering, and delivery to create measurable outcomes.
+            </p>
+          </div>
+
+          <div className="space-y-8">
             {sortedJobs.map((job) => (
               <JobCard
                 key={job.id}
                 {...job}
+                href={`/experience/${job.id}`}
                 projects={getRelatedProjects(job.id)}
-                compact={false}
               />
             ))}
           </div>
         </div>
       </Section>
 
-      {/* Call to Action */}
-      <Section className="py-16 bg-gray-50 dark:bg-gray-900 text-center">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4 heading-gradient">
-            Let&apos;s Work Together
+      <Section
+        background="gradient"
+        className="py-12 text-center lg:py-16"
+        containerClassName="max-w-5xl"
+      >
+        <div className="space-y-6">
+          <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
+            Let&apos;s build what&apos;s next
           </h2>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            I&apos;m always interested in new opportunities and challenges.
+          <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg">
+            I partner with teams to transform ideas into production-ready AI, automation, and data platforms. Tell me about your next challenge.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="#contact"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
-            >
+            <Button className="btn-primary" href="#contact">
               Contact Me
-            </a>
-            <a
-              href="/"
-              className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
-            >
+            </Button>
+            <Button className="btn-secondary" href="/">
               Back to Home
-            </a>
+            </Button>
           </div>
         </div>
       </Section>

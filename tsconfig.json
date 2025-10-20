@@ -23,7 +23,6 @@
       "@/*": ["./*"],
       "@/components/*": ["./components/*"],
       "@/utils/*": ["./utils/*"],
-      "@/data/*": ["./data/*"],
       "@/app/*": ["./app/*"],
       "@/styles/*": ["./src/styles/*"]
     }

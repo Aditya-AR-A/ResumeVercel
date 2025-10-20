@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ViewType } from './DynamicContentManager';
+import { useRouter } from 'next/navigation';
 
 interface CommandInterfaceProps {
   variant: 'navbar' | 'full';
@@ -11,6 +12,42 @@ interface CommandInterfaceProps {
   value?: string; // external controlled value
   onValueChange?: (v: string) => void; // external setter
 }
+
+const SECTION_ALIAS_MAP: Record<ViewType, string[]> = {
+  home: ['home', 'main', 'start', 'landing'],
+  projects: ['project', 'projects', 'portfolio', 'build', 'builds', 'work samples'],
+  experience: ['experience', 'work', 'career', 'job', 'jobs', 'professional experience'],
+  certificates: ['certificate', 'certificates', 'certs', 'certifications', 'credentials'],
+  contact: ['contact', 'email', 'reach', 'connect'],
+  about: ['about', 'bio', 'me', 'profile'],
+};
+
+const NAVIGATION_PREFIX_PATTERN = /^(?:go to|goto|open|show|take me to|view|list|navigate to)\s+(.+)$/;
+
+const normalizeCandidate = (input: string) => {
+  return input
+    .replace(/[^a-z\s]/gi, ' ')
+    .replace(/\b(the|this|my)\b/gi, ' ')
+    .replace(/\b(section|page|tab|area)\b/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+};
+
+const resolveViewFromCandidate = (candidate: string): ViewType | null => {
+  const normalized = normalizeCandidate(candidate);
+  if (!normalized) {
+    return null;
+  }
+
+  for (const [view, aliases] of Object.entries(SECTION_ALIAS_MAP)) {
+    if (aliases.some((alias) => normalized === alias || normalized.startsWith(`${alias} `))) {
+      return view as ViewType;
+    }
+  }
+
+  return null;
+};
 
 const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChange, currentView = 'home', value, onValueChange }) => {
   const isControlled = typeof value === 'string' && typeof onValueChange === 'function';
@@ -24,45 +61,53 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
     }
   };
   // Removed unused lastCommand state
+  const router = useRouter();
 
   const handleExecute = () => {
-  const command = input.toLowerCase().trim();
-    
-    if (!onViewChange) {
-      // Fallback to old scroll behavior if no view change handler
-      if (command.includes('project')) {
-        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-      } else if (command.includes('experience')) {
-        document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
-      } else if (command.includes('certificate')) {
-        document.getElementById('certificates')?.scrollIntoView({ behavior: 'smooth' });
-      } else if (command.includes('contact')) {
-        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    const rawCommand = input.trim();
+    const command = rawCommand.toLowerCase();
+
+    const redirectToSearch = () => {
+      if (!rawCommand) {
+        return;
       }
+      let queryValue = rawCommand;
+      const searchPrefix = rawCommand.match(/^(?:search|find|show)\s+(.+)/i);
+      if (searchPrefix && searchPrefix[1]) {
+        queryValue = searchPrefix[1];
+      }
+      router.push(`/search?query=${encodeURIComponent(queryValue.trim())}`);
+      setInput('');
+    };
+
+    const determineViewTarget = (): ViewType | null => {
+      const navMatch = command.match(NAVIGATION_PREFIX_PATTERN);
+
+      if (navMatch && navMatch[1]) {
+        return resolveViewFromCandidate(navMatch[1]);
+      }
+
+      const tokens = command.split(/\s+/).filter(Boolean);
+      if (tokens.length <= 2) {
+        return resolveViewFromCandidate(command);
+      }
+
+      return null;
+    };
+
+    const targetView = determineViewTarget();
+    
+    if (targetView) {
+      if (onViewChange) {
+        onViewChange(targetView);
+      } else {
+        document.getElementById(targetView)?.scrollIntoView({ behavior: 'smooth' });
+      }
+      setInput('');
       return;
     }
 
-    // Dynamic view switching
-    if (command.includes('project')) {
-      onViewChange('projects');
-    } else if (command.includes('experience') || command.includes('work')) {
-      onViewChange('experience');
-    } else if (command.includes('certificate') || command.includes('cert')) {
-      onViewChange('certificates');
-    } else if (command.includes('contact') || command.includes('email')) {
-      onViewChange('contact');
-    } else if (command.includes('about') || command.includes('me') || command.includes('bio')) {
-      onViewChange('about');
-    } else if (command.includes('home') || command.includes('main') || command.includes('start')) {
-      onViewChange('home');
-    } else {
-      // If command doesn't match, show a helpful message
-      setInput(`Try: "show projects", "about me", "contact me"`);
-      setTimeout(() => setInput(''), 2000);
-      return;
-    }
-    
-  setInput(''); // Clear input after successful command (works for controlled & uncontrolled)
+    redirectToSearch();
   };
 
   return (
@@ -79,7 +124,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
           <input
             type="text"
             className="flex-1 p-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
-            placeholder={`Try: "show projects", "about me" | Current: ${currentView}`}
+            placeholder={`Try: "show projects", "search python" | Current: ${currentView}`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleExecute()}
@@ -110,6 +155,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
                 <li>&quot;show certificates&quot; - View my certifications</li>
                 <li>&quot;contact me&quot; - Get my contact information</li>
                 <li>&quot;about me&quot; - Learn more about my background</li>
+                <li>&quot;search python&quot; - Find everything related to a skill</li>
                 <li>&quot;skills&quot; - View my technical skills</li>
               </ul>
             </div>

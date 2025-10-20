@@ -1,19 +1,75 @@
 import React from 'react'
 import Image from 'next/image'
-import { loadJson } from '@/utils/loadJson'
 import Card from '@/components/Card'
 import Section from '@/components/Section'
 import Button from '@/components/Button'
 import SkillTag from '@/components/SkillTag';
 import JobCard from '@/components/JobCard';
-import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
+import { dataApi } from '@/utils/api'
+import type { Project, Job, Certificate, IntroData } from '@/types/interfaces';
+import { getAssetUrl } from '@/utils/assets';
+
+async function loadIntro(): Promise<IntroData | null> {
+  try {
+    const data = await dataApi.getIntro()
+    return data as IntroData
+  } catch (error) {
+    console.error('BackupHome: failed to fetch intro data', error)
+    return null
+  }
+}
+
+async function loadProjects(): Promise<Project[]> {
+  try {
+    const data = await dataApi.getProjects()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('BackupHome: failed to fetch projects data', error)
+    return []
+  }
+}
+
+async function loadJobs(): Promise<Job[]> {
+  try {
+    const data = await dataApi.getJobs()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('BackupHome: failed to fetch jobs data', error)
+    return []
+  }
+}
+
+async function loadCertificates(): Promise<Certificate[]> {
+  try {
+    const data = await dataApi.getCertificates()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('BackupHome: failed to fetch certificates data', error)
+    return []
+  }
+}
 
 export default async function Home() {
-  // Load data from JSON files
-  const introData: IntroData = loadJson('intro.json')
-  const projects: Project[] = loadJson('projects_new.json')
-  const jobs: Job[] = loadJson('jobs.json')
-  const certificates: Certificate[] = loadJson('certificates.json')
+  const [introData, projects, jobs, certificates] = await Promise.all([
+    loadIntro(),
+    loadProjects(),
+    loadJobs(),
+    loadCertificates()
+  ])
+
+  const intro = introData || {
+    name: 'Aditya',
+    title: 'AI & Python Developer',
+    profileImage: { src: 'https://avatars.githubusercontent.com/u/126697615?v=4', alt: 'Profile image' },
+    about: '',
+    socialLinks: {
+      email: 'aditya@example.com',
+      github: 'https://github.com',
+      linkedin: 'https://linkedin.com'
+    }
+  } as IntroData
+
+  const resumeLink = getAssetUrl('resume.pdf');
 
   // Get featured projects
   const featuredProjects = projects.filter(project => project.featured).slice(0, 3)
@@ -26,7 +82,7 @@ export default async function Home() {
 
   // Function to get related projects for a job
   const getRelatedProjects = (jobId: string) => {
-    return projects.filter(project => project.jobId === jobId);
+    return projects.filter(project => project.jobId === jobId || project.relatedJobIds?.includes(jobId));
   };
 
   return (
@@ -48,11 +104,11 @@ export default async function Home() {
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                     Hi, I&apos;m{' '}
                     <span className="heading-gradient">
-                      {introData.name}
+                      {intro.name}
                     </span>
                   </h1>
                   <h2 className="text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 font-medium">
-                    {introData.title}
+                    {intro.title}
                   </h2>
                 </div>
                 
@@ -99,7 +155,7 @@ export default async function Home() {
                       View My Work
                     </span>
                   </Button>
-                  <Button className="btn-secondary" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                  <Button className="btn-secondary" href={resumeLink} target="_blank" rel="noopener noreferrer">
                     <span className="flex items-center gap-2">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -114,7 +170,7 @@ export default async function Home() {
                   <span className="text-sm text-gray-600 dark:text-gray-400">Connect with me:</span>
                   <div className="flex gap-3">
                     <a
-                      href={introData.socialLinks.github}
+                      href={intro.socialLinks.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-900 dark:bg-gray-100 hover:bg-gray-700 dark:hover:bg-gray-300 transition-colors group"
@@ -125,7 +181,7 @@ export default async function Home() {
                       </svg>
                     </a>
                     <a
-                      href={introData.socialLinks.linkedin}
+                      href={intro.socialLinks.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 transition-colors group"
@@ -136,7 +192,7 @@ export default async function Home() {
                       </svg>
                     </a>
                     <a
-                      href={`mailto:${introData.socialLinks.email}`}
+                      href={`mailto:${intro.socialLinks.email}`}
                       className="w-10 h-10 flex items-center justify-center rounded-full bg-green-600 hover:bg-green-700 transition-colors group"
                       title="Email"
                     >
@@ -155,8 +211,8 @@ export default async function Home() {
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl opacity-10"></div>
                   <div className="relative bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl">
                     <Image
-                      src={introData.profileImage.src}
-                      alt={introData.profileImage.alt}
+                      src={intro.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
+                      alt={intro.profileImage?.alt || 'Profile image'}
                       width={300}
                       height={300}
                       className="w-full max-w-xs mx-auto rounded-2xl shadow-lg"
@@ -205,6 +261,7 @@ export default async function Home() {
                 {...job}
                 projects={getRelatedProjects(job.id)}
                 compact={false}
+                href={`/experience/${job.id}`}
               />
             ))}
           </div>
@@ -231,7 +288,7 @@ export default async function Home() {
                 imageUrl={project.thumbnail}
                 tags={project.skills.slice(0, 4)}
                 featured={project.featured}
-                linkUrl={project.demoUrl || project.githubUrl}
+                linkUrl={`/projects/${project.id}`}
               />
             ))}
           </div>
@@ -248,16 +305,23 @@ export default async function Home() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-8">Featured Certificates</h2>
           <div className="space-y-12">
-            {featuredCertificates.map(certificate => (
-              <div key={certificate.name} className="relative w-full">
-                <Image
-                  src={`/certificate_thumbnails/${certificate.file.replace('.pdf', '.png')}`}
-                  alt={certificate.name}
-                  width={800}
-                  height={600}
-                  className="w-full h-auto object-contain rounded-lg shadow-lg"
-                  priority
-                />
+            {featuredCertificates.map(certificate => {
+              const thumbnailUrl = certificate.file
+                ? getAssetUrl('certificate_thumbnails', certificate.file.replace('.pdf', '.png'))
+                : undefined
+
+              return (
+                <div key={certificate.name} className="relative w-full">
+                  {thumbnailUrl && (
+                    <Image
+                      src={thumbnailUrl}
+                      alt={certificate.name}
+                      width={800}
+                      height={600}
+                      className="w-full h-auto object-contain rounded-lg shadow-lg"
+                      priority
+                    />
+                  )}
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                   <p className="text-white text-lg font-semibold px-4">{certificate.description}</p>
                 </div>              
@@ -267,8 +331,9 @@ export default async function Home() {
                     <SkillTag key={skill} skill={skill} />
                   ))}
                 </div>
-              </div>
-            ))}
+                </div>
+              )
+            })}
           </div>
           <Button className="mt-8" href="/certificates">
             View All Certificates
@@ -287,13 +352,13 @@ export default async function Home() {
             Feel free to reach out if you&apos;d like to discuss projects, job opportunities, or just chat about technology!
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button className="btn-primary" href={`mailto:${introData.socialLinks.email}`}>
+            <Button className="btn-primary" href={`mailto:${intro.socialLinks.email}`}>
               Send Email
             </Button>
-            <Button className="btn-secondary" href={introData.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
+            <Button className="btn-secondary" href={intro.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
               LinkedIn
             </Button>
-            <Button className="btn-secondary" href={introData.socialLinks.github} target="_blank" rel="noopener noreferrer">
+            <Button className="btn-secondary" href={intro.socialLinks.github} target="_blank" rel="noopener noreferrer">
               GitHub
             </Button>
           </div>

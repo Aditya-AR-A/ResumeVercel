@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
+import { motion, LayoutGroup } from 'framer-motion';
 import CommandInterface from './CommandInterface';
-import AnimatedNavbar from './AnimatedNavbar';
 // Removed unused Hero import
 import DynamicContentManager, { ViewType } from './DynamicContentManager';
 import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
@@ -24,8 +23,6 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
 }) => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [commandInput, setCommandInput] = useState('');
-  // Navbar visibility with hysteresis to prevent flicker near thresholds
-  const [navVisible, setNavVisible] = useState(false);
   // Track refs for sections (including hero as index 0)
   const sectionRefs = useRef<HTMLElement[]>([]);
   
@@ -115,74 +112,9 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
     };
   }, [currentView, viewSequence]);
 
-  // Body class to adjust styles (e.g., hide sidebar floating button)
-  useEffect(() => {
-    if (currentView !== 'home') {
-      document.body.classList.add('navbar-active');
-    } else {
-      document.body.classList.remove('navbar-active');
-    }
-  }, [currentView]);
-
-  // Compute navbar visibility based on hero visibility ratio (with hysteresis)
-  useEffect(() => {
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const hero = sectionRefs.current[0];
-        if (!hero) {
-          return;
-        }
-        const vh = window.innerHeight || 1;
-        const rect = hero.getBoundingClientRect();
-        const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
-        const ratio = visible / Math.min(vh, rect.height || vh);
-        // Smoother thresholds for better transition
-        const SHOW_NAV = 0.6; // show when 40% of hero is off-screen
-        const HIDE_NAV = 0.75; // hide when hero is more visible again
-        if (!navVisible && ratio < SHOW_NAV) {
-          setNavVisible(true);
-        } else if (navVisible && ratio > HIDE_NAV) {
-          setNavVisible(false);
-        }
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    onScroll();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
-  }, [navVisible]);
-
   return (
     <LayoutGroup id="app-shared-layout">
     <div className="scroll-smooth">
-      <AnimatePresence>
-        <motion.div
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ 
-            y: navVisible ? 0 : -100,
-            opacity: navVisible ? 1 : 0
-          }}
-          exit={{ y: -100, opacity: 0 }}
-          transition={{ 
-            duration: 0.4, 
-            ease: [0.4, 0.0, 0.2, 1],
-            type: "tween"
-          }}
-          style={{ pointerEvents: navVisible ? 'auto' : 'none' }}
-        >
-          <AnimatedNavbar 
-            isVisible={navVisible} 
-            onViewChange={handleViewChange}
-            currentView={currentView}
-            commandValue={commandInput}
-            onCommandChange={setCommandInput}
-            brandName={introData.name}
-          />
-        </motion.div>
-      </AnimatePresence>
-
       {/* Hero + Interactive (combined) */}
       <motion.div
         ref={el => { if (el) { sectionRefs.current[0] = el; } }}
@@ -288,10 +220,6 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                   layoutId="command-interface" 
                   className="w-full order-1 md:order-2"
                   transition={{ layout: { duration: 0.4, ease: [0.4, 0.0, 0.2, 1] } }}
-                  animate={{
-                    opacity: navVisible ? 0.85 : 1,
-                    scale: navVisible ? 0.97 : 1
-                  }}
                 >
                   <CommandInterface 
                     variant="full"

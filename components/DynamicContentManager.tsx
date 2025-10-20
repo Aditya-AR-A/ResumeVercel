@@ -28,7 +28,7 @@ const DynamicContentManager: React.FC<DynamicContentManagerProps> = ({
 }) => {
   // Move the function logic into the client component
   const getRelatedProjects = (jobId: string) => {
-    return projects.filter(project => project.jobId === jobId);
+    return projects.filter(project => project.jobId === jobId || project.relatedJobIds?.includes(jobId));
   };
   const renderView = () => {
     switch (currentView) {

@@ -21,13 +21,20 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
   console.log('API Request:', { url, method: options.method || 'GET', body: options.body });
 
   try {
-    const response = await fetch(url, {
+    const fetchOptions: RequestInit = {
+      ...options,
+      cache: options.cache ?? 'no-store',
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
       },
-      ...options,
-    });
+    };
+
+    if ((options as any)?.next) {
+      (fetchOptions as any).next = (options as any).next;
+    }
+
+    const response = await fetch(url, fetchOptions);
 
     console.log('API Response status:', response.status, response.statusText);
 
@@ -117,6 +124,11 @@ export const dataApi = {
   async getStats() {
     return apiRequest('/api/stats');
   },
+
+  // Get global layout configuration
+  async getLayout() {
+    return apiRequest('/api/layout');
+  },
 };
 
 /**
@@ -160,6 +172,38 @@ export const aiApi = {
     return apiRequest('/ai/generate', {
       method: 'POST',
       body: JSON.stringify({ prompt }),
+    });
+  },
+
+  // Semantic search with AI summary
+  async search(query: string, options: {
+    searchType?: string;
+    filters?: any;
+    limit?: number;
+    offset?: number;
+    includeSections?: string[];
+  } = {}) {
+    const payload: Record<string, unknown> = { query };
+
+    if (options.searchType) {
+      payload.search_type = options.searchType;
+    }
+    if (options.filters) {
+      payload.filters = options.filters;
+    }
+    if (typeof options.limit === 'number') {
+      payload.limit = options.limit;
+    }
+    if (typeof options.offset === 'number') {
+      payload.offset = options.offset;
+    }
+    if (options.includeSections && options.includeSections.length > 0) {
+      payload.include_sections = options.includeSections;
+    }
+
+    return apiRequest('/ai/search', {
+      method: 'POST',
+      body: JSON.stringify(payload),
     });
   },
 };

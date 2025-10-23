@@ -12,7 +12,6 @@ import {
 } from '@/utils/assetDisplay';
 
 const SCROLLABLE_HEIGHT_CLASS = 'h-[28rem]';
-const STATIC_HEIGHT_CLASS = 'h-[22rem]';
 const DEFAULT_EMBED_ASPECT_RATIO = '16 / 9';
 
 interface AssetPreviewProps {

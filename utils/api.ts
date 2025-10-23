@@ -2,7 +2,10 @@
  * API utility functions for communicating with the FastAPI backend
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ||
+  (process.env.NODE_ENV === 'production'
+    ? 'https://resume-backend-8uzi.onrender.com'
+    : 'http://localhost:8000');
 
 // Debug logging for API configuration
 if (typeof window !== 'undefined') {

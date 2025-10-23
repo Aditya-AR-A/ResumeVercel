@@ -104,8 +104,8 @@ export default async function SearchPage({ searchParams = {} }: SearchPageProps)
           <div className="space-y-4 text-slate-600 dark:text-slate-300">
             <h2 className="text-xl font-semibold text-slate-900 dark:text-white">How search works</h2>
             <p>
-              Type a keyword like "python" or "fastapi" to see relevant projects, roles, and certificates. Ask broader questions
-              such as "What&apos;s your AI experience?" to receive a detailed AI-crafted response instead.
+              Type a keyword like &quot;python&quot; or &quot;fastapi&quot; to see relevant projects, roles, and certificates. Ask broader questions
+              such as &ldquo;What&apos;s your AI experience?&rdquo; to receive a detailed AI-crafted response instead.
             </p>
             <div className="grid gap-4 sm:grid-cols-2 text-sm">
               <div className="rounded-2xl border border-white/10 bg-white/60 p-5 backdrop-blur dark:bg-slate-900/40">
@@ -119,7 +119,7 @@ export default async function SearchPage({ searchParams = {} }: SearchPageProps)
               <div className="rounded-2xl border border-white/10 bg-white/60 p-5 backdrop-blur dark:bg-slate-900/40">
                 <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">Ask anything</h3>
                 <p className="mt-3 text-slate-600 dark:text-slate-300">
-                  Try "How do you apply AI to automation projects?" or "Tell me about your leadership experience".
+                  Try &ldquo;How do you apply AI to automation projects?&rdquo; or &ldquo;Tell me about your leadership experience&rdquo;.
                 </p>
               </div>
             </div>

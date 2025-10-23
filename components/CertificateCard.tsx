@@ -32,7 +32,7 @@ function formatIssueDate(certificate: Certificate) {
       month: 'short',
       year: 'numeric',
     });
-  } catch (error) {
+  } catch {
     return certificate.issueDate;
   }
 }

@@ -21,9 +21,14 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
   console.log('API Request:', { url, method: options.method || 'GET', body: options.body });
 
   try {
+    const method = (options.method || 'GET').toUpperCase();
+    const isGetRequest = method === 'GET';
+    const isServer = typeof window === 'undefined';
+
     const fetchOptions: RequestInit = {
       ...options,
-      cache: options.cache ?? 'no-store',
+      method,
+      cache: options.cache ?? (isGetRequest ? 'force-cache' : 'no-store'),
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
@@ -32,6 +37,8 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
 
     if ((options as any)?.next) {
       (fetchOptions as any).next = (options as any).next;
+    } else if (isServer && isGetRequest) {
+      (fetchOptions as any).next = { revalidate: 900 };
     }
 
     const response = await fetch(url, fetchOptions);

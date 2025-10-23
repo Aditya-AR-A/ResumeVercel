@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import SkillTag from '@/components/SkillTag'
 import FeaturedBadge from '@/components/FeaturedBadge'
 import Section from '@/components/Section'
@@ -69,10 +70,14 @@ export default function ProjectDetailView({ project, relatedJob }: ProjectDetail
         {heroThumbnail && (
           <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/5">
             <div className="absolute inset-0 z-0 bg-gradient-to-tr from-slate-900/35 via-transparent to-transparent" aria-hidden="true" />
-            <img
+            <Image
               src={heroThumbnail}
               alt={project.name}
+              width={1600}
+              height={900}
               className="relative z-[1] h-auto w-full object-cover"
+              sizes="(max-width: 768px) 90vw, (max-width: 1280px) 800px, 1000px"
+              priority
             />
           </div>
         )}

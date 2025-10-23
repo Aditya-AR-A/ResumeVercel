@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Image from 'next/image'
 import SkillTag from '@/components/SkillTag'
 import FeaturedBadge from '@/components/FeaturedBadge'
 import Section from '@/components/Section'
@@ -153,10 +153,14 @@ export default function JobDetailView({ job, projects = [] }: JobDetailProps) {
 
           {job.companyLogo && (
             <div className="relative flex items-center justify-center rounded-3xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">
-              <img
+              <Image
                 src={job.companyLogo}
                 alt={job.company}
-                className="max-h-32 w-auto object-contain"
+                width={320}
+                height={160}
+                className="h-auto max-h-32 w-full object-contain"
+                sizes="(max-width: 768px) 60vw, 320px"
+                priority
               />
             </div>
           )}

@@ -1,5 +1,20 @@
 import { ReactNode } from 'react';
 
+export type AssetDisplayMode = 'scrollable' | 'unscrollable';
+
+export interface PortfolioAsset {
+  title: string;
+  file?: string;
+  description?: string;
+  type?: string;
+  sourceUrl?: string;
+  automated?: boolean;
+  displayMode?: AssetDisplayMode;
+  embedCode?: string;
+}
+
+export type AssetCollection = Record<string, PortfolioAsset[]>;
+
 export interface Project {
   id: string;
   name: string;
@@ -17,6 +32,9 @@ export interface Project {
   startDate?: string;
   endDate?: string | null;
   status?: string;
+  highlights?: string[];
+  metrics?: Record<string, string>;
+  assets?: AssetCollection;
 }
 
 export interface Job {
@@ -36,6 +54,7 @@ export interface Job {
   links?: Record<string, string>;
   featured?: boolean;
   projectIds?: string[];
+  assets?: AssetCollection;
 }
 
 export interface Certificate {
@@ -50,6 +69,7 @@ export interface Certificate {
   credentialUrl?: string | null;
   description?: string;
   featured: boolean;
+  assets?: AssetCollection;
 }
 
 export interface IntroData {

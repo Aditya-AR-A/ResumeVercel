@@ -199,6 +199,27 @@ section.snap-start, .snap-start {
 
 /* Accent utilities */
 .accent-cert { color: var(--accent-certificates); }
+
+/* Ensure embedded Tableau/HTML assets scale with their containers */
+.tableau-responsive {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.tableau-responsive *,
+.tableau-responsive object,
+.tableau-responsive iframe,
+.tableau-responsive embed {
+  max-width: 100%;
+}
+
+.tableau-responsive object,
+.tableau-responsive iframe,
+.tableau-responsive embed {
+  width: 100% !important;
+  height: 100% !important;
+}
 .accent-projects { color: var(--accent-projects); }
 .accent-experience { color: var(--accent-experience); }
 .accent-ai { color: var(--accent-ai); }

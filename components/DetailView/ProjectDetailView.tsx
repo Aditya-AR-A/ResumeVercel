@@ -4,7 +4,8 @@ import FeaturedBadge from '@/components/FeaturedBadge'
 import Section from '@/components/Section'
 import PageHero from '@/components/PageHero'
 import Button from '@/components/Button'
-import { Project, Job } from '@/types/interfaces'
+import AssetCard from '@/components/AssetCard'
+import { Project, Job, PortfolioAsset } from '@/types/interfaces'
 import { resolveAssetUrl } from '@/utils/assets'
 
 interface ProjectDetailProps {
@@ -12,8 +13,30 @@ interface ProjectDetailProps {
   relatedJob?: Job
 }
 
+const formatKeyLabel = (rawKey: string) => {
+  const spaced = rawKey
+    .replace(/[_-]+/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  if (!spaced) {
+    return rawKey
+  }
+
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1)
+}
+
 export default function ProjectDetailView({ project, relatedJob }: ProjectDetailProps) {
   const heroThumbnail = resolveAssetUrl(project.thumbnail)
+
+  const highlightList = project.highlights ?? []
+  const metricEntries = project.metrics
+    ? (Object.entries(project.metrics) as [string, string][])
+    : []
+  const assetGroups = project.assets
+    ? (Object.entries(project.assets) as [string, PortfolioAsset[]][])
+    : []
 
   const projectStatus = project.status ?? (project.endDate ? 'Completed' : 'In Progress')
 
@@ -100,6 +123,22 @@ export default function ProjectDetailView({ project, relatedJob }: ProjectDetail
           </div>
         </div>
 
+        {highlightList.length > 0 && (
+          <div className="rounded-3xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">
+            <h2 className="text-lg font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-300">
+              Highlights
+            </h2>
+            <ul className="mt-4 space-y-4 text-sm text-slate-600 dark:text-slate-300">
+              {highlightList.map((highlight: string, index: number) => (
+                <li key={`${project.id}-highlight-${index}`} className="flex gap-3">
+                  <span className="mt-2 h-2.5 w-2.5 flex-shrink-0 rounded-full bg-emerald-400 dark:bg-emerald-500" aria-hidden="true" />
+                  <span className="leading-7">{highlight}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <div className="rounded-3xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">
           <h2 className="text-lg font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-300">
             Technologies
@@ -110,6 +149,61 @@ export default function ProjectDetailView({ project, relatedJob }: ProjectDetail
             ))}
           </div>
         </div>
+
+        {metricEntries.length > 0 && (
+          <div className="rounded-3xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">
+            <h2 className="text-lg font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-300">
+              Impact Metrics
+            </h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {metricEntries.map(([metricKey, metricValue]) => (
+                <div
+                  key={`${project.id}-metric-${metricKey}`}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-4 dark:border-white/10 dark:bg-slate-900/30"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">
+                    {formatKeyLabel(metricKey)}
+                  </p>
+                  <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
+                    {metricValue}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {assetGroups.length > 0 && (
+          <div className="space-y-8">
+            <div className="rounded-3xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">
+              <h2 className="text-lg font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-300">
+                Project Assets
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                Explore supporting dashboards, notebooks, and exports that were synced from the backend asset registry.
+              </p>
+            </div>
+
+            {assetGroups.map(([groupKey, groupAssets]) => (
+              <div key={`${project.id}-asset-group-${groupKey}`} className="space-y-4">
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">
+                    {formatKeyLabel(groupKey)} Assets
+                  </h3>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {groupAssets.length} attachment{groupAssets.length === 1 ? '' : 's'}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-6">
+                  {groupAssets.map((asset, index) => (
+                    <AssetCard key={`${project.id}-${groupKey}-${index}`} asset={asset} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {(project.demoUrl || project.githubUrl) && (
           <div className="flex flex-wrap gap-4">

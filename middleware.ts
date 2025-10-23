@@ -31,6 +31,18 @@ const defaultOrigin = process.env.NODE_ENV === 'production'
 const apiOrigin = parseOrigin(apiUrl) || defaultOrigin;
 const assetOrigin = parseOrigin(process.env.NEXT_PUBLIC_ASSET_BASE_URL) || apiOrigin;
 
+const TABLEAU_ORIGINS = ['https://public.tableau.com', 'http://public.tableau.com'];
+
+const THIRD_PARTY_SCRIPT_ORIGINS = [
+  'https://cdnjs.cloudflare.com',
+  'https://cdn.jsdelivr.net',
+  ...TABLEAU_ORIGINS,
+];
+
+const THIRD_PARTY_FRAME_ORIGINS = [...TABLEAU_ORIGINS];
+
+const THIRD_PARTY_IMAGE_ORIGINS = [...TABLEAU_ORIGINS];
+
 export function middleware(request: NextRequest) {
   // Add security headers
   const response = NextResponse.next();
@@ -40,27 +52,29 @@ export function middleware(request: NextRequest) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
   const imgSrcValues = new Set(["'self'", 'data:', 'https:']);
-  [apiOrigin, assetOrigin].forEach((origin) => {
+  [apiOrigin, assetOrigin, ...THIRD_PARTY_IMAGE_ORIGINS].forEach((origin) => {
     if (origin && origin !== "'self'" && origin !== 'data:' && origin !== 'https:') {
       imgSrcValues.add(origin);
     }
   });
 
   const frameSrcValues = new Set(["'self'"]);
-  [apiOrigin, assetOrigin].forEach((origin) => {
+  [apiOrigin, assetOrigin, ...THIRD_PARTY_FRAME_ORIGINS].forEach((origin) => {
     if (origin && origin !== "'self'") {
       frameSrcValues.add(origin);
     }
   });
 
+  const scriptSrcValues = new Set(["'self'", "'unsafe-eval'", "'unsafe-inline'", ...THIRD_PARTY_SCRIPT_ORIGINS]);
+
   const cspDirectives = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
+  `script-src ${Array.from(scriptSrcValues).join(' ')}`,
     "style-src 'self' 'unsafe-inline'",
     `img-src ${Array.from(imgSrcValues).join(' ')}`,
     `frame-src ${Array.from(frameSrcValues).join(' ')}`,
     "font-src 'self' data:",
-    `connect-src 'self' ${apiOrigin} ws://localhost:3000 ws://127.0.0.1:3000 wss://*`,
+    `connect-src 'self' ${apiOrigin} ${TABLEAU_ORIGINS.join(' ')} ws://localhost:3000 ws://127.0.0.1:3000 wss://*`,
   ];
 
   response.headers.set('Content-Security-Policy', `${cspDirectives.join('; ')};`);
@@ -76,7 +90,7 @@ export function middleware(request: NextRequest) {
   };
 
   const fullscreenAllowList = new Set<string>(['self']);
-  [apiOrigin, assetOrigin].forEach((origin) => {
+  [apiOrigin, assetOrigin, ...TABLEAU_ORIGINS].forEach((origin) => {
     if (origin && origin !== 'self') {
       fullscreenAllowList.add(origin);
     }

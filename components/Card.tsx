@@ -22,7 +22,7 @@ export default function Card({
 
   const content = (
     <div
-      className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/65 p-6 shadow-[0_25px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-[3px] hover:shadow-[0_35px_90px_rgba(59,130,246,0.25)] group dark:border-white/5 dark:bg-slate-950/60"
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/65 p-6 shadow-[0_25px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-[3px] hover:shadow-[0_35px_90px_rgba(59,130,246,0.25)] dark:border-white/5 dark:bg-slate-950/60"
     >
       {resolvedImageUrl && (
         <div className="relative mb-6 overflow-hidden rounded-[1.3rem] border border-white/10 bg-slate-900/40">
@@ -124,40 +124,33 @@ export default function Card({
         {children}
 
         {linkUrl && (
-          <div className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition group-hover:text-sky-500 dark:text-sky-300">
-            {ctaLabel}
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
+          isExternalLink ? (
+            <a
+              href={linkUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 dark:text-sky-300"
+            >
+              {ctaLabel}
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          ) : (
+            <Link
+              href={linkUrl}
+              className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 dark:text-sky-300"
+            >
+              {ctaLabel}
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          )
         )}
       </div>
     </div>
   );
 
-  if (!linkUrl) {
-    return content;
-  }
-
-  if (isExternalLink) {
-    return (
-      <a
-        href={linkUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded-xl"
-      >
-        {content}
-      </a>
-    );
-  }
-
-  return (
-    <Link
-      href={linkUrl}
-      className="block group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded-xl"
-    >
-      {content}
-    </Link>
-  );
+  return content;
 }

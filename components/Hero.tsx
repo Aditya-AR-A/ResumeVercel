@@ -136,6 +136,7 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
               alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
               width={320}
               height={320}
+              sizes="(max-width: 768px) 70vw, (max-width: 1280px) 360px, 400px"
               priority
               className="relative rounded-3xl shadow-xl ring-1 sm:ring-2 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)] object-cover w-full aspect-square"
             />

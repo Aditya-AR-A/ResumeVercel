@@ -86,6 +86,7 @@ export default function JobCard({
                 alt={`${company} logo`}
                 width={48}
                 height={48}
+                sizes="(max-width: 640px) 12vw, 48px"
                 className={`w-12 h-12 rounded-lg object-contain p-2 border border-gray-200 dark:border-gray-600 shadow-sm ${getCompanyLogoBackground(company)}`}
               />
             ) : (
@@ -143,6 +144,7 @@ export default function JobCard({
               alt={`${company} logo`}
               width={64}
               height={64}
+              sizes="(max-width: 640px) 16vw, 64px"
               className={`w-16 h-16 rounded-xl object-contain p-3 border border-gray-200 dark:border-gray-600 shadow-sm ${getCompanyLogoBackground(company)}`}
             />
           ) : (
@@ -242,6 +244,7 @@ export default function JobCard({
                     alt={project.name}
                     width={400}
                     height={160}
+                    sizes="(max-width: 768px) 100vw, 400px"
                     className="w-full h-32 object-cover rounded-lg mb-3"
                   />
                 )}

@@ -187,6 +187,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                       alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
                       width={288}
                       height={288}
+                      sizes="(max-width: 768px) 45vw, 288px"
                       className="w-full h-full rounded-full shadow-lg object-cover ring-1 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)]"
                       priority
                     />

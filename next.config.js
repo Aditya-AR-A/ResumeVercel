@@ -82,6 +82,11 @@ const nextConfig = {
         port: '8000',
         pathname: '/assets/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'resume-backend-8uzi.onrender.com',
+        pathname: '/assets/**',
+      },
     ],
   },
   async rewrites() {

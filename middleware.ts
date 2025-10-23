@@ -10,8 +10,25 @@ const parseOrigin = (value?: string | null) => {
   }
 };
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-const apiOrigin = parseOrigin(apiUrl) || 'http://localhost:8000';
+const resolveDefaultApiUrl = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://resume-backend-8uzi.onrender.com';
+  }
+
+  return 'http://localhost:8000';
+};
+
+// Ensure CSP reflects the same base URL logic as the API client helper
+const apiUrl = resolveDefaultApiUrl();
+const defaultOrigin = process.env.NODE_ENV === 'production'
+  ? 'https://resume-backend-8uzi.onrender.com'
+  : 'http://localhost:8000';
+
+const apiOrigin = parseOrigin(apiUrl) || defaultOrigin;
 const assetOrigin = parseOrigin(process.env.NEXT_PUBLIC_ASSET_BASE_URL) || apiOrigin;
 
 export function middleware(request: NextRequest) {

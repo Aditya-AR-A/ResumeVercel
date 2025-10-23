@@ -2,7 +2,9 @@ const trimSlashes = (value: string) => value.replace(/^\/+|\/+$/g, '');
 
 const assetHostBase = (() => {
   const fromEnv = process.env.NEXT_PUBLIC_ASSET_BASE_URL || process.env.NEXT_PUBLIC_API_URL;
-  const fallback = 'http://localhost:8000';
+  const fallback = process.env.NODE_ENV === 'production'
+    ? 'https://resume-backend-8uzi.onrender.com'
+    : 'http://localhost:8000';
   return trimTrailingSlash(fromEnv || fallback);
 })();
 

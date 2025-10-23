@@ -107,146 +107,144 @@ export default function JobDetailView({ job, projects = [] }: JobDetailProps) {
         )}
       />
 
-      <Section background="default" containerClassName="max-w-5xl space-y-10">
-        <div className="grid gap-6 md:grid-cols-[1fr_minmax(0,0.7fr)]">
-          <div className="space-y-6">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1 text-sm font-semibold text-blue-600 dark:text-blue-300">
+      <Section background="default" containerClassName="max-w-5xl space-y-12 py-8">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center gap-3 md:gap-4">
+              <span className="rounded-full border border-blue-500/25 bg-blue-500/12 px-4 py-1.5 text-sm font-semibold text-blue-600 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-300">
                 {job.company}
               </span>
               {job.isCurrent && (
-                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1 text-sm font-semibold text-emerald-500 dark:text-emerald-300">
+                <span className="rounded-full border border-emerald-500/25 bg-emerald-500/12 px-4 py-1.5 text-sm font-semibold text-emerald-500 dark:border-emerald-500/35 dark:bg-emerald-500/15 dark:text-emerald-300">
                   Current Role
                 </span>
               )}
               {job.featured && <FeaturedBadge className="px-3 py-1" />}
             </div>
 
-            <div className="rounded-2xl border border-white/15 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">
-              <h2 className="text-base font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-300">
+            <div className="rounded-3xl border border-white/10 bg-white/12 p-6 shadow-[0_18px_45px_rgba(15,23,42,0.12)] dark:border-white/10 dark:bg-slate-900/45">
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Role Overview</h2>
+              <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-300 whitespace-pre-wrap">
+                {job.description}
+              </p>
+            </div>
+
+            {responsibilities.length > 0 && (
+              <div className="rounded-2xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/45">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                  Key Responsibilities
+                </h3>
+                <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                  {responsibilities.map((responsibility, index) => (
+                    <li key={`${responsibility}-${index}`} className="flex gap-3">
+                      <span className="mt-0.5 text-sky-500">•</span>
+                      <span>{responsibility}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {jobLinks.length > 0 && (
+              <div className="space-y-3">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.32em] text-slate-500 dark:text-slate-300">
+                  Notable Links
+                </h2>
+                <div className="flex flex-wrap gap-3">
+                  {jobLinks.map(([label, url]) => (
+                    <a
+                      key={label}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-sky-500/25 bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-600 transition hover:border-sky-400 hover:bg-sky-500/20 dark:text-sky-300"
+                    >
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M14 3h7v7m0-7L10 14m4 7H3v-7"
+                        />
+                      </svg>
+                      {label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-6">
+            {job.companyLogo && (
+              <div className="relative flex items-center justify-center rounded-3xl border border-white/10 bg-white/10 p-6 shadow-[0_16px_40px_rgba(15,23,42,0.12)] dark:border-white/10 dark:bg-slate-900/45">
+                <Image
+                  src={job.companyLogo}
+                  alt={job.company}
+                  width={320}
+                  height={160}
+                  className="h-auto max-h-32 w-full object-contain"
+                  sizes="(max-width: 768px) 60vw, 320px"
+                  priority
+                />
+              </div>
+            )}
+
+            <div className="rounded-3xl border border-white/10 bg-white/12 p-6 shadow-[0_18px_45px_rgba(15,23,42,0.12)] dark:border-white/10 dark:bg-slate-900/45">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.32em] text-slate-500 dark:text-slate-300">
                 Timeline
               </h2>
-              <div className="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                <p>
-                  <strong className="text-slate-800 dark:text-white">Start:</strong> {startDate ?? 'N/A'}
+              <div className="mt-4 space-y-3 text-base text-slate-600 dark:text-slate-300">
+                <p className="flex items-center justify-between gap-4">
+                  <span className="text-slate-500 dark:text-slate-400">Start</span>
+                  <span className="font-medium text-slate-800 dark:text-white">{startDate ?? 'N/A'}</span>
                 </p>
-                <p>
-                  <strong className="text-slate-800 dark:text-white">End:</strong> {endDate}
+                <p className="flex items-center justify-between gap-4">
+                  <span className="text-slate-500 dark:text-slate-400">End</span>
+                  <span className="font-medium text-slate-800 dark:text-white">{endDate}</span>
                 </p>
                 {durationLabel && (
-                  <p className="text-emerald-500 dark:text-emerald-300">
-                    Duration: {durationLabel}
+                  <p className="flex items-center justify-between gap-4 text-emerald-500 dark:text-emerald-300">
+                    <span>Duration</span>
+                    <span className="font-semibold">{durationLabel}</span>
                   </p>
                 )}
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
-                Role Overview
+            <div className="rounded-3xl border border-white/10 bg-white/12 p-6 shadow-[0_18px_45px_rgba(15,23,42,0.12)] dark:border-white/10 dark:bg-slate-900/45">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.32em] text-slate-500 dark:text-slate-300">
+                Quick Actions
               </h2>
-              <p className="text-sm leading-7 text-slate-600 dark:text-slate-300 whitespace-pre-wrap">
-                {job.description}
-              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Button className="btn-secondary" href="/experience">
+                  Back to Experience
+                </Button>
+                {hasRelatedProjects && (
+                  <Button className="btn-primary" href="#related-projects">
+                    Related Projects
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
-
-          {job.companyLogo && (
-            <div className="relative flex items-center justify-center rounded-3xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">
-              <Image
-                src={job.companyLogo}
-                alt={job.company}
-                width={320}
-                height={160}
-                className="h-auto max-h-32 w-full object-contain"
-                sizes="(max-width: 768px) 60vw, 320px"
-                priority
-              />
-            </div>
-          )}
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {responsibilities.length > 0 && (
-            <div className="rounded-2xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                Key Responsibilities
-              </h3>
-              <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                {responsibilities.map((responsibility, index) => (
-                  <li key={`${responsibility}-${index}`} className="flex gap-3">
-                    <span className="mt-0.5 text-sky-500">•</span>
-                    <span>{responsibility}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {achievements.length > 0 && (
-            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6">
-              <h3 className="text-lg font-semibold text-emerald-600 dark:text-emerald-300">
-                Highlighted Achievements
-              </h3>
-              <ul className="mt-4 space-y-3 text-sm text-emerald-700 dark:text-emerald-200">
-                {achievements.map((achievement, index) => (
-                  <li key={`${achievement}-${index}`} className="flex gap-3">
-                    <svg
-                      className="mt-0.5 h-4 w-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span>{achievement}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </Section>
-
-      <Section background="gray" containerClassName="max-w-5xl space-y-10">
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
-            Key Technologies & Skills
-          </h2>
-          {job.skills && job.skills.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {job.skills.map((skill) => (
-                <SkillTag key={skill} skill={skill} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Skill metadata is still being curated for this role.
-            </p>
-          )}
-        </div>
-
-        {jobLinks.length > 0 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
-              Notable Links
-            </h2>
-            <div className="flex flex-wrap gap-3">
-              {jobLinks.map(([label, url]) => (
-                <a
-                  key={label}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-sky-500/20 bg-sky-500/10 px-4 py-2 text-sm font-medium text-sky-600 transition hover:border-sky-400 hover:bg-sky-500/20 dark:text-sky-300"
-                >
+        {achievements.length > 0 && (
+          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6">
+            <h3 className="text-lg font-semibold text-emerald-600 dark:text-emerald-300">
+              Highlighted Achievements
+            </h3>
+            <ul className="mt-4 space-y-3 text-sm text-emerald-700 dark:text-emerald-200">
+              {achievements.map((achievement, index) => (
+                <li key={`${achievement}-${index}`} className="flex gap-3">
                   <svg
-                    className="h-4 w-4"
+                    className="mt-0.5 h-4 w-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -255,28 +253,43 @@ export default function JobDetailView({ job, projects = [] }: JobDetailProps) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M14 3h7v7m0-7L10 14m4 7H3v-7"
+                      d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  {label}
-                </a>
+                  <span>{achievement}</span>
+                </li>
               ))}
-            </div>
-          </div>
-        )}
-
-        {job.featured && (
-          <div className="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-5 text-sm font-semibold text-amber-600 dark:text-amber-300">
-            ⭐ This role is part of the featured experience set.
+            </ul>
           </div>
         )}
       </Section>
+
+      {(job.skills?.length || job.featured) && (
+        <Section background="gray" containerClassName="max-w-5xl space-y-10 py-8">
+          {job.skills && job.skills.length > 0 && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Key Technologies & Skills</h2>
+              <div className="flex flex-wrap gap-2.5 md:gap-3">
+                {job.skills.map((skill) => (
+                  <SkillTag key={skill} skill={skill} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {job.featured && (
+            <div className="rounded-3xl border border-amber-400/30 bg-amber-400/12 p-6 text-base font-semibold text-amber-600 dark:border-amber-400/35 dark:bg-amber-400/10 dark:text-amber-300">
+              ⭐ This role is part of the featured experience set.
+            </div>
+          )}
+        </Section>
+      )}
 
       {hasRelatedProjects && (
         <Section
           id="related-projects"
           background="gradient"
-          containerClassName="max-w-6xl space-y-8"
+          containerClassName="max-w-5xl space-y-10"
         >
           <div className="space-y-3 text-center">
             <span className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:border-white/10 dark:text-slate-200">
@@ -300,6 +313,7 @@ export default function JobDetailView({ job, projects = [] }: JobDetailProps) {
                 tags={project.skills.slice(0, 4)}
                 linkUrl={`/projects/${project.id}`}
                 featured={project.featured}
+                jobMeta={{ id: job.id, title: job.title, company: job.company }}
               >
                 <div className="mt-4 text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">
                   {project.category}

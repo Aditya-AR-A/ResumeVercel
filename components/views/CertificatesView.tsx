@@ -15,10 +15,15 @@ const CertificatesView: React.FC<CertificatesViewProps> = ({ certificates }) => 
   const featuredCertificates = Array.isArray(certificates) ? certificates.filter(certificate => certificate.featured) : [];
 
   return (
-    <Section className="py-16 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-8">Featured Certificates</h2>
-        <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+    <Section className="py-16 bg-gray-50 dark:bg-gray-900" containerClassName="max-w-5xl">
+      <div className="space-y-10">
+        <div className="text-center space-y-3">
+          <h2 className="heading-gradient text-4xl font-bold">Featured Certificates</h2>
+          <p className="text-base text-gray-600 dark:text-gray-300">
+            Recognitions that mirror the depth of the featured projects and roles highlighted above.
+          </p>
+        </div>
+        <div className="space-y-6">
           {featuredCertificates.length > 0 ? (
             featuredCertificates.map((certificate, index) => {
               const slug = toSlug(certificate.name);
@@ -33,14 +38,16 @@ const CertificatesView: React.FC<CertificatesViewProps> = ({ certificates }) => 
               );
             })
           ) : (
-            <div className="text-center text-gray-500">
+            <div className="text-center text-gray-500 dark:text-gray-400">
               <p>No featured certificates available at the moment.</p>
             </div>
           )}
         </div>
-        <Button className="mt-8" href="/certificates">
-          View All Certificates
-        </Button>
+        <div className="text-center">
+          <Button className="btn-primary" href="/certificates">
+            View All Certificates
+          </Button>
+        </div>
       </div>
     </Section>
   );

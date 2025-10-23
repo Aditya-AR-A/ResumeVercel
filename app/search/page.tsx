@@ -56,6 +56,10 @@ export default async function SearchPage({ searchParams = {} }: SearchPageProps)
   const trimmedQuery = query.trim()
 
   const searchResult = trimmedQuery ? await fetchSearchResults(trimmedQuery) : null
+  const jobSection = searchResult?.sections?.find((section) => section.type === 'jobs')
+  const jobMap = jobSection
+    ? new Map<string, Job>((jobSection.items as Job[]).map((job) => [job.id, job]))
+    : new Map<string, Job>()
 
   const totalMatches = searchResult?.total_count ?? 0
   const searchDuration = searchResult?.search_time ?? 0
@@ -209,6 +213,16 @@ export default async function SearchPage({ searchParams = {} }: SearchPageProps)
                     linkUrl={`/projects/${project.id}`}
                     tags={project.skills?.slice(0, 5)}
                     featured={project.featured}
+                    jobMeta={(() => {
+                      const candidateIds = [project.jobId, ...(project.relatedJobIds ?? [])].filter(Boolean) as string[]
+                      for (const id of candidateIds) {
+                        const job = jobMap.get(id)
+                        if (job) {
+                          return { id: job.id, title: job.title, company: job.company }
+                        }
+                      }
+                      return undefined
+                    })()}
                   >
                     <div className="mt-4 text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">
                       {project.category}

@@ -79,7 +79,6 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
     { href: '/projects', label: 'Projects' },
     { href: '/experience', label: 'Experience' },
     { href: '/certificates', label: 'Certificates' },
-    { href: '#contact', label: 'Contact' }
   ];
 
   const isActive = (href: string) => {

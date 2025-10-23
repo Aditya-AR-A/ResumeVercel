@@ -4,6 +4,7 @@ import Button from '@/components/Button'
 import PageHero from '@/components/PageHero'
 import { dataApi } from '@/utils/api'
 import type { Job, Project } from '@/types/interfaces'
+import ExperienceTimeline from '@/components/ExperienceTimeline'
 
 async function loadJobs(): Promise<Job[]> {
   try {
@@ -81,6 +82,8 @@ export default async function ExperiencePage() {
         )}
       />
 
+      <ExperienceTimeline jobs={sortedJobs} />
+
       <Section
         className="py-12 lg:py-16"
         containerClassName="max-w-5xl"
@@ -100,36 +103,14 @@ export default async function ExperiencePage() {
 
           <div className="space-y-8">
             {sortedJobs.map((job) => (
-              <JobCard
-                key={job.id}
-                {...job}
-                href={`/experience/${job.id}`}
-                projects={getRelatedProjects(job.id)}
-              />
+              <div key={job.id} id={`job-${job.id}`} className="timeline-card-wrapper scroll-mt-32 transition">
+                <JobCard
+                  {...job}
+                  href={`/experience/${job.id}`}
+                  projects={getRelatedProjects(job.id)}
+                />
+              </div>
             ))}
-          </div>
-        </div>
-      </Section>
-
-      <Section
-        background="gradient"
-        className="py-12 text-center lg:py-16"
-        containerClassName="max-w-5xl"
-      >
-        <div className="space-y-6">
-          <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
-            Let&apos;s build what&apos;s next
-          </h2>
-          <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg">
-            I partner with teams to transform ideas into production-ready AI, automation, and data platforms. Tell me about your next challenge.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button className="btn-primary" href="#contact">
-              Contact Me
-            </Button>
-            <Button className="btn-secondary" href="/">
-              Back to Home
-            </Button>
           </div>
         </div>
       </Section>

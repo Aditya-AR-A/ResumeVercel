@@ -2,7 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import SkillTag from './SkillTag';
-import FeaturedBadge from './FeaturedBadge';
 import { Project } from '@/types/interfaces';
 
 interface JobCardProps {
@@ -36,7 +35,6 @@ export default function JobCard({
   description,
   responsibilities,
   skills,
-  featured,
   projects,
   compact = false,
   href,
@@ -75,9 +73,7 @@ export default function JobCard({
   };
 
   const compactContent = (
-      <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl border ${
-        featured ? 'border-blue-500' : 'border-transparent'
-      }`}>
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-transparent p-6 shadow-lg transition-all duration-300 hover:shadow-xl">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
             {companyLogo ? (
@@ -103,7 +99,6 @@ export default function JobCard({
               <p className="accent-cert font-semibold">
                 {company}
               </p>
-              {featured && <FeaturedBadge className="mt-2 w-max" />}
             </div>
           </div>
           <div className="text-right">
@@ -132,9 +127,7 @@ export default function JobCard({
   );
 
   const fullContent = (
-    <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl border ${
-      featured ? 'border-blue-500 ring-2 ring-blue-100 dark:ring-blue-900' : 'border-gray-200 dark:border-gray-700'
-    }`}>
+    <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800">
       {/* Header with company info and duration */}
       <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
         <div className="flex items-center space-x-4 mb-4 md:mb-0">
@@ -161,7 +154,6 @@ export default function JobCard({
             <p className="text-xl accent-cert font-semibold mb-1">
               {company}
             </p>
-            {featured && <FeaturedBadge className="w-max" />}
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
               <span className="text-sm">{location}</span>
               <span className="w-1 h-1 bg-gray-400 rounded-full"></span>

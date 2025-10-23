@@ -78,6 +78,10 @@ body {
 
 .dark body { color: var(--color-text); background: var(--color-bg); }
 
+html, body {
+  min-height: 100%;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -253,4 +257,61 @@ section.snap-start, .snap-start {
 html, body {
   overflow-x: hidden;
   width: 100%;
+}
+
+.timeline-highlight {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 6px;
+  border-radius: 1rem;
+  transition: outline 0.4s ease, outline-offset 0.4s ease;
+}
+
+.timeline-card-wrapper {
+  position: relative;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.timeline-card-wrapper > * {
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.timeline-hover-card {
+  position: relative;
+  z-index: 30;
+}
+
+.timeline-hover-card > * {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 72px rgba(15, 23, 42, 0.28);
+}
+
+.timeline-hover-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  pointer-events: none;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.35);
+}
+
+.timeline-node-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.timeline-node-card-active,
+.timeline-node-card.timeline-node-card-active {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.timeline-node-card-active.timeline-node-card {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.timeline-node-card-active .timeline-node-card {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(255, 255, 255, 0.95);
 }

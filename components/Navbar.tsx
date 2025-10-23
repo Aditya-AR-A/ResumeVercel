@@ -12,7 +12,6 @@ const NAV_LINKS = [
   { label: 'Projects', href: '/projects' },
   { label: 'Experience', href: '/experience' },
   { label: 'Certificates', href: '/certificates' },
-  { label: 'Contact', href: '/#contact' },
 ]
 
 export default function Navbar() {
@@ -64,8 +63,7 @@ export default function Navbar() {
       home: '/',
       projects: '/projects',
       experience: '/experience',
-      certificates: '/certificates',
-      contact: '/#contact',
+  certificates: '/certificates',
       about: '/#about',
     }
 
@@ -92,81 +90,83 @@ export default function Navbar() {
         transition={{ duration: 0.4, ease: 'easeOut' }}
         className="pointer-events-auto fixed left-0 right-0 top-0 z-50"
       >
-        <div className="px-4 pt-4 sm:px-6 lg:px-8">
-          <div
-            className={`relative mx-auto flex max-w-6xl items-center justify-between gap-6 rounded-2xl border border-white/10 px-5 py-3 transition-all duration-300 backdrop-blur-2xl ${
-              isScrolled
-                ? 'bg-white/75 shadow-[0_20px_70px_rgba(15,23,42,0.28)] dark:bg-slate-950/70'
-                : 'bg-white/40 shadow-[0_10px_45px_rgba(15,23,42,0.18)] dark:bg-slate-950/50'
-            }`}
-          >
-            <div className="flex items-center gap-4">
-              <button
-                id="sidebar-inline-toggle"
-                data-sidebar-toggle
-                onClick={() => window.dispatchEvent(new Event('sidebar:toggle'))}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/20 text-slate-600 transition hover:border-white/30 hover:bg-white/30 dark:text-slate-200"
-                aria-label="Toggle sidebar"
-              >
-                <span className="sr-only">Toggle sidebar</span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                  <path d="M4 7h16" />
-                  <path d="M4 12h16" />
-                  <path d="M4 17h16" />
-                </svg>
-              </button>
+        <div className="pt-4">
+          <div className="container mx-auto px-0">
+            <div
+              className={`relative flex w-full items-center justify-between gap-6 rounded-2xl border border-white/10 px-5 py-3 transition-all duration-300 backdrop-blur-2xl ${
+                isScrolled
+                  ? 'bg-white/75 shadow-[0_20px_70px_rgba(15,23,42,0.28)] dark:bg-slate-950/70'
+                  : 'bg-white/40 shadow-[0_10px_45px_rgba(15,23,42,0.18)] dark:bg-slate-950/50'
+              }`}
+            >
+              <div className="flex items-center gap-4">
+                <button
+                  id="sidebar-inline-toggle"
+                  data-sidebar-toggle
+                  onClick={() => window.dispatchEvent(new Event('sidebar:toggle'))}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/20 text-slate-600 transition hover:border-white/30 hover:bg-white/30 dark:text-slate-200"
+                  aria-label="Toggle sidebar"
+                >
+                  <span className="sr-only">Toggle sidebar</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M4 7h16" />
+                    <path d="M4 12h16" />
+                    <path d="M4 17h16" />
+                  </svg>
+                </button>
 
-              <Link href="/" className="heading-gradient text-lg font-semibold sm:text-xl">
-                Aditya Raj
-              </Link>
-            </div>
+                <Link href="/" className="heading-gradient text-lg font-semibold sm:text-xl">
+                  Aditya Raj
+                </Link>
+              </div>
 
-            <div className="hidden items-center gap-6 md:flex">
-              {NAV_LINKS.map((link) => (
-                <div key={link.href} className="relative">
-                  <Link
-                    href={link.href}
-                    className={`text-sm font-medium transition duration-200 ${
-                      isActiveLink(link.href)
-                        ? 'text-slate-900 dark:text-white'
-                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                  {isActiveLink(link.href) && (
-                    <motion.span
-                      layoutId="nav-active-indicator"
-                      className="absolute inset-x-0 -bottom-2 h-0.5 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
+              <div className="hidden items-center gap-6 md:flex">
+                {NAV_LINKS.map((link) => (
+                  <div key={link.href} className="relative">
+                    <Link
+                      href={link.href}
+                      className={`text-sm font-medium transition duration-200 ${
+                        isActiveLink(link.href)
+                          ? 'text-slate-900 dark:text-white'
+                          : 'text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                    {isActiveLink(link.href) && (
+                      <motion.span
+                        layoutId="nav-active-indicator"
+                        className="absolute inset-x-0 -bottom-2 h-0.5 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
 
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setIsCommandOpen(true)}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/20 px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-white/30 hover:bg-white/30 dark:text-slate-200"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                  <path d="M5 12h14" />
-                  <path d="M12 5l7 7-7 7" />
-                </svg>
-                Command
-              </button>
-              <a
-                href={resumeLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(59,130,246,0.35)] transition hover:shadow-[0_20px_45px_rgba(59,130,246,0.45)]"
-              >
-                Resume
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                  <path d="M7 7h10v10" />
-                  <path d="M7 17 17 7" />
-                </svg>
-              </a>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsCommandOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/20 px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-white/30 hover:bg-white/30 dark:text-slate-200"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M5 12h14" />
+                    <path d="M12 5l7 7-7 7" />
+                  </svg>
+                  Command
+                </button>
+                <a
+                  href={resumeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(59,130,246,0.35)] transition hover:shadow-[0_20px_45px_rgba(59,130,246,0.45)]"
+                >
+                  Resume
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M7 7h10v10" />
+                    <path d="M7 17 17 7" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </div>

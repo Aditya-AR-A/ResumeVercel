@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CardProps } from '@/types/interfaces';
 import SkillTag from './SkillTag';
-import FeaturedBadge from './FeaturedBadge';
 import { resolveAssetUrl } from '@/utils/assets';
 
 export default function Card({
@@ -12,9 +11,9 @@ export default function Card({
   imageUrl,
   linkUrl,
   tags,
-  featured,
   children,
   projects,
+  jobMeta,
 }: CardProps) {
   const isExternalLink = linkUrl ? /^https?:/i.test(linkUrl) : false;
   const ctaLabel = isExternalLink ? 'Open link →' : 'View details →';
@@ -23,12 +22,8 @@ export default function Card({
 
   const content = (
     <div
-      className={`relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/65 p-6 shadow-[0_25px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-transform duration-300 dark:border-white/5 dark:bg-slate-950/60 hover:-translate-y-[3px] hover:shadow-[0_35px_90px_rgba(59,130,246,0.25)] group ${
-        featured ? 'ring-2 ring-sky-400/60 shadow-[0_35px_90px_rgba(56,189,248,0.35)]' : ''
-      }`}
+      className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/65 p-6 shadow-[0_25px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-[3px] hover:shadow-[0_35px_90px_rgba(59,130,246,0.25)] group dark:border-white/5 dark:bg-slate-950/60"
     >
-      {featured && <FeaturedBadge className="mb-4" />}
-
       {resolvedImageUrl && (
         <div className="relative mb-6 overflow-hidden rounded-[1.3rem] border border-white/10 bg-slate-900/40">
           <div className="absolute inset-0 z-0 bg-gradient-to-tr from-slate-900/40 via-transparent to-transparent" aria-hidden="true" />
@@ -55,6 +50,38 @@ export default function Card({
             </p>
           )}
         </div>
+
+        {jobMeta && (
+          <Link
+            href={`/experience/${jobMeta.id}`}
+            className="inline-flex flex-col gap-1 self-start rounded-2xl border border-slate-200/70 bg-white/65 px-4 py-2.5 text-left transition hover:border-slate-300 hover:bg-white/80 dark:border-white/15 dark:bg-white/5 dark:hover:border-white/25"
+          >
+            <span className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-600 dark:text-slate-200">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="text-sky-500"
+              >
+                <path d="M8 17h8" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Built at {jobMeta.company}
+            </span>
+            {jobMeta.title && (
+              <span className="text-[0.62rem] font-medium uppercase tracking-[0.22em] text-slate-400 dark:text-slate-400">
+                Role · {jobMeta.title}
+              </span>
+            )}
+          </Link>
+        )}
 
         {tags && (
           <div className="flex flex-wrap gap-2">

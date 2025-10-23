@@ -3,7 +3,7 @@ import Section from '@/components/Section'
 import Button from '@/components/Button'
 import PageHero from '@/components/PageHero'
 import { dataApi } from '@/utils/api'
-import type { Project } from '@/types/interfaces'
+import type { Job, Project } from '@/types/interfaces'
 
 async function loadProjects(): Promise<Project[]> {
   try {
@@ -15,8 +15,23 @@ async function loadProjects(): Promise<Project[]> {
   }
 }
 
+async function loadJobs(): Promise<Job[]> {
+  try {
+    const data = await dataApi.getJobs()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('ProjectsPage: failed to fetch jobs from API', error)
+    return []
+  }
+}
+
 export default async function ProjectsPage() {
-  const projects = await loadProjects()
+  const [projects, jobs] = await Promise.all([loadProjects(), loadJobs()])
+
+  const jobMap = new Map<string, Job>()
+  jobs.forEach((job) => {
+    jobMap.set(job.id, job)
+  })
 
   const projectsByCategory = projects.reduce((acc, project) => {
     if (!acc[project.category]) {
@@ -42,12 +57,12 @@ export default async function ProjectsPage() {
     },
     {
       label: 'Featured',
-      value: projects.filter(project => project.featured).length || '0',
+      value: projects.filter((project) => project.featured).length || '0',
       accentClass: 'text-amber-500 dark:text-amber-400'
     },
     {
       label: 'Tech Stack',
-      value: new Set(projects.flatMap(project => project.skills)).size || '0',
+      value: new Set(projects.flatMap((project) => project.skills)).size || '0',
       accentClass: 'text-emerald-500 dark:text-emerald-400'
     }
   ]
@@ -61,8 +76,8 @@ export default async function ProjectsPage() {
         stats={heroStats}
         actions={(
           <>
-            <Button className="btn-primary" href="#contact">
-              Start a Project
+            <Button className="btn-primary" href="/certificates">
+              Browse Credentials
             </Button>
             <Button className="btn-secondary" href="/experience">
               View Experience
@@ -102,7 +117,16 @@ export default async function ProjectsPage() {
                     description={project.shortDescription}
                     imageUrl={project.thumbnail}
                     tags={project.skills.slice(0, 4)}
-                    featured={project.featured}
+                    jobMeta={(() => {
+                      const candidateIds = [project.jobId, ...(project.relatedJobIds ?? [])].filter(Boolean) as string[]
+                      for (const id of candidateIds) {
+                        const job = jobMap.get(id)
+                        if (job) {
+                          return { id: job.id, title: job.title, company: job.company }
+                        }
+                      }
+                      return undefined
+                    })()}
                     linkUrl={`/projects/${project.id}`}
                   />
                 ))}
@@ -111,29 +135,6 @@ export default async function ProjectsPage() {
           </Section>
         )
       })}
-
-      <Section
-        background="gradient"
-        className="py-12 text-center lg:py-16"
-        containerClassName="max-w-5xl"
-      >
-        <div className="space-y-6">
-          <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
-            Interested in collaborating?
-          </h2>
-          <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg">
-            I love partnering with founders, product teams, and researchers to bring intelligent experiences to life. Let&apos;s build something ambitious together.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button className="btn-primary" href="#contact">
-              Get In Touch
-            </Button>
-            <Button className="btn-secondary" href="/">
-              Back to Home
-            </Button>
-          </div>
-        </div>
-      </Section>
     </div>
   )
 }

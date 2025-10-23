@@ -335,9 +335,11 @@ export default async function Home() {
               )
             })}
           </div>
-          <Button className="mt-8" href="/certificates">
-            View All Certificates
-          </Button>
+          <div className="text-center mt-8">
+            <Button className="btn-primary" href="/certificates">
+              View All Certificates
+            </Button>
+          </div>
         </div>
       </Section>
 

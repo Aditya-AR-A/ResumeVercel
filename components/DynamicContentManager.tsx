@@ -5,11 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ExperienceView from './views/ExperienceView';
 import ProjectsView from './views/ProjectsView';
 import CertificatesView from './views/CertificatesView';
-import ContactView from './views/ContactView';
 import AboutView from './views/AboutView';
 import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
 
-export type ViewType = 'home' | 'about' | 'experience' | 'projects' | 'certificates' | 'contact';
+export type ViewType = 'home' | 'about' | 'experience' | 'projects' | 'certificates';
 
 interface DynamicContentManagerProps {
   currentView: ViewType;
@@ -33,15 +32,21 @@ const DynamicContentManager: React.FC<DynamicContentManagerProps> = ({
   const renderView = () => {
     switch (currentView) {
       case 'about':
-        return <AboutView key="about" />;
+        return (
+          <AboutView
+            key="about"
+            introData={introData}
+            projects={projects}
+            jobs={jobs}
+            certificates={certificates}
+          />
+        );
       case 'experience':
         return <ExperienceView key="experience" jobs={jobs} getRelatedProjects={getRelatedProjects} />;
       case 'projects':
-        return <ProjectsView key="projects" projects={projects} />;
+        return <ProjectsView key="projects" projects={projects} jobs={jobs} />;
       case 'certificates':
         return <CertificatesView key="certificates" certificates={certificates} />;
-      case 'contact':
-        return <ContactView key="contact" introData={introData} />;
       case 'home':
       default:
         return (

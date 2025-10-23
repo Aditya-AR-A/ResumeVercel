@@ -143,4 +143,9 @@ export interface CardProps {
   featured?: boolean;
   children?: ReactNode;
   projects?: Project[];
+  jobMeta?: {
+    id: string;
+    title: string;
+    company: string;
+  };
 }

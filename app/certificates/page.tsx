@@ -1,9 +1,9 @@
-import { toSlug } from '@/utils/slug'
 import Section from '@/components/Section'
 import CertificateCard from '@/components/CertificateCard'
 import Button from '@/components/Button'
 import PageHero from '@/components/PageHero'
 import { dataApi } from '@/utils/api'
+import { toSlug } from '@/utils/slug'
 import type { Certificate } from '@/types/interfaces'
 
 async function loadCertificates(): Promise<Certificate[]> {
@@ -11,23 +11,24 @@ async function loadCertificates(): Promise<Certificate[]> {
     const data = await dataApi.getCertificates()
     return Array.isArray(data) ? data : []
   } catch (error) {
-    console.error('CertificatesPage: failed to fetch certificates from API', error)
+    console.error('CertificatesPage: failed to fetch certificates', error)
     return []
   }
 }
 
 export default async function CertificatesPage() {
   const certificates = await loadCertificates()
+
   const featuredCertificates = certificates.filter((certificate) => certificate.featured)
 
-  const certificatesByField = certificates.reduce<Record<string, Certificate[]>>((acc, certificate) => {
-    const field = certificate.field || 'Other'
+  const certificatesByField = certificates.reduce((acc, certificate) => {
+    const field = certificate.field || 'General'
     if (!acc[field]) {
       acc[field] = []
     }
     acc[field].push(certificate)
     return acc
-  }, {})
+  }, {} as Record<string, Certificate[]>)
 
   const fields = Object.keys(certificatesByField).sort((a, b) => a.localeCompare(b))
 
@@ -50,7 +51,7 @@ export default async function CertificatesPage() {
     },
     {
       label: 'Providers',
-      value: new Set(certificates.map(cert => cert.provider)).size || '0',
+      value: new Set(certificates.map((cert) => cert.provider)).size || '0',
       accentClass: 'text-amber-500 dark:text-amber-400'
     }
   ]
@@ -64,11 +65,11 @@ export default async function CertificatesPage() {
         stats={heroStats}
         actions={(
           <>
-            <Button className="btn-primary" href="#contact">
-              Hire for a Project
-            </Button>
-            <Button className="btn-secondary" href="/projects">
+            <Button className="btn-primary" href="/projects">
               View Projects
+            </Button>
+            <Button className="btn-secondary" href="/experience">
+              View Experience
             </Button>
           </>
         )}
@@ -136,7 +137,7 @@ export default async function CertificatesPage() {
               </div>
 
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {fieldCertificates.map((certificate, index) => {
+                {fieldCertificates.map((certificate, fieldIndex) => {
                   const slug = toSlug(certificate.name)
 
                   return (
@@ -145,7 +146,7 @@ export default async function CertificatesPage() {
                       certificate={certificate}
                       href={`/certificates/${slug}`}
                       variant="showcase"
-                      priority={index === 0}
+                      priority={fieldIndex === 0}
                     />
                   )
                 })}
@@ -154,29 +155,6 @@ export default async function CertificatesPage() {
           </Section>
         )
       })}
-
-      <Section
-        background="gradient"
-        className="py-12 text-center lg:py-16"
-        containerClassName="max-w-5xl"
-      >
-        <div className="space-y-6">
-          <h2 className="heading-gradient text-3xl font-bold sm:text-4xl">
-            Continuous learning is the advantage
-          </h2>
-          <p className="mx-auto max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg">
-            Let&apos;s partner on your toughest data, automation, or AI problems. I bring fresh research, practical experience, and proven results to every engagement.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button className="btn-primary" href="#contact">
-              Start a Conversation
-            </Button>
-            <Button className="btn-secondary" href="/">
-              Back to Home
-            </Button>
-          </div>
-        </div>
-      </Section>
     </div>
-  );
+  )
 }

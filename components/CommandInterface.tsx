@@ -18,7 +18,6 @@ const SECTION_ALIAS_MAP: Record<ViewType, string[]> = {
   projects: ['project', 'projects', 'portfolio', 'build', 'builds', 'work samples'],
   experience: ['experience', 'work', 'career', 'job', 'jobs', 'professional experience'],
   certificates: ['certificate', 'certificates', 'certs', 'certifications', 'credentials'],
-  contact: ['contact', 'email', 'reach', 'connect'],
   about: ['about', 'bio', 'me', 'profile'],
 };
 
@@ -153,7 +152,6 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
                 <li>&quot;show projects&quot; - View my featured projects</li>
                 <li>&quot;show experience&quot; - View my work experience</li>
                 <li>&quot;show certificates&quot; - View my certifications</li>
-                <li>&quot;contact me&quot; - Get my contact information</li>
                 <li>&quot;about me&quot; - Learn more about my background</li>
                 <li>&quot;search python&quot; - Find everything related to a skill</li>
                 <li>&quot;skills&quot; - View my technical skills</li>

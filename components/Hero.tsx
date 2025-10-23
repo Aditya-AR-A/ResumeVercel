@@ -13,7 +13,7 @@ interface HeroProps {
   showCommand: boolean;
   commandValue: string;
   onCommandChange: (v: string) => void;
-  onViewChange?: (view: 'home' | 'about' | 'experience' | 'projects' | 'certificates' | 'contact') => void;
+  onViewChange?: (view: 'home' | 'about' | 'experience' | 'projects' | 'certificates') => void;
 }
 
 interface StatDef {
@@ -192,7 +192,6 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
             <Button className="btn-primary" onClick={() => onViewChange?.('projects')}>View Projects</Button>
             <Button className="btn-secondary" onClick={() => onViewChange?.('experience')}>Experience</Button>
             <Button className="btn-secondary" href={resumeLink} target="_blank" rel="noopener noreferrer">Resume</Button>
-            <Button className="btn-secondary" onClick={() => onViewChange?.('contact')}>Contact</Button>
           </motion.div>
 
           {showCommand && (

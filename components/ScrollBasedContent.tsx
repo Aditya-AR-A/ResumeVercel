@@ -15,10 +15,10 @@ interface ScrollBasedContentProps {
   certificates: Certificate[];
 }
 
-const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({ 
-  introData, 
-  projects, 
-  jobs, 
+const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
+  introData,
+  projects,
+  jobs,
   certificates
 }) => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
@@ -27,7 +27,114 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
   const sectionRefs = useRef<HTMLElement[]>([]);
   
   // Define the sequence of views
-  const viewSequence: ViewType[] = useMemo(() => ['home', 'about', 'experience', 'projects', 'certificates', 'contact'], []);
+  const viewSequence: ViewType[] = useMemo(() => ['home', 'about', 'experience', 'projects', 'certificates'], []);
+
+  const projectCount = Array.isArray(projects) ? projects.length : 0;
+  const jobCount = Array.isArray(jobs) ? jobs.length : 0;
+  const certificateCount = Array.isArray(certificates) ? certificates.length : 0;
+
+  const heroSummary = useMemo(() => {
+    const about = introData?.about?.trim();
+    if (!about) return '';
+    const sentences = about
+      .split(/(?<=[.!?])\s+/)
+      .map((sentence) => sentence.trim())
+      .filter(Boolean);
+    return sentences.slice(0, 2).join(' ');
+  }, [introData]);
+
+  const sortedJobs = useMemo(() => {
+    if (!Array.isArray(jobs)) return [];
+    return [...jobs].sort((a, b) => {
+      const aDate = new Date(a.startDate).getTime();
+      const bDate = new Date(b.startDate).getTime();
+      return Number.isNaN(bDate) || Number.isNaN(aDate) ? 0 : bDate - aDate;
+    });
+  }, [jobs]);
+
+  const experienceYears = useMemo(() => {
+    if (sortedJobs.length === 0) {
+      return null;
+    }
+    const parsedDates = sortedJobs
+      .map((job) => new Date(job.startDate))
+      .filter((date) => !Number.isNaN(date.getTime()));
+    if (parsedDates.length === 0) {
+      return null;
+    }
+    const earliest = parsedDates.reduce((min, date) => (date < min ? date : min));
+    const now = new Date();
+    const diffMs = now.getTime() - earliest.getTime();
+    const diffYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+    return diffYears > 0 ? diffYears : null;
+  }, [sortedJobs]);
+
+  const topSkills = useMemo(() => {
+    const tally = new Map<string, number>();
+    const pushSkills = (skills: string[] | undefined) => {
+      (skills || []).forEach((skill) => {
+        const key = skill.trim();
+        if (!key) return;
+        tally.set(key, (tally.get(key) || 0) + 1);
+      });
+    };
+
+    if (Array.isArray(projects)) {
+      projects.forEach((project) => pushSkills(project.skills));
+    }
+    if (Array.isArray(jobs)) {
+      jobs.forEach((job) => pushSkills(job.skills));
+    }
+    if (Array.isArray(certificates)) {
+      certificates.forEach((certificate) => pushSkills(certificate.skills));
+    }
+
+    return Array.from(tally.entries())
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, 3)
+      .map(([skill]) => skill);
+  }, [projects, jobs, certificates]);
+
+  const heroStats = useMemo(() => {
+    const stats: Array<{ label: string; value: string; accentClass: string }> = [];
+
+    if (projectCount > 0) {
+      stats.push({
+        label: 'Projects',
+        value: `${projectCount}`,
+        accentClass: 'accent-projects'
+      });
+    }
+
+    if (certificateCount > 0) {
+      stats.push({
+        label: 'Certificates',
+        value: `${certificateCount}`,
+        accentClass: 'accent-cert'
+      });
+    }
+
+    if (experienceYears) {
+      const rounded = experienceYears >= 5 ? Math.round(experienceYears) : Math.max(1, Number(experienceYears.toFixed(1)));
+      stats.push({
+        label: 'Years Experience',
+        value: `${rounded}+`,
+        accentClass: 'accent-experience'
+      });
+    }
+
+    if (topSkills.length > 0) {
+      const primarySkill = topSkills[0];
+      const remainingCount = topSkills.length - 1;
+      stats.push({
+        label: 'Core Focus',
+        value: remainingCount > 0 ? `${primarySkill} +${remainingCount}` : primarySkill,
+        accentClass: 'accent-ai'
+      });
+    }
+
+    return stats;
+  }, [projectCount, certificateCount, experienceYears, topSkills]);
   
   const handleViewChange = (view: ViewType) => {
     // Optimistically set current view so UI highlights immediately
@@ -119,7 +226,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
       <motion.div
         ref={el => { if (el) { sectionRefs.current[0] = el; } }}
         data-view="home"
-        className="relative min-h-screen snap-start"
+        className="relative flex min-h-[88vh] flex-col justify-start gap-12 snap-start"
         initial={false}
         animate={{ 
           scale: currentView === 'home' ? 1 : 0.992,
@@ -137,10 +244,10 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
           transition={{ duration: 0.6, ease: 'easeInOut' }}
           style={{ mixBlendMode: 'multiply' }}
         />
-        <section className="h-auto md:h-[75vh] flex items-start md:items-center py-10 md:py-0">
+        <section className="flex flex-col justify-center pt-14 md:pt-16">
           <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start md:items-center">
+            <div className="mx-auto max-w-6xl">
+              <div className="grid grid-cols-1 items-start gap-10 md:items-center lg:grid-cols-2">
                 {/* Left Column - Text Content */}
                 <div className="relative z-10 space-y-8 order-2 lg:order-1">
                   <div className="space-y-4">
@@ -156,30 +263,26 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                       {introData.title}
                     </h2>
                   </div>
+                  {heroSummary && (
+                    <p className="text-lg text-gray-700 dark:text-gray-300 max-w-xl">
+                      {heroSummary}
+                    </p>
+                  )}
 
-                  {/* Key Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold accent-cert">15+</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Certificates</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold accent-projects">20+</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold accent-experience">3+</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Years Experience</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold accent-ai">AI</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Specialist</div>
-                      </div>
+                  {heroStats.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-2">
+                      {heroStats.map((stat) => (
+                        <div key={stat.label} className="text-center">
+                          <div className={`text-2xl font-bold ${stat.accentClass}`}>{stat.value}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                        </div>
+                      ))}
                     </div>
+                  )}
                 </div>
 
-                {/* Right Column - Profile Image */}
-                <div className="relative z-10 order-1 lg:order-2 flex justify-center">
+                {/* Right Column - Profile Image & Command Interface */}
+                <div className="relative z-10 order-1 flex flex-col items-center gap-6 lg:order-2 lg:items-end">
                   <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
                     <div className="absolute -inset-3 sm:-inset-4 rounded-full bg-[radial-gradient(circle_at_35%_35%,var(--accent-gradient-start)_0%,transparent_65%)] opacity-60 blur-xl" />
                     <Image
@@ -188,48 +291,68 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                       width={288}
                       height={288}
                       sizes="(max-width: 768px) 45vw, 288px"
-                      className="w-full h-full rounded-full shadow-lg object-cover ring-1 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)]"
+                      className="w-full h-full rounded-full object-cover shadow-lg ring-1 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)]"
                       priority
                     />
                   </div>
+
+                  <motion.div
+                    layout
+                    layoutId="command-interface"
+                    className="w-full max-w-md"
+                    transition={{ layout: { duration: 0.45, ease: [0.4, 0.0, 0.2, 1] } }}
+                  >
+                    <div className="rounded-3xl border border-white/10 bg-white/65 p-4 shadow-[0_22px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/15 dark:bg-slate-950/70">
+                      <CommandInterface
+                        variant="full"
+                        onViewChange={handleViewChange}
+                        currentView={currentView}
+                        value={commandInput}
+                        onValueChange={setCommandInput}
+                      />
+                    </div>
+                  </motion.div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Interactive Section - 25vh */}
-  <section className="h-auto md:h-[25vh] flex items-start md:items-center bg-gray-50 dark:bg-gray-900 py-8 md:py-0 border-t border-gray-200/60 dark:border-gray-800/60">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                {/* Left Column - Description */}
-    <div className="md:col-span-2 space-y-6 order-2 md:order-1">
-                  <h2 className="text-3xl font-bold mb-4">Let&apos;s Explore Together</h2>
-                  <p className="text-lg text-gray-700 dark:text-gray-300">
-                    I&apos;m a passionate <strong>AI and Python Developer</strong> with expertise in building 
-                    intelligent systems that solve real-world problems.
-                  </p>
-                  <p className="text-lg text-gray-700 dark:text-gray-300">
-                    Scroll down or use commands to explore my work!
-                  </p>
+              <div className="mt-10 grid gap-4 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/15 bg-white/60 p-5 text-sm shadow-[0_18px_45px_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-slate-950/60">
+                  <h3 className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500 dark:text-slate-300">
+                    Try these commands
+                  </h3>
+                  <ul className="mt-4 space-y-2 text-slate-600 dark:text-slate-300">
+                    <li>• show projects</li>
+                    <li>• show experience</li>
+                    <li>• highlight ai builds</li>
+                    <li>• contact me</li>
+                  </ul>
                 </div>
 
-                {/* Right Column - Command Interface */}
-                <motion.div 
-                  layout 
-                  layoutId="command-interface" 
-                  className="w-full order-1 md:order-2"
-                  transition={{ layout: { duration: 0.4, ease: [0.4, 0.0, 0.2, 1] } }}
-                >
-                  <CommandInterface 
-                    variant="full"
-                    onViewChange={handleViewChange}
-                    currentView={currentView}
-                    value={commandInput}
-                    onValueChange={setCommandInput}
-                  />
-                </motion.div>
+                <div className="rounded-2xl border border-white/15 bg-white/60 p-5 text-sm shadow-[0_18px_45px_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-slate-950/60">
+                  <h3 className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500 dark:text-slate-300">
+                    Snapshot
+                  </h3>
+                  <div className="mt-4 grid grid-cols-2 gap-3 text-slate-700 dark:text-slate-200">
+                    <div>
+                      <div className="text-lg font-bold text-sky-500 dark:text-sky-400">{projectCount}</div>
+                      <div className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Projects</div>
+                    </div>
+                    <div>
+                      <div className="text-lg font-bold text-emerald-500 dark:text-emerald-400">{jobCount}</div>
+                      <div className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Roles</div>
+                    </div>
+                    <div>
+                      <div className="text-lg font-bold text-amber-500 dark:text-amber-400">{certificateCount}</div>
+                      <div className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Certs</div>
+                    </div>
+                    {topSkills[0] && (
+                      <div className="col-span-2">
+                        <div className="text-lg font-bold text-violet-500 dark:text-violet-400">{topSkills[0]}</div>
+                        <div className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Core Focus</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

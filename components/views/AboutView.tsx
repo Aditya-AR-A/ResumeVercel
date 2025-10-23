@@ -1,58 +1,197 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Section from '@/components/Section';
+import type { Certificate, IntroData, Job, Project } from '@/types/interfaces';
 
-const AboutView: React.FC = () => {
+interface AboutViewProps {
+  introData: IntroData;
+  projects: Project[];
+  jobs: Job[];
+  certificates: Certificate[];
+}
+
+const surfaceClasses = 'rounded-3xl border border-white/12 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-lg dark:border-white/8 dark:bg-slate-950/65';
+
+const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certificates }) => {
+  const aboutParagraphs = useMemo(() => {
+    const about = introData?.about?.trim();
+    if (!about) return [];
+    return about
+      .split(/(?<=[.!?])\s+/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean);
+  }, [introData]);
+
+  const projectCount = Array.isArray(projects) ? projects.length : 0;
+  const jobCount = Array.isArray(jobs) ? jobs.length : 0;
+  const certificateCount = Array.isArray(certificates) ? certificates.length : 0;
+
+  const currentJob = useMemo(() => {
+    if (!Array.isArray(jobs) || jobs.length === 0) return undefined;
+    return jobs.find((job) => job.isCurrent) || jobs[0];
+  }, [jobs]);
+
+  const experienceYears = useMemo(() => {
+    if (!Array.isArray(jobs) || jobs.length === 0) return null;
+    const parsed = jobs
+      .map((job) => new Date(job.startDate))
+      .filter((date) => !Number.isNaN(date.getTime()));
+    if (parsed.length === 0) return null;
+    const earliest = parsed.reduce((min, date) => (date < min ? date : min));
+    const now = new Date();
+    const diffYears = (now.getTime() - earliest.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+    return diffYears > 0 ? diffYears : null;
+  }, [jobs]);
+
+  const projectCategories = useMemo(() => {
+    if (!Array.isArray(projects)) return [];
+    return Array.from(new Set(projects.map((project) => project.category).filter(Boolean))).slice(0, 5);
+  }, [projects]);
+
+  const certificateFields = useMemo(() => {
+    if (!Array.isArray(certificates)) return [];
+    return Array.from(new Set(certificates.map((certificate) => certificate.field).filter(Boolean))).slice(0, 4);
+  }, [certificates]);
+
+  const topSkills = useMemo(() => {
+    const tally = new Map<string, number>();
+    const tallySkills = (skills: string[] | undefined) => {
+      (skills || []).forEach((skill) => {
+        const key = skill.trim();
+        if (!key) return;
+        tally.set(key, (tally.get(key) || 0) + 1);
+      });
+    };
+
+    if (Array.isArray(projects)) {
+      projects.forEach((project) => tallySkills(project.skills));
+    }
+    if (Array.isArray(jobs)) {
+      jobs.forEach((job) => tallySkills(job.skills));
+    }
+    if (Array.isArray(certificates)) {
+      certificates.forEach((certificate) => tallySkills(certificate.skills));
+    }
+
+    return Array.from(tally.entries())
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, 8)
+      .map(([skill]) => skill);
+  }, [projects, jobs, certificates]);
+
+  const formatExperienceValue = () => {
+    if (!experienceYears) return null;
+    if (experienceYears >= 5) return `${Math.round(experienceYears)}+ years`;
+    const rounded = Math.max(1, Number(experienceYears.toFixed(1)));
+    return `${rounded} years`;
+  };
+
   return (
     <Section className="py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-12 heading-gradient">
           About Me
         </h2>
-        <div className="max-w-4xl mx-auto space-y-8">
-          <div className="text-lg text-gray-700 dark:text-gray-300 space-y-6">
-            <p>
-              I&apos;m a passionate <strong>AI and Python Developer</strong> with expertise in building 
-              intelligent systems that solve real-world problems. Currently working at Addmin Web World, 
-              I specialize in integrating <strong>LLMs with SIP call agents</strong> and developing 
-              AI-driven automation solutions.
-            </p>
-            <p>
-              My journey in technology spans over 3 years, during which I&apos;ve developed a deep 
-              understanding of machine learning, natural language processing, and full-stack development. 
-              I&apos;m particularly interested in creating AI solutions that enhance human productivity 
-              and decision-making.
-            </p>
-            <p>
-              When I&apos;m not coding, you can find me exploring the latest AI research papers, 
-              contributing to open-source projects, or mentoring aspiring developers in the field 
-              of artificial intelligence.
-            </p>
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-12">
+          <div className="space-y-5 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            {aboutParagraphs.length > 0 ? (
+              aboutParagraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))
+            ) : (
+              <p>
+                I&apos;m a developer focused on AI-powered products, data-intensive applications, and the tooling that glues them together.
+              </p>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-            <div>
-              <h3 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">Technical Skills</h3>
-              <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                <li>• Python, JavaScript, TypeScript</li>
-                <li>• Machine Learning & Deep Learning</li>
-                <li>• Natural Language Processing</li>
-                <li>• React, Next.js, Node.js</li>
-                <li>• TensorFlow, PyTorch, Scikit-learn</li>
-                <li>• Docker, AWS, PostgreSQL</li>
-              </ul>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+            <div className={`${surfaceClasses} space-y-6`}>
+              <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                Snapshot
+              </h3>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <div className="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-300">
+                    Current Role
+                  </div>
+                  <p className="mt-1 text-base font-medium text-slate-900 dark:text-white">
+                    {currentJob ? (
+                      <>
+                        {currentJob.title}
+                        <span className="block text-slate-500 dark:text-slate-300">{currentJob.company}</span>
+                      </>
+                    ) : (
+                      'Available for opportunities'
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <div className="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-300">
+                    Experience
+                  </div>
+                  <p className="mt-1 text-base font-medium text-slate-900 dark:text-white">
+                    {formatExperienceValue() || '3+ years'}
+                    <span className="block text-slate-500 dark:text-slate-300">Across {jobCount} roles</span>
+                  </p>
+                </div>
+                <div>
+                  <div className="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-300">
+                    Portfolio Scale
+                  </div>
+                  <p className="mt-1 text-base font-medium text-slate-900 dark:text-white">
+                    {projectCount} projects · {certificateCount} certificates
+                  </p>
+                </div>
+                {projectCategories.length > 0 && (
+                  <div>
+                    <div className="text-sm uppercase tracking-[0.28em] text-slate-500 dark:text-slate-300">
+                      Focus Areas
+                    </div>
+                    <p className="mt-1 text-base font-medium text-slate-900 dark:text-white">
+                      {projectCategories.join(' · ')}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-            <div>
-              <h3 className="text-2xl font-bold mb-4 text-purple-600 dark:text-purple-400">Interests</h3>
-              <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                <li>• Artificial Intelligence Research</li>
-                <li>• Open Source Contributions</li>
-                <li>• Technical Writing & Blogging</li>
-                <li>• Mentoring & Teaching</li>
-                <li>• Automation & DevOps</li>
-                <li>• Data Science & Analytics</li>
-              </ul>
+
+            <div className={`${surfaceClasses} space-y-6`}>
+              <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                Core Skills & Credentials
+              </h3>
+              <div className="space-y-4 text-sm text-slate-600 dark:text-slate-300">
+                {topSkills.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">
+                      Frequently applied technologies
+                    </h4>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {topSkills.map((skill) => (
+                        <span key={skill} className="rounded-full bg-slate-200/80 px-3 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800/70 dark:text-slate-200">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {certificateFields.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">
+                      Certification domains
+                    </h4>
+                    <ul className="mt-3 space-y-2">
+                      {certificateFields.map((field) => (
+                        <li key={field} className="flex items-center gap-2 text-sm">
+                          <span className="h-1.5 w-1.5 rounded-full bg-purple-400"></span>
+                          {field}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

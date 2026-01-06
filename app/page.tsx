@@ -26,7 +26,7 @@ export default async function Home() {
     const baseProjects = await dataApi.getProjects() || [];
     let newProjects: Project[] = [];
     try {
-      newProjects = await (dataApi as any).getNewProjects?.() || [];
+      newProjects = await dataApi.getNewProjects() || [];
     } catch {}
     const seen = new Set<string>();
     const merged: Project[] = [];

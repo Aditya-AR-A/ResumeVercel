@@ -6,20 +6,22 @@ import { motion, LayoutGroup } from 'framer-motion';
 import CommandInterface from './CommandInterface';
 // Removed unused Hero import
 import DynamicContentManager, { ViewType } from './DynamicContentManager';
-import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
+import { Project, Job, Certificate, IntroData, SkillsResponse } from '@/types/interfaces';
 
 interface ScrollBasedContentProps {
   introData: IntroData;
   projects: Project[];
   jobs: Job[];
   certificates: Certificate[];
+  skillsAggregation?: SkillsResponse;
 }
 
 const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
   introData,
   projects,
   jobs,
-  certificates
+  certificates,
+  skillsAggregation
 }) => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [commandInput, setCommandInput] = useState('');
@@ -381,6 +383,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                 projects={projects}
                 jobs={jobs}
                 certificates={certificates}
+                skillsAggregation={skillsAggregation}
               />
             </motion.div>
           </motion.section>

@@ -14,6 +14,8 @@ interface AboutViewProps {
 
 const surfaceClasses = 'rounded-3xl border border-white/12 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-lg dark:border-white/8 dark:bg-slate-950/65';
 
+type SkillLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
+
 const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certificates, skillsAggregation }) => {
   const aboutParagraphs = useMemo(() => {
     const about = introData?.about?.trim();
@@ -67,10 +69,14 @@ const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certif
       if (['llms', 'cnn', 'rnn', 'lstm', 'yolov8', 'transformers', 'nlp', 'machine learning', 'deep learning', 'reinforcement learning'].includes(s)) return 'AI/ML';
       return 'Other';
     };
-    const toLevel = (count: number): 'beginner' | 'intermediate' | 'advanced' | 'expert' => {
+    const toLevel = (count: number): SkillLevel => {
       if (count >= 6) return 'expert';
       if (count >= 4) return 'advanced';
       if (count >= 2) return 'intermediate';
+      return 'beginner';
+    };
+    const normalizeLevel = (value: SkillAggregation['proficiency']): SkillLevel => {
+      if (value === 'expert' || value === 'advanced' || value === 'intermediate' || value === 'beginner') return value;
       return 'beginner';
     };
     aggs.forEach((agg) => {
@@ -82,10 +88,10 @@ const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certif
       bucket.set(category, list);
     });
     const entries = Array.from(bucket.entries()).map(([category, list]) => {
+      const order: Record<SkillLevel, number> = { expert: 3, advanced: 2, intermediate: 1, beginner: 0 };
       const sorted = list.slice().sort((a, b) => {
-        const order = { expert: 3, advanced: 2, intermediate: 1, beginner: 0 } as const;
-        const ao = order[(a.proficiency as any) || 'beginner'];
-        const bo = order[(b.proficiency as any) || 'beginner'];
+        const ao = order[normalizeLevel(a.proficiency)];
+        const bo = order[normalizeLevel(b.proficiency)];
         return bo - ao || a.skill.localeCompare(b.skill);
       });
       return { category, skills: sorted };
@@ -244,7 +250,10 @@ const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certif
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {skills.map((s) => {
-                              const level = (s.proficiency as any) || 'beginner';
+                              const level: SkillLevel =
+                                s.proficiency === 'expert' || s.proficiency === 'advanced' || s.proficiency === 'intermediate' || s.proficiency === 'beginner'
+                                  ? s.proficiency
+                                  : 'beginner';
                               const levelClass =
                                 level === 'expert' ? 'bg-purple-500' :
                                 level === 'advanced' ? 'bg-green-500' :

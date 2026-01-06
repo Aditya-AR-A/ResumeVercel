@@ -1,7 +1,7 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 import { dataApi } from '@/utils/api'
-import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
+import { Project, Job, Certificate, IntroData, SkillsResponse } from '@/types/interfaces';
 
 export default async function Home() {
   // Load data from backend API with error handling
@@ -9,6 +9,7 @@ export default async function Home() {
   let projects: Project[] = [];
   let jobs: Job[] = [];
   let certificates: Certificate[] = [];
+  let skillsAggregation: SkillsResponse | undefined;
 
   try {
     console.log('Page: Starting to load intro data...');
@@ -22,7 +23,19 @@ export default async function Home() {
 
   try {
     console.log('Page: Starting to load projects...');
-    projects = await dataApi.getProjects() || [];
+    const baseProjects = await dataApi.getProjects() || [];
+    let newProjects: Project[] = [];
+    try {
+      newProjects = await (dataApi as any).getNewProjects?.() || [];
+    } catch {}
+    const seen = new Set<string>();
+    const merged: Project[] = [];
+    for (const p of [...baseProjects, ...newProjects]) {
+      if (!p || !p.id || seen.has(p.id)) continue;
+      seen.add(p.id);
+      merged.push(p);
+    }
+    projects = merged;
     console.log('Page: Projects loaded successfully:', projects.length);
   } catch (error) {
     console.error('Page: Failed to load projects:', error);
@@ -44,6 +57,14 @@ export default async function Home() {
     console.error('Page: Failed to load certificates:', error);
   }
 
+  try {
+    console.log('Page: Starting to load skills aggregation...');
+    skillsAggregation = await dataApi.getSkills();
+    console.log('Page: Skills aggregation loaded:', skillsAggregation?.total_unique_skills);
+  } catch (error) {
+    console.error('Page: Failed to load skills aggregation:', error);
+  }
+
   console.log('Page: All data loading complete', {
     introData: !!introData,
     projects: projects.length,
@@ -62,6 +83,7 @@ export default async function Home() {
         projects={projects}
         jobs={jobs}
         certificates={certificates}
+        skillsAggregation={skillsAggregation}
       />
     </div>
   )

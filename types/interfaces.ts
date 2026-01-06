@@ -154,6 +154,22 @@ export interface SearchResponse {
   intent?: string | null;
 }
 
+export interface SkillAggregation {
+  skill: string;
+  count: number;
+  categories: string[];
+  proficiency?: string | null;
+  projects?: string[];
+  jobs?: string[];
+  certificates?: string[];
+}
+
+export interface SkillsResponse {
+  skills: SkillAggregation[];
+  categories: string[];
+  total_unique_skills: number;
+}
+
 export interface CardProps {
   title: string;
   description?: string;

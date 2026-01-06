@@ -22,10 +22,10 @@ export default function Card({
 
   const content = (
     <div
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/65 p-6 shadow-[0_25px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-[3px] hover:shadow-[0_35px_90px_rgba(59,130,246,0.25)] dark:border-white/5 dark:bg-slate-950/60"
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--color-border)] bg-surfaceAlt p-6 shadow-[0_25px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-[3px] hover:shadow-[0_35px_90px_rgba(59,130,246,0.25)]"
     >
       {resolvedImageUrl && (
-        <div className="relative mb-6 overflow-hidden rounded-[1.3rem] border border-white/10 bg-slate-900/40">
+          <div className="relative mb-6 overflow-hidden rounded-[1.3rem] border border-[var(--color-border)] bg-[color-mix(in srgb,var(--color-surface) 15%, transparent)]">
           <div className="absolute inset-0 z-0 bg-gradient-to-tr from-slate-900/40 via-transparent to-transparent" aria-hidden="true" />
           <div className="relative aspect-[16/9] w-full">
             <Image
@@ -41,11 +41,11 @@ export default function Card({
 
       <div className="flex flex-1 flex-col gap-5">
         <div className="space-y-3">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white sm:text-2xl">
+          <h2 className="text-xl font-semibold text-textStrong sm:text-2xl">
             {title}
           </h2>
           {description && (
-            <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
+            <p className="text-sm leading-6 text-text">
               {description}
             </p>
           )}
@@ -54,9 +54,9 @@ export default function Card({
         {jobMeta && (
           <Link
             href={`/experience/${jobMeta.id}`}
-            className="inline-flex flex-col gap-1 self-start rounded-2xl border border-slate-200/70 bg-white/65 px-4 py-2.5 text-left transition hover:border-slate-300 hover:bg-white/80 dark:border-white/15 dark:bg-white/5 dark:hover:border-white/25"
+            className="inline-flex flex-col gap-1 self-start rounded-2xl border border-[var(--color-border)] bg-surfaceAlt px-4 py-2.5 text-left transition hover:brightness-105"
           >
-            <span className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-600 dark:text-slate-200">
+            <span className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-text">
               <svg
                 width="14"
                 height="14"
@@ -76,7 +76,7 @@ export default function Card({
               Built at {jobMeta.company}
             </span>
             {jobMeta.title && (
-              <span className="text-[0.62rem] font-medium uppercase tracking-[0.22em] text-slate-400 dark:text-slate-400">
+              <span className="text-[0.62rem] font-medium uppercase tracking-[0.22em] text-textMuted">
                 Role · {jobMeta.title}
               </span>
             )}
@@ -92,17 +92,17 @@ export default function Card({
         )}
 
         {projects && projects.length > 0 && (
-          <div className="space-y-4 rounded-2xl border border-white/20 bg-white/10 p-5 dark:border-white/10 dark:bg-slate-900/40">
+            <div className="space-y-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-alt)] p-5">
             <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500 dark:text-slate-300">
               Related Projects
             </h3>
             <div className="space-y-4">
               {projects.map((project) => (
                 <div key={project.id} className="rounded-xl border border-white/10 bg-white/5 p-4 dark:border-white/10 dark:bg-slate-900/30">
-                  <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <h4 className="text-sm font-semibold text-textStrong">
                     {project.name}
                   </h4>
-                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
+                  <p className="mt-2 text-xs text-textMuted">
                     {project.shortDescription}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-1">
@@ -110,7 +110,7 @@ export default function Card({
                       <SkillTag key={skill} skill={skill} />
                     ))}
                     {project.skills.length > 3 && (
-                      <span className="rounded-full bg-slate-200/60 px-2 py-0.5 text-[10px] text-slate-500 dark:bg-slate-800/70 dark:text-slate-300">
+                      <span className="rounded-full bg-[var(--color-surface-alt)] px-2 py-0.5 text-[10px] text-textMuted">
                         +{project.skills.length - 3}
                       </span>
                     )}
@@ -129,7 +129,7 @@ export default function Card({
               href={linkUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 dark:text-sky-300"
+              className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent-primary)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-outline)]"
             >
               {ctaLabel}
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +139,7 @@ export default function Card({
           ) : (
             <Link
               href={linkUrl}
-              className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 dark:text-sky-300"
+              className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent-primary)] transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-outline)]"
             >
               {ctaLabel}
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

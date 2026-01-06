@@ -88,15 +88,15 @@ const StatsGrid: React.FC = () => {
   return (
     <motion.div
       ref={containerRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.45, duration: 0.6 }}
-      className="grid grid-cols-2 sm:grid-cols-4 gap-6"
+      className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6"
     >
       {STATS.map((s, idx) => (
-        <div key={s.label} className="text-center">
-          <div className={`text-2xl md:text-3xl font-bold ${s.accentClass}`}>{values[idx]}{values[idx] === s.value ? s.suffix : ''}</div>
-          <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">{s.label}</div>
+        <div key={s.label} className="text-center p-2 sm:p-0">
+          <div className={`text-xl sm:text-2xl md:text-3xl font-bold ${s.accentClass}`}>{values[idx]}{values[idx] === s.value ? s.suffix : ''}</div>
+          <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">{s.label}</div>
         </div>
       ))}
     </motion.div>
@@ -118,7 +118,7 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
   }, []);
 
   return (
-    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden layout-safe-pad py-12">
+    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true" />
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 sm:gap-12 lg:gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
@@ -129,23 +129,23 @@ const Hero: React.FC<HeroProps> = ({ introData, showCommand, commandValue, onCom
           transition={{ delay: 0.25, duration: 0.6, type: 'spring', stiffness: 130 }}
           className="order-1 -mt-2 mb-4 flex justify-center lg:order-2 lg:mb-0"
         >
-          <div className="relative mx-auto flex w-full max-w-[220px] items-center justify-center sm:max-w-[260px] md:max-w-[300px] lg:max-w-[360px]">
-            <div className="absolute -inset-3 sm:-inset-4 md:-inset-5 lg:-inset-6 rounded-3xl bg-[radial-gradient(circle_at_32%_30%,var(--accent-gradient-start)_0%,transparent_65%)] opacity-55 blur-xl" />
+          <div className="relative mx-auto flex w-full max-w-[200px] items-center justify-center sm:max-w-[240px] md:max-w-[280px] lg:max-w-[360px]">
+            <div className="absolute -inset-2 sm:-inset-3 md:-inset-4 lg:-inset-6 rounded-2xl sm:rounded-3xl bg-[radial-gradient(circle_at_32%_30%,var(--accent-gradient-start)_0%,transparent_65%)] opacity-55 blur-lg sm:blur-xl" />
             <Image
               src={introData.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
               alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
               width={320}
               height={320}
-              sizes="(max-width: 768px) 70vw, (max-width: 1280px) 360px, 400px"
+              sizes="(max-width: 640px) 200px, (max-width: 768px) 240px, (max-width: 1280px) 280px, 360px"
               priority
-              className="relative rounded-3xl shadow-xl ring-1 sm:ring-2 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)] object-cover w-full aspect-square"
+              className="relative rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl ring-1 sm:ring-2 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)] object-cover w-full aspect-square"
             />
           </div>
         </motion.div>
 
         {/* Text block second on mobile, first on large */}
-  <div className="order-2 space-y-8 lg:order-1 lg:max-w-2xl">
-          <div className="space-y-4">
+  <div className="order-2 space-y-6 sm:space-y-8 lg:order-1 lg:max-w-2xl">
+          <div className="space-y-3 sm:space-y-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

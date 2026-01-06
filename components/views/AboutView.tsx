@@ -2,18 +2,19 @@
 
 import React, { useMemo } from 'react';
 import Section from '@/components/Section';
-import type { Certificate, IntroData, Job, Project } from '@/types/interfaces';
+import type { Certificate, IntroData, Job, Project, SkillsResponse, SkillAggregation } from '@/types/interfaces';
 
 interface AboutViewProps {
   introData: IntroData;
   projects: Project[];
   jobs: Job[];
   certificates: Certificate[];
+  skillsAggregation?: SkillsResponse;
 }
 
 const surfaceClasses = 'rounded-3xl border border-white/12 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-lg dark:border-white/8 dark:bg-slate-950/65';
 
-const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certificates }) => {
+const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certificates, skillsAggregation }) => {
   const aboutParagraphs = useMemo(() => {
     const about = introData?.about?.trim();
     if (!about) return [];
@@ -53,6 +54,45 @@ const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certif
     if (!Array.isArray(certificates)) return [];
     return Array.from(new Set(certificates.map((certificate) => certificate.field).filter(Boolean))).slice(0, 4);
   }, [certificates]);
+
+  const categorizedSkills = useMemo(() => {
+    const aggs = skillsAggregation?.skills || [];
+    const bucket = new Map<string, SkillAggregation[]>();
+    const categorize = (skill: string) => {
+      const s = skill.toLowerCase();
+      if (['python', 'typescript', 'javascript', 'sql', 'r'].includes(s)) return 'Programming Languages';
+      if (['fastapi', 'django', 'next.js', 'nextjs', 'tensorflow', 'pytorch', 'keras', 'opencv'].includes(s)) return 'Frameworks';
+      if (['power bi', 'tableau', 'qlik sense', 'qlikview', 'excel', 'plotly', 'seaborn', 'matplotlib'].includes(s)) return 'Tools';
+      if (['mysql', 'dbms', 'rdbms'].includes(s)) return 'Databases';
+      if (['llms', 'cnn', 'rnn', 'lstm', 'yolov8', 'transformers', 'nlp', 'machine learning', 'deep learning', 'reinforcement learning'].includes(s)) return 'AI/ML';
+      return 'Other';
+    };
+    const toLevel = (count: number): 'beginner' | 'intermediate' | 'advanced' | 'expert' => {
+      if (count >= 6) return 'expert';
+      if (count >= 4) return 'advanced';
+      if (count >= 2) return 'intermediate';
+      return 'beginner';
+    };
+    aggs.forEach((agg) => {
+      const category = categorize(agg.skill);
+      const level = toLevel(agg.count);
+      const enriched: SkillAggregation = { ...agg, proficiency: level };
+      const list = bucket.get(category) || [];
+      list.push(enriched);
+      bucket.set(category, list);
+    });
+    const entries = Array.from(bucket.entries()).map(([category, list]) => {
+      const sorted = list.slice().sort((a, b) => {
+        const order = { expert: 3, advanced: 2, intermediate: 1, beginner: 0 } as const;
+        const ao = order[(a.proficiency as any) || 'beginner'];
+        const bo = order[(b.proficiency as any) || 'beginner'];
+        return bo - ao || a.skill.localeCompare(b.skill);
+      });
+      return { category, skills: sorted };
+    });
+    entries.sort((a, b) => a.category.localeCompare(b.category));
+    return entries;
+  }, [skillsAggregation]);
 
   const topSkills = useMemo(() => {
     const tally = new Map<string, number>();
@@ -189,6 +229,41 @@ const AboutView: React.FC<AboutViewProps> = ({ introData, projects, jobs, certif
                         </li>
                       ))}
                     </ul>
+                  </div>
+                )}
+                {categorizedSkills.length > 0 && (
+                  <div className="space-y-5">
+                    <h4 className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">
+                      Categorized skills with proficiency
+                    </h4>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      {categorizedSkills.map(({ category, skills }) => (
+                        <div key={category}>
+                          <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500 dark:text-slate-300 mb-2">
+                            {category}
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {skills.map((s) => {
+                              const level = (s.proficiency as any) || 'beginner';
+                              const levelClass =
+                                level === 'expert' ? 'bg-purple-500' :
+                                level === 'advanced' ? 'bg-green-500' :
+                                level === 'intermediate' ? 'bg-blue-500' : 'bg-yellow-500';
+                              return (
+                                <span
+                                  key={`${category}-${s.skill}`}
+                                  className="inline-flex items-center gap-2 rounded-full bg-slate-200/80 px-3 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800/70 dark:text-slate-200"
+                                  title={`Proficiency: ${level}`}
+                                >
+                                  <span className={`inline-block w-2 h-2 rounded-full ${levelClass}`} />
+                                  {s.skill}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

@@ -8,7 +8,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ||
     : 'http://localhost:8000');
 
 // Debug logging for API configuration
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
   console.log('API Configuration:', {
     API_BASE_URL,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
@@ -16,12 +16,43 @@ if (typeof window !== 'undefined') {
   });
 }
 
+const AI_CACHE_TTL_MS = 1000 * 60 * 5;
+const AI_CACHE_MAX = 100;
+const aiCache: Map<string, { ts: number; data: any }> = new Map();
+
+function makeCacheKey(endpoint: string, options: RequestInit) {
+  const body = typeof options.body === 'string' ? options.body : JSON.stringify(options.body ?? '');
+  return `${endpoint}|${body}`;
+}
+
+function getCached(endpoint: string, options: RequestInit) {
+  const key = makeCacheKey(endpoint, options);
+  const entry = aiCache.get(key);
+  if (!entry) return undefined;
+  if (Date.now() - entry.ts > AI_CACHE_TTL_MS) {
+    aiCache.delete(key);
+    return undefined;
+  }
+  return entry.data;
+}
+
+function setCached(endpoint: string, options: RequestInit, data: any) {
+  const key = makeCacheKey(endpoint, options);
+  aiCache.set(key, { ts: Date.now(), data });
+  if (aiCache.size > AI_CACHE_MAX) {
+    const firstKey = aiCache.keys().next().value as string;
+    aiCache.delete(firstKey);
+  }
+}
+
 /**
  * Generic API fetch function with error handling
  */
 async function apiRequest(endpoint: string, options: RequestInit = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
-  console.log('API Request:', { url, method: options.method || 'GET', body: options.body });
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('API Request:', { url, method: options.method || 'GET', body: options.body });
+  }
 
   try {
     const method = (options.method || 'GET').toUpperCase();
@@ -44,17 +75,31 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
       (fetchOptions as any).next = { revalidate: 900 };
     }
 
+    if (method === 'POST' && endpoint.startsWith('/ai/')) {
+      const cached = getCached(endpoint, fetchOptions);
+      if (cached !== undefined) {
+        return cached;
+      }
+    }
+
     const response = await fetch(url, fetchOptions);
 
-    console.log('API Response status:', response.status, response.statusText);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('API Response status:', response.status, response.statusText);
+    }
 
     if (!response.ok) {
-      console.error('API Error response:', response.status, response.statusText);
+      const errorPayload = { status: response.status, statusText: response.statusText };
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('API Error response:', errorPayload);
+      }
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
 
     const result = await response.json();
-    console.log('API Response data:', result);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('API Response data:', result);
+    }
 
     // Check if the response has the APIResponse structure (data endpoints)
     if (result && typeof result === 'object' && 'data' in result && 'success' in result) {
@@ -62,15 +107,24 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
         console.error('API returned success=false:', result.message);
         throw new Error(result.message || 'API request failed');
       }
-      console.log('Extracting data from APIResponse wrapper');
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Extracting data from APIResponse wrapper');
+      }
       return result.data; // Return just the data field for data endpoints
     }
 
     // For AI endpoints and other direct responses, return the result as-is
-    console.log('Returning direct response (AI endpoint or other)');
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Returning direct response (AI endpoint or other)');
+    }
+    if (method === 'POST' && endpoint.startsWith('/ai/')) {
+      setCached(endpoint, fetchOptions, result);
+    }
     return result;
   } catch (error) {
-    console.error(`API request failed for ${endpoint}:`, error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(`API request failed for ${endpoint}:`, error);
+    }
     throw error;
   }
 }
@@ -87,6 +141,11 @@ export const dataApi = {
   // Get all projects
   async getProjects() {
     return apiRequest('/api/projects');
+  },
+
+  // Get new projects (additional feed)
+  async getNewProjects() {
+    return apiRequest('/api/projects/new');
   },
 
   // Get specific project

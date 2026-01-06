@@ -116,52 +116,41 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
       initial={false}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className={variant === 'navbar' ? 'w-full' : 'w-full'}
+      className="w-full"
     >
       {variant === 'navbar' ? (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           <input
             type="text"
-            className="flex-1 p-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
-            placeholder={`Try: "show projects", "search python" | Current: ${currentView}`}
+            className="flex-1 min-w-0 px-2 sm:px-3 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-800 transition-all placeholder:text-xs sm:placeholder:text-sm"
+            placeholder={`Search or navigate (current: ${currentView})...`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleExecute()}
           />
           <button
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+            className="px-2 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:scale-95 transition-all whitespace-nowrap font-medium"
             onClick={handleExecute}
           >
-            Execute
+            Go
           </button>
         </div>
       ) : (
         <div className="flex items-center">
-          <div className="w-full space-y-4">
+          <div className="w-full space-y-3">
             <input
               type="text"
-              className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800"
-              placeholder="Try these commands..."
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-800 shadow-sm transition-all"
+              placeholder={`Try: show projects, search python (current: ${currentView})...`}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleExecute()}
             />
-            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-              <p>Available commands:</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>&quot;show projects&quot; - View my featured projects</li>
-                <li>&quot;show experience&quot; - View my work experience</li>
-                <li>&quot;show certificates&quot; - View my certifications</li>
-                <li>&quot;about me&quot; - Learn more about my background</li>
-                <li>&quot;search python&quot; - Find everything related to a skill</li>
-                <li>&quot;skills&quot; - View my technical skills</li>
-              </ul>
-            </div>
             <button
-              className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="w-full px-4 py-2.5 sm:py-3 bg-blue-600 text-white text-sm sm:text-base rounded-lg hover:bg-blue-700 active:scale-[0.98] transition-all font-medium"
               onClick={handleExecute}
             >
-              Execute
+              Search or Navigate
             </button>
           </div>
         </div>

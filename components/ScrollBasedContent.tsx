@@ -226,7 +226,7 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
       <motion.div
         ref={el => { if (el) { sectionRefs.current[0] = el; } }}
         data-view="home"
-        className="relative flex min-h-[88vh] flex-col justify-start gap-12 snap-start"
+        className="relative flex min-h-[88vh] flex-col justify-start gap-8 sm:gap-10 lg:gap-12 snap-start px-4 sm:px-0"
         initial={false}
         animate={{ 
           scale: currentView === 'home' ? 1 : 0.992,
@@ -244,37 +244,37 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
           transition={{ duration: 0.6, ease: 'easeInOut' }}
           style={{ mixBlendMode: 'multiply' }}
         />
-        <section className="flex flex-col justify-center pt-14 md:pt-16">
-          <div className="container mx-auto px-4">
+        <section className="flex flex-col justify-center pt-10 sm:pt-14 md:pt-16">
+          <div className="container mx-auto">
             <div className="mx-auto max-w-6xl">
-              <div className="grid grid-cols-1 items-start gap-10 md:items-center lg:grid-cols-2">
+              <div className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-10">
                 {/* Left Column - Text Content */}
-                <div className="relative z-10 space-y-8 order-2 lg:order-1">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-2 h-8 brand-gradient-bar rounded-full"></div>
-                      <span className="intro-badge">Welcome to my portfolio</span>
+                <div className="relative z-10 space-y-5 sm:space-y-6 lg:space-y-8 order-2 lg:order-1 lg:flex-1">
+                  <div className="space-y-2 sm:space-y-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="w-1 sm:w-1.5 h-5 sm:h-6 lg:h-8 brand-gradient-bar rounded-full"></div>
+                      <span className="intro-badge text-[11px] sm:text-xs">Welcome to my portfolio</span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                    <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                       Hi, I&apos;m{' '}
                       <motion.span className="heading-gradient" layoutId="brand-name">{introData.name}</motion.span>
                     </h1>
-                    <h2 className="text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 font-medium">
+                    <h2 className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 font-medium">
                       {introData.title}
                     </h2>
                   </div>
                   {heroSummary && (
-                    <p className="text-lg text-gray-700 dark:text-gray-300 max-w-xl">
+                    <p className="text-sm sm:text-base lg:text-lg text-gray-700 dark:text-gray-300 max-w-xl leading-relaxed">
                       {heroSummary}
                     </p>
                   )}
 
                   {heroStats.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-2">
+                    <div className="flex flex-wrap gap-4 sm:gap-6 pt-1">
                       {heroStats.map((stat) => (
-                        <div key={stat.label} className="text-center">
-                          <div className={`text-2xl font-bold ${stat.accentClass}`}>{stat.value}</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                        <div key={stat.label} className="text-center min-w-[60px]">
+                          <div className={`text-lg sm:text-xl lg:text-2xl font-bold ${stat.accentClass}`}>{stat.value}</div>
+                          <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">{stat.label}</div>
                         </div>
                       ))}
                     </div>
@@ -282,15 +282,15 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                 </div>
 
                 {/* Right Column - Profile Image & Command Interface */}
-                <div className="relative z-10 order-1 flex flex-col items-center gap-6 lg:order-2 lg:items-end">
-                  <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
-                    <div className="absolute -inset-3 sm:-inset-4 rounded-full bg-[radial-gradient(circle_at_35%_35%,var(--accent-gradient-start)_0%,transparent_65%)] opacity-60 blur-xl" />
+                <div className="relative z-10 order-1 lg:order-2 flex flex-col items-center gap-4 sm:gap-5 lg:gap-6 lg:flex-shrink-0">
+                  <div className="relative w-32 h-32 xs:w-40 xs:h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64">
+                    <div className="absolute -inset-2 sm:-inset-3 rounded-full bg-[radial-gradient(circle_at_35%_35%,var(--accent-gradient-start)_0%,transparent_65%)] opacity-60 blur-md sm:blur-lg lg:blur-xl" />
                     <Image
                       src={introData.profileImage?.src || 'https://avatars.githubusercontent.com/u/126697615?v=4'}
                       alt={introData.profileImage?.alt || 'Portrait of ' + introData.name}
-                      width={288}
-                      height={288}
-                      sizes="(max-width: 768px) 45vw, 288px"
+                      width={256}
+                      height={256}
+                      sizes="(max-width: 475px) 128px, (max-width: 640px) 160px, (max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
                       className="w-full h-full rounded-full object-cover shadow-lg ring-1 ring-[color-mix(in_srgb,var(--accent-gradient-mid)_35%,transparent)]"
                       priority
                     />
@@ -299,10 +299,10 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                   <motion.div
                     layout
                     layoutId="command-interface"
-                    className="w-full max-w-md"
+                    className="w-full max-w-sm sm:max-w-md"
                     transition={{ layout: { duration: 0.45, ease: [0.4, 0.0, 0.2, 1] } }}
                   >
-                    <div className="rounded-3xl border border-white/10 bg-white/65 p-4 shadow-[0_22px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/15 dark:bg-slate-950/70">
+                    <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-white/65 p-3 sm:p-4 shadow-[0_12px_32px_rgba(15,23,42,0.15)] sm:shadow-[0_18px_45px_rgba(15,23,42,0.18)] backdrop-blur-xl dark:border-white/15 dark:bg-slate-950/70">
                       <CommandInterface
                         variant="full"
                         onViewChange={handleViewChange}
@@ -315,40 +315,28 @@ const ScrollBasedContent: React.FC<ScrollBasedContentProps> = ({
                 </div>
               </div>
 
-              <div className="mt-10 grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-white/15 bg-white/60 p-5 text-sm shadow-[0_18px_45px_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-slate-950/60">
-                  <h3 className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500 dark:text-slate-300">
-                    Try these commands
+              <div className="mt-8 sm:mt-10">
+                <div className="rounded-xl sm:rounded-2xl border border-white/15 bg-white/60 p-4 sm:p-5 shadow-[0_12px_32px_rgba(15,23,42,0.15)] sm:shadow-[0_18px_45px_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-slate-950/60">
+                  <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.28em] sm:tracking-[0.32em] text-slate-500 dark:text-slate-300">
+                    At a Glance
                   </h3>
-                  <ul className="mt-4 space-y-2 text-slate-600 dark:text-slate-300">
-                    <li>• show projects</li>
-                    <li>• show experience</li>
-                    <li>• highlight ai builds</li>
-                    <li>• contact me</li>
-                  </ul>
-                </div>
-
-                <div className="rounded-2xl border border-white/15 bg-white/60 p-5 text-sm shadow-[0_18px_45px_rgba(15,23,42,0.18)] dark:border-white/15 dark:bg-slate-950/60">
-                  <h3 className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500 dark:text-slate-300">
-                    Snapshot
-                  </h3>
-                  <div className="mt-4 grid grid-cols-2 gap-3 text-slate-700 dark:text-slate-200">
-                    <div>
-                      <div className="text-lg font-bold text-sky-500 dark:text-sky-400">{projectCount}</div>
-                      <div className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Projects</div>
+                  <div className="mt-3 sm:mt-4 grid grid-cols-4 gap-3 sm:gap-4 text-slate-700 dark:text-slate-200">
+                    <div className="text-center">
+                      <div className="text-base sm:text-lg font-bold text-sky-500 dark:text-sky-400">{projectCount}</div>
+                      <div className="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Projects</div>
                     </div>
-                    <div>
-                      <div className="text-lg font-bold text-emerald-500 dark:text-emerald-400">{jobCount}</div>
-                      <div className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Roles</div>
+                    <div className="text-center">
+                      <div className="text-base sm:text-lg font-bold text-emerald-500 dark:text-emerald-400">{jobCount}</div>
+                      <div className="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Roles</div>
                     </div>
-                    <div>
-                      <div className="text-lg font-bold text-amber-500 dark:text-amber-400">{certificateCount}</div>
-                      <div className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Certs</div>
+                    <div className="text-center">
+                      <div className="text-base sm:text-lg font-bold text-amber-500 dark:text-amber-400">{certificateCount}</div>
+                      <div className="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Certs</div>
                     </div>
                     {topSkills[0] && (
-                      <div className="col-span-2">
-                        <div className="text-lg font-bold text-violet-500 dark:text-violet-400">{topSkills[0]}</div>
-                        <div className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Core Focus</div>
+                      <div className="text-center">
+                        <div className="text-base sm:text-lg font-bold text-violet-500 dark:text-violet-400 truncate">{topSkills[0]}</div>
+                        <div className="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Focus</div>
                       </div>
                     )}
                   </div>

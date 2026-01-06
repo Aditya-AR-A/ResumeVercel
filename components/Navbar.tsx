@@ -12,6 +12,8 @@ const NAV_LINKS = [
   { label: 'Projects', href: '/projects' },
   { label: 'Experience', href: '/experience' },
   { label: 'Certificates', href: '/certificates' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navbar() {
@@ -93,10 +95,10 @@ export default function Navbar() {
         <div className="pt-4">
           <div className="container mx-auto px-0">
             <div
-              className={`relative flex w-full items-center justify-between gap-6 rounded-2xl border border-white/10 px-5 py-3 transition-all duration-300 backdrop-blur-2xl ${
+              className={`relative flex w-full items-center justify-between gap-6 rounded-2xl border border-[var(--color-border)] px-5 py-3 transition-all duration-300 navbar-blur ${
                 isScrolled
-                  ? 'bg-white/75 shadow-[0_20px_70px_rgba(15,23,42,0.28)] dark:bg-slate-950/70'
-                  : 'bg-white/40 shadow-[0_10px_45px_rgba(15,23,42,0.18)] dark:bg-slate-950/50'
+                  ? 'shadow-[0_20px_70px_rgba(15,23,42,0.28)]'
+                  : 'shadow-[0_10px_45px_rgba(15,23,42,0.18)]'
               }`}
             >
               <div className="flex items-center gap-4">
@@ -104,7 +106,7 @@ export default function Navbar() {
                   id="sidebar-inline-toggle"
                   data-sidebar-toggle
                   onClick={() => window.dispatchEvent(new Event('sidebar:toggle'))}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/20 text-slate-600 transition hover:border-white/30 hover:bg-white/30 dark:text-slate-200"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-alt)] text-text transition hover:brightness-105"
                   aria-label="Toggle sidebar"
                 >
                   <span className="sr-only">Toggle sidebar</span>
@@ -127,8 +129,8 @@ export default function Navbar() {
                       href={link.href}
                       className={`text-sm font-medium transition duration-200 ${
                         isActiveLink(link.href)
-                          ? 'text-slate-900 dark:text-white'
-                          : 'text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white'
+                          ? 'text-textStrong'
+                          : 'text-textMuted hover:text-textStrong'
                       }`}
                     >
                       {link.label}
@@ -146,7 +148,7 @@ export default function Navbar() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setIsCommandOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/20 px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-white/30 hover:bg-white/30 dark:text-slate-200"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-alt)] px-4 py-2 text-sm font-medium text-text transition hover:brightness-105"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                     <path d="M5 12h14" />

@@ -9,7 +9,7 @@ type SkillTooltipContentProps = {
 
 const SkillTooltipContent: React.FC<SkillTooltipContentProps> = ({ projects, jobs, certificates }) => {
   return (
-    <div className="p-4 bg-white shadow-lg rounded-md text-sm text-gray-800">
+    <div role="tooltip" className="p-4 rounded-lg text-sm bg-slate-900/95 text-white shadow-tooltip ring-1 ring-white/10">
       {projects && projects.length > 0 && (
         <div className="mb-4">
           <h3 className="font-bold mb-2">Projects</h3>
@@ -44,7 +44,7 @@ const SkillTooltipContent: React.FC<SkillTooltipContentProps> = ({ projects, job
       )}
 
       {(!projects || projects.length === 0) && (!jobs || jobs.length === 0) && (!certificates || certificates.length === 0) && (
-        <p>No related data found.</p>
+        <p className="text-slate-300">No related data found.</p>
       )}
     </div>
   );

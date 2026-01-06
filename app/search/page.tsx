@@ -81,8 +81,30 @@ export default async function SearchPage({ searchParams = {} }: SearchPageProps)
     },
   ] : undefined
 
+  const suggestions: string[] = (() => {
+    if (!searchResult || !trimmedQuery) return []
+    const types = (searchResult.sections || []).map((s) => s.type)
+    const unique = Array.from(new Set(types))
+    const base: string[] = []
+    if (unique.includes('projects')) base.push(`Show more projects using ${trimmedQuery}`)
+    if (unique.includes('jobs')) base.push(`Roles where ${trimmedQuery} was key`)
+    if (unique.includes('certificates')) base.push(`Certificates related to ${trimmedQuery}`)
+    base.push(`What are related skills to ${trimmedQuery}?`)
+    base.push(`Summarize experience with ${trimmedQuery}`)
+    return base
+  })()
+
+  const relatedQuestions: string[] = (() => {
+    if (!trimmedQuery) return []
+    return [
+      `How have you applied ${trimmedQuery} in production?`,
+      `What projects best showcase ${trimmedQuery}?`,
+      `Which certificates validate ${trimmedQuery} expertise?`,
+    ]
+  })()
+
   return (
-    <div className="space-y-12 py-12 lg:py-16">
+    <div className="space-y-8 sm:space-y-12 py-8 sm:py-12 lg:py-16 px-4 sm:px-0">
       <PageHero
         eyebrow="Search"
         title={trimmedQuery ? `Results for "${trimmedQuery}"` : 'Search the Portfolio'}
@@ -105,13 +127,13 @@ export default async function SearchPage({ searchParams = {} }: SearchPageProps)
 
       {!trimmedQuery && (
         <Section background="gray" containerClassName="max-w-5xl space-y-6">
-          <div className="space-y-4 text-slate-600 dark:text-slate-300">
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">How search works</h2>
-            <p>
+          <div className="space-y-3 sm:space-y-4 text-slate-600 dark:text-slate-300">
+            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">How search works</h2>
+            <p className="text-sm sm:text-base">
               Type a keyword like &quot;python&quot; or &quot;fastapi&quot; to see relevant projects, roles, and certificates. Ask broader questions
               such as &ldquo;What&apos;s your AI experience?&rdquo; to receive a detailed AI-crafted response instead.
             </p>
-            <div className="grid gap-4 sm:grid-cols-2 text-sm">
+            <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 text-xs sm:text-sm">
               <div className="rounded-2xl border border-white/10 bg-white/60 p-5 backdrop-blur dark:bg-slate-900/40">
                 <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">Keyword ideas</h3>
                 <ul className="mt-3 space-y-2 text-slate-600 dark:text-slate-300">
@@ -152,13 +174,13 @@ export default async function SearchPage({ searchParams = {} }: SearchPageProps)
           </div>
 
           {searchResult.summary.highlights && Object.keys(searchResult.summary.highlights).length > 0 && (
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {Object.entries(searchResult.summary.highlights).map(([key, values]) => (
-                <div key={key} className="rounded-2xl border border-white/10 bg-white/60 p-5 dark:bg-slate-900/40">
-                  <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">
+                <div key={key} className="rounded-2xl border border-white/10 bg-white/60 p-4 sm:p-5 dark:bg-slate-900/40">
+                  <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] sm:tracking-[0.3em] text-slate-500 dark:text-slate-300">
                     {SECTION_TITLES[key] || key}
                   </h3>
-                  <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                  <ul className="mt-2 sm:mt-3 space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
                     {values.map((item) => (
                       <li key={item}>• {item}</li>
                     ))}
@@ -171,18 +193,47 @@ export default async function SearchPage({ searchParams = {} }: SearchPageProps)
       )}
 
       {searchResult?.llm_response && (
-        <Section background="gradient" containerClassName="max-w-5xl space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">AI Insight</h2>
-          <p className="text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-line">
-            {searchResult.llm_response}
-          </p>
+        <Section background="gradient" containerClassName="max-w-5xl space-y-3 sm:space-y-4">
+          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-white">AI Insight</h2>
+          <div className="rounded-2xl border border-white/10 bg-white/80 dark:bg-slate-900/60 p-4 sm:p-6">
+            <p className="text-sm sm:text-base text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-line">
+              {searchResult.llm_response}
+            </p>
+          </div>
+        </Section>
+      )}
+
+      {trimmedQuery && (suggestions.length > 0 || relatedQuestions.length > 0) && (
+        <Section background="default" containerClassName="max-w-5xl space-y-6">
+          <div className="grid gap-4 sm:grid-cols-2">
+            {suggestions.length > 0 && (
+              <div className="rounded-2xl border border-white/10 bg-white/60 p-4 backdrop-blur dark:bg-slate-900/40">
+                <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">Suggestions</h3>
+                <ul className="mt-3 space-y-2 text-sm text-slate-700 dark:text-slate-200">
+                  {suggestions.map((s) => (
+                    <li key={s}>• {s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {relatedQuestions.length > 0 && (
+              <div className="rounded-2xl border border-white/10 bg-white/60 p-4 backdrop-blur dark:bg-slate-900/40">
+                <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-300">Related Questions</h3>
+                <ul className="mt-3 space-y-2 text-sm text-slate-700 dark:text-slate-200">
+                  {relatedQuestions.map((q) => (
+                    <li key={q}>• {q}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </Section>
       )}
 
       {trimmedQuery && searchResult && searchResult.total_count === 0 && !searchResult.llm_response && (
-        <Section background="default" containerClassName="max-w-4xl space-y-4">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">No matches found</h2>
-          <p className="text-slate-600 dark:text-slate-300">
+        <Section background="default" containerClassName="max-w-4xl space-y-3 sm:space-y-4">
+          <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white">No matches found</h2>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300">
             Try another keyword or ask a broader question to let the AI help you.
           </p>
         </Section>

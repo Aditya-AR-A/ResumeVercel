@@ -6,7 +6,7 @@ import ExperienceView from './views/ExperienceView';
 import ProjectsView from './views/ProjectsView';
 import CertificatesView from './views/CertificatesView';
 import AboutView from './views/AboutView';
-import { Project, Job, Certificate, IntroData } from '@/types/interfaces';
+import { Project, Job, Certificate, IntroData, SkillsResponse } from '@/types/interfaces';
 
 export type ViewType = 'home' | 'about' | 'experience' | 'projects' | 'certificates';
 
@@ -16,6 +16,7 @@ interface DynamicContentManagerProps {
   projects: Project[];
   jobs: Job[];
   certificates: Certificate[];
+  skillsAggregation?: SkillsResponse;
 }
 
 const DynamicContentManager: React.FC<DynamicContentManagerProps> = ({
@@ -23,7 +24,8 @@ const DynamicContentManager: React.FC<DynamicContentManagerProps> = ({
   introData,
   projects,
   jobs,
-  certificates
+  certificates,
+  skillsAggregation
 }) => {
   // Move the function logic into the client component
   const getRelatedProjects = (jobId: string) => {
@@ -39,6 +41,7 @@ const DynamicContentManager: React.FC<DynamicContentManagerProps> = ({
             projects={projects}
             jobs={jobs}
             certificates={certificates}
+            skillsAggregation={skillsAggregation}
           />
         );
       case 'experience':

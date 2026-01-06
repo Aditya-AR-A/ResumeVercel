@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { SkillTooltipProps, Project, Job, Certificate } from '@/types/interfaces';
 import SkillTooltipContent from './SkillTooltipContent';
+import Tooltip from './Tooltip';
 import { dataApi } from '@/utils/api';
 
 type RelatedData = {
@@ -103,28 +104,33 @@ export default function SkillTooltip({
     )
   }
 
-  return (
-    <div 
-      className="relative inline-block"
-      onMouseEnter={() => setIsVisible(true)}
-      onMouseLeave={() => setIsVisible(false)}
+  const trigger = (
+    <button
+      type="button"
+      className={`skill-tag cursor-help ${getLevelColor()}`}
+      aria-describedby={`skill-${skill.replace(/\s+/g, '-')}-tooltip`}
     >
-      {children || (
-        <span className={`skill-tag cursor-help ${getLevelColor()}`}>
-          {getLevelBadge()}
-          {skill}
-        </span>
-      )}
-      
-      {isVisible && (
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-10">
-          <SkillTooltipContent 
-            projects={relatedProjects} 
-            jobs={relatedJobs} 
-            certificates={relatedCertificates} 
+      {getLevelBadge()}
+      {skill}
+    </button>
+  )
+
+  return (
+    <Tooltip
+      content={
+        <div id={`skill-${skill.replace(/\s+/g, '-')}-tooltip`}>
+          <SkillTooltipContent
+            projects={relatedProjects}
+            jobs={relatedJobs}
+            certificates={relatedCertificates}
           />
         </div>
-      )}
-    </div>
+      }
+      placement="top"
+      onOpenChange={(o) => setIsVisible(o)}
+      open={isVisible}
+    >
+      {children || trigger}
+    </Tooltip>
   )
 }

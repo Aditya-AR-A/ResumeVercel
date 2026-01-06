@@ -29,6 +29,7 @@ const formatKeyLabel = (rawKey: string) => {
 
 export default function ProjectDetailView({ project, relatedJob }: ProjectDetailProps) {
   const heroThumbnail = resolveAssetUrl(project.thumbnail)
+  const isHeroSvg = typeof heroThumbnail === 'string' && heroThumbnail.toLowerCase().endsWith('.svg')
 
   const highlightList = project.highlights ?? []
   const metricEntries = project.metrics
@@ -101,6 +102,7 @@ export default function ProjectDetailView({ project, relatedJob }: ProjectDetail
               className="relative z-[1] h-auto w-full object-cover"
               sizes="(max-width: 768px) 90vw, (max-width: 1280px) 800px, 1000px"
               priority
+              unoptimized={isHeroSvg}
             />
           </div>
         )}

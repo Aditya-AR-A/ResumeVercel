@@ -72,7 +72,7 @@ export default async function ProjectsPage() {
       <PageHero
         eyebrow="Projects"
         title="All Projects"
-        description="Every build, experiment, and deployment that shaped my journey across AI, automation, and product engineering."
+        description="Selected AI, Python, and analytics work, alongside earlier learning projects. Each project describes my own contribution."
         stats={heroStats}
         actions={(
           <>

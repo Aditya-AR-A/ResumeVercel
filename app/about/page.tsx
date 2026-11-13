@@ -67,7 +67,7 @@ export default async function AboutPage() {
         align="left"
       />
 
-      <Section background="default" containerClassName="max-w-5xl">
+      <Section background="default" className="p-5 sm:p-8" containerClassName="max-w-6xl">
         <AboutView introData={introData || defaultIntro()} projects={projects} jobs={jobs} certificates={certificates} />
       </Section>
     </div>

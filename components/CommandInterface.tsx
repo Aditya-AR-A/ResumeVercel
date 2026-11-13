@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+
 import { ViewType } from './DynamicContentManager';
 import { useRouter } from 'next/navigation';
 
@@ -10,6 +10,7 @@ interface CommandInterfaceProps {
   onViewChange?: (view: ViewType) => void;
   currentView?: ViewType;
   value?: string; // external controlled value
+  onNavigate?: () => void;
   onValueChange?: (v: string) => void; // external setter
 }
 
@@ -48,7 +49,7 @@ const resolveViewFromCandidate = (candidate: string): ViewType | null => {
   return null;
 };
 
-const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChange, currentView = 'home', value, onValueChange }) => {
+const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChange, currentView = 'home', value, onValueChange, onNavigate }) => {
   const isControlled = typeof value === 'string' && typeof onValueChange === 'function';
   const [uncontrolled, setUncontrolled] = useState('');
   const input = isControlled ? value! : uncontrolled;
@@ -65,6 +66,8 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
   const handleExecute = () => {
     const rawCommand = input.trim();
     const command = rawCommand.toLowerCase();
+    if (!rawCommand) return;
+    if (/^(contact|contact me|show contact|open contact|get in touch)$/.test(command)) { router.push('/contact'); onNavigate?.(); setInput(''); return; }
 
     const redirectToSearch = () => {
       if (!rawCommand) {
@@ -77,6 +80,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
       }
       router.push(`/search?query=${encodeURIComponent(queryValue.trim())}`);
       setInput('');
+      onNavigate?.();
     };
 
     const determineViewTarget = (): ViewType | null => {
@@ -110,18 +114,12 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
   };
 
   return (
-    <motion.div
-      layout
-      layoutId="command-interface"
-      initial={false}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="w-full"
-    >
+<div className="w-full">
       {variant === 'navbar' ? (
         <div className="flex items-center gap-1.5 sm:gap-3">
           <input
-            type="text"
+            aria-label="Search portfolio or enter a navigation command"
+              type="search"
             className="flex-1 min-w-0 px-2 sm:px-3 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-800 transition-all placeholder:text-xs sm:placeholder:text-sm"
             placeholder={`Search or navigate (current: ${currentView})...`}
             value={input}
@@ -139,7 +137,8 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
         <div className="flex items-center">
           <div className="w-full space-y-3">
             <input
-              type="text"
+              aria-label="Search portfolio or enter a navigation command"
+              type="search"
               className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-800 shadow-sm transition-all"
               placeholder={`Try: show projects, search python (current: ${currentView})...`}
               value={input}
@@ -155,7 +154,7 @@ const CommandInterface: React.FC<CommandInterfaceProps> = ({ variant, onViewChan
           </div>
         </div>
       )}
-    </motion.div>
+    </div>
   )
 };
 

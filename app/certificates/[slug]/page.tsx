@@ -23,6 +23,7 @@ async function loadCertificates(): Promise<Certificate[]> {
 
 function findCertificateBySlug(certificates: Certificate[], slug: string): Certificate | undefined {
   return certificates.find((item) => {
+    if (item.originalName && [toSlug(item.originalName), toLegacyName(item.originalName)].includes(slug)) return true
     const currentSlug = toSlug(item.name)
     if (currentSlug === slug) {
       return true

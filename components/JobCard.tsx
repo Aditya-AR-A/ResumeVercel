@@ -1,3 +1,4 @@
+import { jobDuration } from '@/utils/experience';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -58,23 +59,11 @@ export default function JobCard({
     }
   };
 
-  const getDuration = () => {
-    const start = new Date(startDate);
-    const end = isCurrent ? new Date() : new Date(endDate || '');
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const months = Math.round(diffDays / 30);
-    
-    if (months < 12) return `${months} month${months !== 1 ? 's' : ''}`;
-    const years = Math.floor(months / 12);
-    const remainingMonths = months % 12;
-    if (remainingMonths === 0) return `${years} year${years !== 1 ? 's' : ''}`;
-    return `${years}y ${remainingMonths}m`;
-  };
+  const getDuration = () => jobDuration({ startDate, endDate, isCurrent });
 
   const compactContent = (
       <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl border border-transparent p-6 shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex flex-col sm:flex-row gap-3 items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
             {companyLogo ? (
               <Image
@@ -94,7 +83,7 @@ export default function JobCard({
             )}
             <div className="flex flex-col">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                {title}
+                {href ? <Link href={href} className="hover:underline">{title}</Link> : title}
               </h3>
               <p className="accent-cert font-semibold">
                 {company}
@@ -149,7 +138,7 @@ export default function JobCard({
           )}
           <div className="flex flex-col">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-              {title}
+              {href ? <Link href={href} className="hover:underline">{title}</Link> : title}
             </h3>
             <p className="text-xl accent-cert font-semibold mb-1">
               {company}
@@ -306,14 +295,6 @@ export default function JobCard({
   );
 
   const cardContent = compact ? compactContent : fullContent;
-
-  if (href) {
-    return (
-      <Link href={href} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 rounded-xl">
-        {cardContent}
-      </Link>
-    );
-  }
 
   return cardContent;
 }

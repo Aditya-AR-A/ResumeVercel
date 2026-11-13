@@ -1,3 +1,4 @@
+import { intro, projects, jobs, certificates, getSkills, searchPortfolio } from './portfolio';
 /**
  * API utility functions for communicating with the FastAPI backend
  */
@@ -133,71 +134,19 @@ async function apiRequest(endpoint: string, options: RequestInit = {}) {
  * Data API functions
  */
 export const dataApi = {
-  // Get intro data
-  async getIntro() {
-    return apiRequest('/api/intro');
-  },
-
-  // Get all projects
-  async getProjects() {
-    return apiRequest('/api/projects');
-  },
-
-  // Get new projects (additional feed)
-  async getNewProjects() {
-    return apiRequest('/api/projects/new');
-  },
-
-  // Get specific project
-  async getProject(id: string) {
-    return apiRequest(`/api/projects/${id}`);
-  },
-
-  // Get all jobs
-  async getJobs() {
-    return apiRequest('/api/jobs');
-  },
-
-  // Get specific job
-  async getJob(id: string) {
-    return apiRequest(`/api/jobs/${id}`);
-  },
-
-  // Get all certificates
-  async getCertificates() {
-    return apiRequest('/api/certificates');
-  },
-
-  // Get specific certificate
-  async getCertificate(id: string) {
-    return apiRequest(`/api/certificates/${id}`);
-  },
-
-  // Unified search
-  async search(query: string, filters?: any) {
-    const params = new URLSearchParams({ q: query, ...filters });
-    return apiRequest(`/api/search?${params}`);
-  },
-
-  // Get aggregated skills
-  async getSkills() {
-    return apiRequest('/api/skills');
-  },
-
-  // Get timeline
-  async getTimeline() {
-    return apiRequest('/api/timeline');
-  },
-
-  // Get portfolio stats
-  async getStats() {
-    return apiRequest('/api/stats');
-  },
-
-  // Get global layout configuration
-  async getLayout() {
-    return apiRequest('/api/layout');
-  },
+  async getIntro() { return intro; },
+  async getProjects() { return projects; },
+  async getNewProjects() { return []; },
+  async getProject(id: string) { return projects.find(p => p.id === id) ?? null; },
+  async getJobs() { return jobs; },
+  async getJob(id: string) { return jobs.find(j => j.id === id) ?? null; },
+  async getCertificates() { return certificates; },
+  async getCertificate(id: string) { return certificates.find(c => c.name === id) ?? null; },
+  async search(query: string) { return searchPortfolio(query); },
+  async getSkills() { return getSkills(); },
+  async getTimeline() { return jobs; },
+  async getStats() { return { projects: projects.length, jobs: jobs.length, certificates: certificates.length }; },
+  async getLayout() { return null; },
 };
 
 /**

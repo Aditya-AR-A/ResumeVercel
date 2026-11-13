@@ -23,7 +23,7 @@ export default function Card({
 
   const content = (
     <div
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--color-border)] bg-surfaceAlt p-6 shadow-[0_25px_60px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-[3px] hover:shadow-[0_35px_90px_rgba(59,130,246,0.25)]"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-surfaceAlt p-6 shadow-sm transition-transform duration-300 hover:-translate-y-[3px] hover:shadow-md"
     >
       {resolvedImageUrl && (
           <div className="relative mb-6 overflow-hidden rounded-[1.3rem] border border-[var(--color-border)] bg-[color-mix(in srgb,var(--color-surface) 15%, transparent)]">

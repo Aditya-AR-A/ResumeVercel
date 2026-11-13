@@ -8,7 +8,7 @@ export default function Section({
   containerClassName = '',
   background = 'default'
 }: SectionProps) {
-  const baseClasses = 'relative overflow-hidden rounded-3xl border border-white/10 shadow-[0_30px_80px_rgba(15,23,42,0.28)] backdrop-blur-2xl dark:border-white/5';
+  const baseClasses = 'relative rounded-2xl border border-[var(--color-border)]';
 
   const getBackgroundClasses = () => {
     switch (background) {

@@ -1,3 +1,4 @@
+import { jobDuration } from '@/utils/experience'
 import Image from 'next/image'
 import SkillTag from '@/components/SkillTag'
 import FeaturedBadge from '@/components/FeaturedBadge'
@@ -32,35 +33,7 @@ export default function JobDetailView({ job, projects = [] }: JobDetailProps) {
   const startDate = formatDate(job.startDate)
   const endDate = job.isCurrent ? 'Present' : formatDate(job.endDate) ?? 'N/A'
 
-  const durationLabel = (() => {
-    if (!job.startDate) {
-      return null
-    }
-
-    const start = new Date(job.startDate)
-    const end = job.isCurrent || !job.endDate ? new Date() : new Date(job.endDate)
-    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-      return null
-    }
-
-    const months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth())
-    if (months < 1) {
-      return null
-    }
-
-    const years = Math.floor(months / 12)
-    const remainingMonths = months % 12
-
-    const parts: string[] = []
-    if (years > 0) {
-      parts.push(`${years} ${years === 1 ? 'yr' : 'yrs'}`)
-    }
-    if (remainingMonths > 0) {
-      parts.push(`${remainingMonths} mo`)
-    }
-
-    return parts.join(' ')
-  })()
+  const durationLabel = jobDuration(job)
 
   const heroStats = [
     {

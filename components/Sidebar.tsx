@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { PROFILE_TITLE } from '@/utils/portfolio';
 import ThemeToggle from './ThemeToggle';
 import { getAssetUrl } from '@/utils/assets';
 
@@ -19,29 +20,10 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
   const resumeLink = getAssetUrl('resume.pdf');
   const pathname = usePathname();
 
-  // Close sidebar when clicking outside
+  const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    const handleDocumentClick = (event: MouseEvent) => {
-      if (!isOpen) return;
-      const target = event.target as Node;
-      const sidebar = document.getElementById('sidebar');
-      const toggleButtons = Array.from(document.querySelectorAll('[data-sidebar-toggle]')) as HTMLElement[];
-      if (sidebar?.contains(target)) return; // inside sidebar
-      if (toggleButtons.some(btn => btn.contains(target))) return; // clicked a toggle button
-      setIsOpen(false);
-    };
-
-    if (isOpen) {
-      document.addEventListener('click', handleDocumentClick);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.removeEventListener('click', handleDocumentClick);
-      document.body.style.overflow = 'unset';
-    };
+    if (isOpen && !dialog.current?.open) dialog.current?.showModal();
+    else if (!isOpen && dialog.current?.open) dialog.current?.close();
   }, [isOpen]);
 
   // Close sidebar on route change
@@ -79,6 +61,8 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
     { href: '/projects', label: 'Projects' },
     { href: '/experience', label: 'Experience' },
     { href: '/certificates', label: 'Certificates' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
   ];
 
   const isActive = (href: string) => {
@@ -88,21 +72,11 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
 
   return (
     <>
-      {/* Overlay */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300" />
-      )}
-
-      {/* Sidebar */}
-      <div
-        id="sidebar"
-        className={`fixed top-0 left-0 h-full w-80 max-w-[90vw] sm:w-80 bg-white dark:bg-gray-900 shadow-2xl z-40 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
+      <dialog ref={dialog} id="sidebar" aria-label="Navigation menu" onClose={() => setIsOpen(false)} onClick={event => { if (event.target === event.currentTarget) setIsOpen(false); }} className="sidebar-dialog fixed left-0 top-0 m-0 h-dvh max-h-dvh w-80 max-w-[90vw] border-0 bg-white p-0 text-text shadow-2xl dark:bg-gray-900">
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 pt-20 border-b border-gray-200 dark:border-gray-700">
+          <div className="relative p-6 pt-16 border-b border-gray-200 dark:border-gray-700">
+            <button onClick={closeSidebar} aria-label="Close navigation menu" className="absolute right-4 top-3 h-10 w-10 rounded-lg hover:bg-surfaceAlt">✕</button>
             <Link 
               href="/" 
               className="text-2xl font-bold text-gray-900 dark:text-white hover:accent-cert transition-colors"
@@ -110,17 +84,19 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
               Aditya Raj
             </Link>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-              Data Scientist & ML Engineer
+              {PROFILE_TITLE}
             </p>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-6">
-            <ul className="space-y-3">
+          <nav className="flex-1 overflow-y-auto p-6">
+            <ul className="space-y-1">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    onClick={closeSidebar}
+                    aria-current={isActive(item.href) ? "page" : undefined}
                     className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 group ${
                       isActive(item.href)
                         ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-l-4 border-blue-500'
@@ -194,7 +170,7 @@ export default function Sidebar({ socialLinks }: SidebarProps) {
             </div>
           </div>
         </div>
-      </div>
+      </dialog>
     </>
   );
 }

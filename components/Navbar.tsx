@@ -1,215 +1,42 @@
 "use client";
+import { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import CommandInterface from './CommandInterface';
+import type { ViewType } from './DynamicContentManager';
+import { getAssetUrl } from '@/utils/assets';
 
-import React, { useEffect, useMemo, useState } from 'react'
-import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import CommandInterface from './CommandInterface'
-import type { ViewType } from './DynamicContentManager'
-import { getAssetUrl } from '@/utils/assets'
-
-const NAV_LINKS = [
-  { label: 'Projects', href: '/projects' },
-  { label: 'Experience', href: '/experience' },
-  { label: 'Certificates', href: '/certificates' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-]
-
+const links = ['Projects', 'Experience', 'About', 'Contact'];
 export default function Navbar() {
-  const router = useRouter()
-  const pathname = usePathname()
-  const resumeLink = useMemo(() => getAssetUrl('resume.pdf'), [])
-
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isCommandOpen, setIsCommandOpen] = useState(false)
-
+  const pathname = usePathname(), router = useRouter();
+  const palette = useRef<HTMLDialogElement>(null);
+  const open = () => { window.dispatchEvent(new Event('sidebar:close')); palette.current?.showModal(); palette.current?.querySelector('input')?.focus(); };
+  const close = () => palette.current?.close();
+  useEffect(() => { close(); }, [pathname]);
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 32)
-    handleScroll()
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (!isCommandOpen) {
-      return undefined
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsCommandOpen(false)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isCommandOpen])
-
-  useEffect(() => {
-    if (typeof document === 'undefined') {
-      return
-    }
-
-    if (isCommandOpen) {
-      const previous = document.body.style.overflow
-      document.body.style.overflow = 'hidden'
-      return () => {
-        document.body.style.overflow = previous
-      }
-    }
-  }, [isCommandOpen])
-
-  const handleCommandViewChange = (view: ViewType) => {
-    const routeMap: Partial<Record<ViewType, string>> = {
-      home: '/',
-      projects: '/projects',
-      experience: '/experience',
-  certificates: '/certificates',
-      about: '/#about',
-    }
-
-    const target = routeMap[view]
-    if (target) {
-      router.push(target)
-    }
-
-    setIsCommandOpen(false)
-  }
-
-  const isActiveLink = (href: string) => {
-    if (href.startsWith('/#')) {
-      return pathname === '/'
-    }
-    return pathname === href || pathname.startsWith(`${href}/`)
-  }
-
-  return (
-    <>
-      <motion.nav
-        initial={{ y: -40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="pointer-events-auto fixed left-0 right-0 top-0 z-50"
-      >
-        <div className="pt-4">
-          <div className="container mx-auto px-0">
-            <div
-              className={`relative flex w-full items-center justify-between gap-6 rounded-2xl border border-[var(--color-border)] px-5 py-3 transition-all duration-300 navbar-blur ${
-                isScrolled
-                  ? 'shadow-[0_20px_70px_rgba(15,23,42,0.28)]'
-                  : 'shadow-[0_10px_45px_rgba(15,23,42,0.18)]'
-              }`}
-            >
-              <div className="flex items-center gap-4">
-                <button
-                  id="sidebar-inline-toggle"
-                  data-sidebar-toggle
-                  onClick={() => window.dispatchEvent(new Event('sidebar:toggle'))}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-alt)] text-text transition hover:brightness-105"
-                  aria-label="Toggle sidebar"
-                >
-                  <span className="sr-only">Toggle sidebar</span>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <path d="M4 7h16" />
-                    <path d="M4 12h16" />
-                    <path d="M4 17h16" />
-                  </svg>
-                </button>
-
-                <Link href="/" className="heading-gradient text-lg font-semibold sm:text-xl">
-                  Aditya Raj
-                </Link>
-              </div>
-
-              <div className="hidden items-center gap-6 md:flex">
-                {NAV_LINKS.map((link) => (
-                  <div key={link.href} className="relative">
-                    <Link
-                      href={link.href}
-                      className={`text-sm font-medium transition duration-200 ${
-                        isActiveLink(link.href)
-                          ? 'text-textStrong'
-                          : 'text-textMuted hover:text-textStrong'
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                    {isActiveLink(link.href) && (
-                      <motion.span
-                        layoutId="nav-active-indicator"
-                        className="absolute inset-x-0 -bottom-2 h-0.5 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setIsCommandOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-alt)] px-4 py-2 text-sm font-medium text-text transition hover:brightness-105"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <path d="M5 12h14" />
-                    <path d="M12 5l7 7-7 7" />
-                  </svg>
-                  Command
-                </button>
-                <a
-                  href={resumeLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(59,130,246,0.35)] transition hover:shadow-[0_20px_45px_rgba(59,130,246,0.45)]"
-                >
-                  Resume
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <path d="M7 7h10v10" />
-                    <path d="M7 17 17 7" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
+    const onKey = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); open(); }
+    };
+    window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey);
+  }, []);
+  const navigate = (view: ViewType) => { close(); router.push(view === 'home' ? '/' : `/${view}`); };
+  return <>
+    <nav aria-label="Main navigation" className="fixed inset-x-0 top-0 z-40 border-b border-[var(--color-border)] navbar-blur">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-2 px-4 sm:px-6 lg:px-8">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+          <button onClick={() => window.dispatchEvent(new Event('sidebar:toggle'))} aria-label="Open navigation menu" aria-haspopup="dialog" className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--color-border)] hover:bg-surfaceAlt"><svg aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeWidth="1.5" d="M4 7h16M4 12h16M4 17h16" /></svg></button>
+          <Link href="/" className="whitespace-nowrap font-semibold text-textStrong sm:text-xl">Aditya Raj<span className="text-blue-500">.</span></Link>
         </div>
-      </motion.nav>
-
-      <AnimatePresence>
-        {isCommandOpen && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 px-4 py-8 backdrop-blur"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 20, opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="w-full max-w-2xl rounded-3xl border border-white/15 bg-white/10 p-6 shadow-[0_30px_120px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:bg-slate-950/80"
-            >
-              <div className="mb-4 flex items-center justify-between gap-4">
-                <div>
-                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Command Palette</h2>
-                  <p className="text-sm text-slate-500 dark:text-slate-300">Type a command like “show projects” or “contact me”.</p>
-                </div>
-                <button
-                  onClick={() => setIsCommandOpen(false)}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-slate-500 transition hover:border-white/30 hover:bg-white/20 dark:text-slate-300"
-                  aria-label="Close command palette"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <path d="M6 6l12 12" />
-                    <path d="M6 18L18 6" />
-                  </svg>
-                </button>
-              </div>
-              <CommandInterface variant="full" onViewChange={handleCommandViewChange} />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  )
+        <div className="hidden items-center gap-6 lg:flex">{links.map(label => { const href = `/${label.toLowerCase()}`; return <Link key={href} href={href} aria-current={pathname.startsWith(href) ? 'page' : undefined} className={`text-sm ${pathname.startsWith(href) ? 'text-blue-600 dark:text-blue-400' : 'text-textMuted hover:text-textStrong'}`}>{label}</Link>; })}</div>
+        <div className="flex items-center gap-2">
+          <button onClick={open} aria-label="Search or navigate" aria-haspopup="dialog" className="inline-flex h-11 items-center gap-2 rounded-xl border border-[var(--color-border)] px-3 text-sm hover:bg-surfaceAlt"><svg aria-hidden="true" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" /><path d="m15 15 5 5" /></svg><span className="hidden sm:inline">Search</span><kbd className="hidden xl:inline text-xs text-textMuted">⌘ / Ctrl K</kbd></button>
+          <a href={getAssetUrl('resume.pdf')} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 items-center rounded-xl bg-blue-600 px-3 text-sm font-semibold text-white hover:bg-blue-700 sm:px-4">Résumé ↗</a>
+        </div>
+      </div>
+    </nav>
+    <dialog ref={palette} aria-labelledby="command-title" className="command-dialog w-[calc(100%-2rem)] max-w-xl rounded-2xl border border-[var(--color-border)] bg-surface p-5 text-text shadow-xl sm:p-6" onClick={e => { if (e.target === e.currentTarget) close(); }}>
+      <div className="mb-5 flex items-start justify-between gap-4"><div><h2 id="command-title" className="text-lg font-semibold text-textStrong">Search or navigate</h2><p className="mt-1 text-sm text-textMuted">Try “show projects”, “contact me”, or “Python”.</p></div><button onClick={close} aria-label="Close search" className="h-10 w-10 shrink-0 rounded-lg hover:bg-surfaceAlt">✕</button></div>
+      <CommandInterface variant="full" onViewChange={navigate} onNavigate={close} />
+    </dialog>
+  </>;
 }

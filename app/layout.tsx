@@ -4,13 +4,15 @@ import './globals.css'
 import Sidebar from '@/components/Sidebar'
 import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import CursorGradient from '@/components/CursorGradient'
+
 import { ReactNode } from 'react'
 import { dataApi } from '@/utils/api'
 import type { IntroData } from '@/types/interfaces'
 import VantaFog from '@/components/VantaFog'
 import Section from '@/components/Section'
 // Using inline SVGs for footer social links to match Sidebar styling
+
+export const revalidate = 86400
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,14 +22,14 @@ interface LayoutConfig {
 }
 
 const FALLBACK_METADATA: Metadata = {
-  title: 'Aditya Raj - Data Scientist & Python Developer',
+  title: 'Aditya Raj | AI / Python Developer & Data Analyst',
   description:
-    'Portfolio of Aditya Raj - Software developer and data scientist with expertise in full-stack development, deep learning, and machine learning.',
+    'Aditya Raj builds AI workflows, Python applications, and analytics dashboards. Explore recruitment automation, voice integrations, and business intelligence projects.',
   keywords: [
-    'Data Scientist',
+    'Data Analyst',
     'Python Developer',
     'Machine Learning',
-    'Deep Learning',
+    'Business Intelligence',
     'Full Stack Developer',
     'AI Developer',
     'Aditya Raj',
@@ -35,8 +37,8 @@ const FALLBACK_METADATA: Metadata = {
   authors: [{ name: 'Aditya Raj' }],
   creator: 'Aditya Raj',
   openGraph: {
-    title: 'Aditya Raj - Data Scientist & Python Developer',
-    description: 'Portfolio showcasing projects in data science, machine learning, and full-stack development.',
+    title: 'Aditya Raj | AI / Python Developer & Data Analyst',
+    description: 'AI automation, Python development, data analysis, and business intelligence projects by Aditya Raj.',
     url: 'https://theaditya.vercel.app',
     siteName: 'Aditya Raj Portfolio',
     images: [
@@ -44,7 +46,7 @@ const FALLBACK_METADATA: Metadata = {
         url: 'https://avatars.githubusercontent.com/u/126697615?v=4',
         width: 1200,
         height: 630,
-        alt: 'Aditya Raj - Data Scientist & Python Developer',
+        alt: 'Aditya Raj | AI / Python Developer & Data Analyst',
       },
     ],
     locale: 'en_US',
@@ -52,8 +54,8 @@ const FALLBACK_METADATA: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aditya Raj - Data Scientist & Python Developer',
-    description: 'Portfolio showcasing projects in data science, machine learning, and full-stack development.',
+    title: 'Aditya Raj | AI / Python Developer & Data Analyst',
+    description: 'AI automation, Python development, data analysis, and business intelligence projects by Aditya Raj.',
     images: ['https://avatars.githubusercontent.com/u/126697615?v=4'],
   },
   robots: 'index, follow',
@@ -133,21 +135,18 @@ export default async function RootLayout({
   const socialLinks = await loadSocialLinks()
 
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-      </head>
+    <html lang="en"  suppressHydrationWarning>
       <body className={`${inter.className} antialiased min-h-screen overflow-x-hidden`}>
-        <CursorGradient />
         <ThemeProvider>
           {/* Global animated fog background */}
           <VantaFog className="fixed inset-0 -z-10" />
           <Navbar />
           <Sidebar socialLinks={socialLinks} />
-          <main className="relative mx-auto w-full max-w-[90%] overflow-x-hidden pt-24" style={{ zIndex: 10 }}>
+          <a href="#main-content" className="skip-link">Skip to content</a>
+          <main id="main-content" className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-24" style={{ zIndex: 10 }}>
             {children}
           </main>
-          <footer className="relative mx-auto w-full max-w-[90%] pb-12">
+          <footer className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
             <Section
               id="contact"
               background="default"

@@ -58,6 +58,7 @@ export interface Job {
 }
 
 export interface Certificate {
+  originalName?: string;
   name: string;
   file: string;
   provider: string;

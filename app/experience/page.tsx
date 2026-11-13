@@ -68,7 +68,7 @@ export default async function ExperiencePage() {
       <PageHero
         eyebrow="Experience"
         title="Professional Journey"
-        description="Highlights from building intelligent systems, shipping AI products, and scaling teams from idea to launch."
+        description="Roles spanning AI workflows, Python development, and practical software delivery."
         stats={heroStats}
         actions={(
           <>
@@ -97,7 +97,7 @@ export default async function ExperiencePage() {
               Roles & Impact
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-300">
-              Every position combines research, engineering, and delivery to create measurable outcomes.
+              Responsibilities and contributions from the employment records below.
             </p>
           </div>
 

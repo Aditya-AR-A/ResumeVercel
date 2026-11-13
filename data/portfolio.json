@@ -1,0 +1,887 @@
+{
+  "intro": {
+    "profileImage": {
+      "src": "https://avatars.githubusercontent.com/u/126697615?v=4",
+      "alt": "Profile"
+    },
+    "name": "Aditya Raj",
+    "title": "AI / Python Developer & Data Analyst",
+    "about": "I build AI-assisted workflows, Python applications, and dashboards that turn operational data into useful decisions. My work spans recruitment automation, voice agents, business intelligence, and data processing. I am focused on AI / Python Developer and Data Analyst opportunities, with Python backend development as a supporting track.",
+    "socialLinks": {
+      "email": "adityaraj.anshukumar50@gmail.com",
+      "github": "https://github.com/Aditya-AR-A",
+      "linkedin": "https://www.linkedin.com/in/aditya-raj-921a08352/",
+      "additional": null
+    }
+  },
+  "projects": [
+    {
+      "id": "slicer-analytics",
+      "name": "Slicer Analytics Dashboard",
+      "shortDescription": "Operational dashboards for work allocation, submissions, rework, and settlements.",
+      "description": "Built an analytics dashboard around Slicer operations, covering completed work, assignments, pending work, rework batches, and settlement periods. Worked on MongoDB-backed reporting, date filtering, and admin tools for user mappings and settlement management.",
+      "skills": [
+        "Python",
+        "MongoDB",
+        "Data Analysis",
+        "Data Visualization",
+        "REST APIs"
+      ],
+      "highlights": [
+        "Built reporting for assignments, submissions, pending work, and rework.",
+        "Worked on settlement-period filters and user-ID mappings.",
+        "Implemented batch rework rules and investigated reporting consistency."
+      ],
+      "category": "Data & Analytics",
+      "featured": true,
+      "demoUrl": "https://sshd-slicer-dashboard.vercel.app"
+    },
+    {
+      "id": "talentpool-powerbi",
+      "name": "Talent Program Executive Dashboard — Power BI",
+      "shortDescription": "An independently delivered talent dashboard with DAX, Power Query, and Deneb visuals.",
+      "description": "Independently built the Talent Program Executive Dashboard in Power BI. The TalentPool base file includes DAX measures, Power Query definitions, model relationships, and Deneb visuals. This represents applied project work; the base-file inspection does not establish refresh or production performance.",
+      "skills": [
+        "Power BI",
+        "DAX",
+        "Power Query",
+        "Data Modeling",
+        "Deneb"
+      ],
+      "highlights": [
+        "Owned the Power BI dashboard project.",
+        "Created measures, data queries, model relationships, and custom Deneb visuals."
+      ],
+      "category": "Data & Analytics",
+      "featured": true
+    },
+    {
+      "id": "slicer-overlay",
+      "name": "Video Segmentation Overlay",
+      "shortDescription": "Custom playback and segmentation controls over a native video workflow.",
+      "description": "Worked on a custom video overlay with independent playback and segmentation controls, synchronising segment operations with the native clip workflow. The work includes split boundaries, deletion priority, selected-segment looping, and native submission integration.",
+      "skills": [
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "API Integration"
+      ],
+      "highlights": [
+        "Worked on synchronising overlay segments and native clips.",
+        "Defined splitting, selection-aware deletion, and segment-loop behaviour."
+      ],
+      "category": "Python & Web Workflows",
+      "featured": true
+    },
+    {
+      "id": "llm-agent-integration",
+      "name": "Voice-Based AI Booking Agent",
+      "type": "ai-platform",
+      "description": "Contributed to a team-built, call-based cab booking agent. My scope covered prompts, guardrails, and token-use optimisation for the booking workflow.",
+      "shortDescription": "Prompts, guardrails, and token-use optimisation for a team-built voice booking agent.",
+      "thumbnail": "/projects/llm-agent/thumbnail.svg",
+      "category": "AI & Automation",
+      "featured": false,
+      "startDate": "2024-09-01",
+      "endDate": null,
+      "status": "active",
+      "skills": [
+        "Prompt Engineering",
+        "LLMs",
+        "Token Optimization"
+      ],
+      "jobId": null,
+      "relatedJobIds": [],
+      "links": {},
+      "demoUrl": null,
+      "githubUrl": null,
+      "highlights": [
+        "Contributed prompts and guardrails for a call-based cab booking workflow.",
+        "Worked on token-use optimisation within the team project."
+      ],
+      "metrics": {},
+      "assets": null
+    },
+    {
+      "id": "recruitment-automation-platform",
+      "name": "Autonomous Recruitment Agent System",
+      "type": "ai-platform",
+      "description": "Worked on an autonomous recruitment system for candidate screening and interview workflows. Personally implemented LiveKit / Twilio integration for voice interactions, alongside work on the AI recruitment workflow.",
+      "shortDescription": "Recruitment automation with personally implemented LiveKit / Twilio voice integration.",
+      "thumbnail": "/projects/recruitment-automation/thumbnail.svg",
+      "category": "AI & Automation",
+      "featured": true,
+      "startDate": "2024-09-01",
+      "endDate": null,
+      "status": "active",
+      "skills": [
+        "Python",
+        "LLMs",
+        "LiveKit",
+        "Twilio",
+        "REST APIs"
+      ],
+      "jobId": null,
+      "relatedJobIds": [],
+      "links": {},
+      "demoUrl": null,
+      "githubUrl": null,
+      "highlights": [
+        "Personally implemented LiveKit / Twilio plumbing for recruitment voice interactions.",
+        "Worked on AI-assisted candidate screening and interview workflows.",
+        "Worked on token-use optimisation; no measured reduction is claimed."
+      ],
+      "metrics": {},
+      "assets": null
+    },
+    {
+      "id": "qlik-powerbi-suite",
+      "name": "Performance Pro — HR Data Processing",
+      "type": "analytics-platform",
+      "description": "Worked on Qlik Enterprise dashboard scripts for Performance Pro, cleaning and processing incoming HR data for another team member to build the dashboard. Contributed to GDPR-related data-handling controls and encryption. Built a supporting utility for quick conversion of partial data during remote-server development.",
+      "shortDescription": "Qlik Enterprise scripts and HR data preparation, with GDPR and encryption work.",
+      "thumbnail": "/projects/qlik-powerbi/thumbnail.svg",
+      "category": "Data & Analytics",
+      "featured": false,
+      "startDate": null,
+      "endDate": null,
+      "status": "completed",
+      "skills": [
+        "Qlik Enterprise",
+        "Data Cleaning",
+        "Data Processing",
+        "Data Encryption"
+      ],
+      "jobId": null,
+      "relatedJobIds": [],
+      "links": {},
+      "demoUrl": null,
+      "githubUrl": null,
+      "highlights": [
+        "Cleaned and processed incoming HR data for downstream dashboard development.",
+        "Worked on Qlik Enterprise scripts.",
+        "Contributed to GDPR-related data-handling controls and encryption.",
+        "Built a testing utility for partial-data conversion during remote deployment delays."
+      ],
+      "metrics": {},
+      "assets": null
+    },
+    {
+      "id": "fatality-claims-analytics",
+      "name": "Fatality Claims Forecasting & Automation",
+      "type": "analytics-platform",
+      "description": "An earlier analytics project exploring fatality claims reporting and forecasting using Python, SQL, and BI dashboards.",
+      "shortDescription": "Earlier claims reporting and forecasting project.",
+      "thumbnail": "/projects/fatality-claims/thumbnail.svg",
+      "category": "Earlier Explorations",
+      "featured": false,
+      "startDate": "2024-10-01",
+      "endDate": "2025-04-30",
+      "status": "completed",
+      "skills": [
+        "Power BI",
+        "Tableau",
+        "Python",
+        "Automation",
+        "Forecasting",
+        "SQL",
+        "Plotly"
+      ],
+      "jobId": null,
+      "relatedJobIds": [],
+      "links": {},
+      "demoUrl": null,
+      "githubUrl": null,
+      "highlights": [],
+      "metrics": {},
+      "assets": null
+    },
+    {
+      "id": "real-estate-price",
+      "name": "Real Estate Price Prediction",
+      "type": "ml-service",
+      "description": "A real estate price prediction project using Python for exploratory analysis, data cleaning, regression, and visualisation.",
+      "shortDescription": "Exploratory analysis and regression for real estate prices.",
+      "thumbnail": "/projects/real-estate/thumbnail.svg",
+      "category": "Earlier Explorations",
+      "featured": false,
+      "startDate": "2023-01-15",
+      "endDate": null,
+      "status": "completed",
+      "skills": [
+        "Python",
+        "Scikit-learn",
+        "Pandas",
+        "Plotly",
+        "Seaborn",
+        "Jupyter",
+        "EDA",
+        "Regression"
+      ],
+      "jobId": null,
+      "relatedJobIds": [],
+      "links": {
+        "notebook": "https://colab.research.google.com/drive/1XdrINdSetdRp22WV6SnGdLWgVMMt7J-8?usp=sharing"
+      },
+      "demoUrl": "https://colab.research.google.com/drive/1XdrINdSetdRp22WV6SnGdLWgVMMt7J-8?usp=sharing",
+      "githubUrl": "https://github.com/Aditya-AR-A/Real-Estate",
+      "highlights": [],
+      "metrics": {},
+      "assets": {
+        "html": [
+          {
+            "title": "Interactive price segmentation dashboard",
+            "file": "/projects/real-estate/real_estate_plot.html",
+            "description": "Plotly visualization exported for standalone viewing.",
+            "type": "plot",
+            "sourceUrl": null,
+            "automated": true,
+            "displayMode": "unscrollable",
+            "embedCode": null
+          },
+          {
+            "title": "Exploratory analysis notebook",
+            "file": "/projects/real-estate/notebook.html",
+            "description": "Static HTML export of the exploratory Jupyter notebook.",
+            "type": "notebook",
+            "sourceUrl": null,
+            "automated": true,
+            "displayMode": "scrollable",
+            "embedCode": null
+          }
+        ],
+        "dashboards": [
+          {
+            "title": "Tableau Interactive Dashboard",
+            "file": null,
+            "description": "Embedded Tableau Public visualization summarizing property insights.",
+            "type": "tableau",
+            "sourceUrl": "https://public.tableau.com/views/RealEstate-AdityaRaj/Final",
+            "automated": false,
+            "displayMode": "unscrollable",
+            "embedCode": "<div class='tableauPlaceholder' id='viz1761234763395' style='position: relative'><noscript><a href='#'><img alt='Final ' src='https://public.tableau.com/static/images/Re/RealEstate-AdityaRaj/Final/1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='path' value='views/RealEstate-AdityaRaj/Final?:language=en-GB&amp;:embed=true&amp;:sid=&amp;:redirect=auth' /> <param name='toolbar' value='yes' /><param name='static_image' value='https://public.tableau.com/static/images/Re/RealEstate-AdityaRaj/Final/1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-GB' /></object></div><script type='text/javascript'>var divElement = document.getElementById('viz1761234763395');var vizElement = divElement.getElementsByTagName('object')[0];if (divElement.offsetWidth > 800) { vizElement.style.width='1680px';vizElement.style.height='869px';} else if (divElement.offsetWidth > 500) { vizElement.style.width='1680px';vizElement.style.height='869px';} else { vizElement.style.width='100%';vizElement.style.height='1277px';} var scriptElement = document.createElement('script');scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';vizElement.parentNode.insertBefore(scriptElement, vizElement);</script>"
+          }
+        ],
+        "documents": [
+          {
+            "title": "Real Estate Project Report",
+            "file": "/projects/real-estate/Real%20Estate%20-Aditya.pdf",
+            "description": "Detailed methodology, feature engineering, and findings for the project.",
+            "type": "pdf",
+            "sourceUrl": null,
+            "automated": false,
+            "displayMode": "scrollable",
+            "embedCode": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "chess-helper",
+      "name": "Real-Time Chess Helper using YOLOv8",
+      "type": "computer-vision",
+      "description": "A computer vision project exploring chessboard and piece recognition with YOLOv8, alongside a chess training interface.",
+      "shortDescription": "Chessboard recognition and a chess training interface.",
+      "thumbnail": "/projects/chess-helper/thumbnail.svg",
+      "category": "Earlier Explorations",
+      "featured": false,
+      "startDate": "2023-02-15",
+      "endDate": null,
+      "status": "completed",
+      "skills": [
+        "YOLOv8",
+        "Deep Learning",
+        "Computer Vision",
+        "Python",
+        "Kaggle",
+        "JavaScript",
+        "React",
+        "Chess.js",
+        "Stockfish",
+        "WebAssembly"
+      ],
+      "jobId": null,
+      "relatedJobIds": [],
+      "links": {},
+      "demoUrl": null,
+      "githubUrl": "https://github.com/Aditya-AR-A/Chess_Trainer",
+      "highlights": [],
+      "metrics": {},
+      "assets": null
+    },
+    {
+      "id": "gender-emotion-detection",
+      "name": "Gender, Nationality & Emotion Detection",
+      "type": "computer-vision",
+      "description": "An earlier computer vision learning project exploring facial image classification with CNNs and OpenCV.",
+      "shortDescription": "Earlier CNN and OpenCV image classification exploration.",
+      "thumbnail": "/projects/gender-emotion/thumbnail.svg",
+      "category": "Earlier Explorations",
+      "featured": false,
+      "startDate": "2023-03-01",
+      "endDate": null,
+      "status": "completed",
+      "skills": [
+        "Python",
+        "TensorFlow",
+        "OpenCV",
+        "CNN",
+        "Deep Learning",
+        "Computer Vision"
+      ],
+      "jobId": null,
+      "relatedJobIds": [],
+      "links": {},
+      "demoUrl": null,
+      "githubUrl": null,
+      "highlights": [],
+      "metrics": {},
+      "assets": null
+    },
+    {
+      "id": "linkedin-sentiment",
+      "name": "LinkedIn Feed Sentiment Analysis",
+      "type": "nlp",
+      "description": "An earlier NLP project exploring sentiment analysis and visualisation of LinkedIn post data.",
+      "shortDescription": "Earlier NLP and sentiment analysis exploration.",
+      "thumbnail": "/projects/linkedin-sentiment/thumbnail.svg",
+      "category": "Earlier Explorations",
+      "featured": false,
+      "startDate": "2023-04-15",
+      "endDate": null,
+      "status": "completed",
+      "skills": [
+        "Python",
+        "NLTK",
+        "Transformers",
+        "Sentiment Analysis",
+        "NLP",
+        "Data Visualization",
+        "Web Scraping"
+      ],
+      "jobId": null,
+      "relatedJobIds": [],
+      "links": {},
+      "demoUrl": null,
+      "githubUrl": null,
+      "highlights": [],
+      "metrics": {},
+      "assets": null
+    },
+    {
+      "id": "plantoai-vscode-copilot",
+      "name": "Planto.ai VS Code Copilot",
+      "type": "developer-tools",
+      "description": "Contributed to an early-stage AI copilot MVP at Coding Pro (Planto.AI), working on prompt optimisation, model output comparisons, and evaluation scripts, with support for Next.js UI integration.",
+      "shortDescription": "Prompt optimisation and evaluation work for an early AI copilot MVP.",
+      "thumbnail": "https://planto.ai/images/features2.webp",
+      "category": "AI & Automation",
+      "featured": false,
+      "startDate": "2024-06-01",
+      "endDate": "2024-09-30",
+      "status": "beta",
+      "skills": [
+        "Python",
+        "Prompt Engineering",
+        "LLM Evaluation",
+        "Next.js"
+      ],
+      "jobId": "ds-ml-intern-plantoai-2024",
+      "relatedJobIds": [],
+      "links": {
+        "live": "https://planto.ai/"
+      },
+      "demoUrl": "https://planto.ai/",
+      "githubUrl": null,
+      "highlights": [
+        "Worked on prompts and model output evaluation.",
+        "Supported UI integration using Next.js."
+      ],
+      "metrics": {},
+      "assets": null
+    }
+  ],
+  "jobs": [
+    {
+      "id": "ai-python-dev-2024",
+      "title": "AI Engineer / Python Developer",
+      "company": "Addmin Web World",
+      "companyLogo": "https://addminwebworld.com/img/admologo-removebg.png",
+      "position": "Full-time",
+      "location": "Chandigarh, India",
+      "startDate": "2024-09-25",
+      "endDate": null,
+      "isCurrent": true,
+      "description": "Deliver end-to-end AI automation solutions for client-facing business workflows.",
+      "responsibilities": [
+        "Deliver end-to-end AI automation solutions for client-facing business workflows.",
+        "Convert business requirements into agent-based AI systems with clear decision flows.",
+        "Architect and maintain multi-model LLM pipelines for reasoning, validation, and execution.",
+        "Integrate external AI services to support real-time conversational workflows.",
+        "Implement guardrails, fallback handling, and validation logic for production stability."
+      ],
+      "skills": [
+        "Python",
+        "FastAPI",
+        "LLMs",
+        "OpenAI/Groq/Gemini",
+        "Hugging Face (model usage)",
+        "MongoDB",
+        "REST APIs",
+        "Prompt Engineering",
+        "NLP",
+        "JSON",
+        "Git"
+      ],
+      "achievements": [],
+      "links": null,
+      "featured": true,
+      "projectIds": [
+        "llm-agent-integration",
+        "recruitment-automation-platform"
+      ]
+    },
+    {
+      "id": "ds-ml-intern-plantoai-2024",
+      "title": "AI & Data Science Intern",
+      "company": "Coding Pro (Planto.AI)",
+      "companyLogo": "https://planto.ai/images/planto-logo.png",
+      "position": "Internship",
+      "location": "Remote",
+      "startDate": "2024-06-01",
+      "endDate": "2024-09-15",
+      "isCurrent": false,
+      "description": "Built core components of an early-stage AI copilot MVP for developer workflow automation.",
+      "responsibilities": [
+        "Contributed to core components of an early-stage AI copilot MVP.",
+        "Worked on prompt optimisation and automated model-output comparisons.",
+        "Created evaluation scripts and supported Next.js UI integration."
+      ],
+      "skills": [
+        "Python",
+        "Next.js",
+        "Prompt Engineering",
+        "LLM benchmarking",
+        "internal test suites",
+        "automated evaluation scripts",
+        "VS Code"
+      ],
+      "achievements": [],
+      "links": null,
+      "featured": true,
+      "projectIds": []
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Data Science",
+      "file": "Final Data Science Certificate.pdf",
+      "provider": "Simplilearn",
+      "field": "Data Science",
+      "skills": [
+        "Python",
+        "Data Science",
+        "Statistics",
+        "Machine Learning",
+        "Programming",
+        "OOPs",
+        "Data Visualization",
+        "Numpy",
+        "Pandas",
+        "Matplotlib",
+        "Seaborn",
+        "Plotly",
+        "Tableau",
+        "Scikit-learn",
+        "TensorFlow",
+        "Keras",
+        "PyTorch",
+        "CNN",
+        "RNN",
+        "LSTM",
+        "Autoencoders",
+        "Gan",
+        "Transfer Learning",
+        "Reinforcement Learning"
+      ],
+      "issueDate": "2024-03-02",
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Comprehensive program covering the full data science pipeline using Python. It includes data preprocessing, EDA, statistics, machine learning algorithms, deep learning (CNN, RNN, GAN), NLP basics, data visualization (Matplotlib, Seaborn, Plotly, Tableau), and advanced frameworks like TensorFlow and PyTorch.",
+      "featured": false,
+      "originalName": "Data Science"
+    },
+    {
+      "name": "Data Science with Python",
+      "file": "SimpliLearn Data Science with Python Certificate.pdf",
+      "provider": "Simplilearn",
+      "field": "Data Science",
+      "skills": [
+        "Python",
+        "Data Science",
+        "Machine Learning",
+        "Statistics",
+        "Programming",
+        "OOPs",
+        "Data Visualization"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Focused on Python’s application in data science. Covered data types, control flow, OOPs, statistical concepts, linear regression, clustering, and basic data visualization techniques.",
+      "featured": false,
+      "originalName": "Data Science with Python"
+    },
+    {
+      "name": "PCAP: Certified Associate Python Programmer",
+      "file": "PCAP.pdf",
+      "provider": "Python Institute",
+      "field": "Programming",
+      "skills": [
+        "Python",
+        "Programming",
+        "OOPs",
+        "Tkinter",
+        "GUI",
+        "File Handling",
+        "Modules",
+        "Exceptions"
+      ],
+      "issueDate": "2024-01-18",
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Globally recognized certification validating foundational to intermediate Python programming knowledge including OOP, functions, exception handling, file I/O, modules, and basic GUI design using Tkinter.",
+      "featured": true,
+      "originalName": "PCAP: Certified Associate Python Programmer"
+    },
+    {
+      "name": "HackerRank SQL (Intermediate)",
+      "file": "sql_intermediate certificate.pdf",
+      "provider": "HackerRank",
+      "field": "Databases",
+      "skills": [
+        "SQL",
+        "Databases",
+        "DBMS",
+        "RDBMS",
+        "Data Management",
+        "Schema"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Assessed intermediate SQL proficiency. Included writing complex queries, multi-table joins, nested queries, aggregations, constraints, and relational schema design.",
+      "featured": false,
+      "originalName": "HackerRank SQL (Intermediate)"
+    },
+    {
+      "name": "Deep Learning",
+      "file": "SimpliLearn Deep Learning.pdf",
+      "provider": "Simplilearn",
+      "field": "Deep Learning",
+      "skills": [
+        "Deep Learning",
+        "Neural Networks",
+        "TensorFlow",
+        "Keras",
+        "PyTorch",
+        "Machine Learning",
+        "Statistics",
+        "Programming",
+        "OOPs",
+        "Data Visualization",
+        "CNN",
+        "RNN",
+        "LSTM",
+        "Autoencoders",
+        "Gan",
+        "Transfer Learning",
+        "Reinforcement Learning"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "In-depth module on designing and training deep neural networks. Covered forward and backpropagation, CNNs, RNNs, LSTMs, GANs, autoencoders, and advanced model tuning with TensorFlow, PyTorch, and Keras.",
+      "featured": false,
+      "originalName": "Deep Learning"
+    },
+    {
+      "name": "Chat GPT Webinar",
+      "file": "Chat GPT webinar.pdf",
+      "provider": "Other",
+      "field": "AI",
+      "skills": [
+        "AI",
+        "ChatGPT"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Participated in a live session exploring ChatGPT's architecture, Prompt Engineering techniques, use in automation and productivity, and ethical considerations.",
+      "featured": false,
+      "originalName": "Chat GPT Webinar"
+    },
+    {
+      "name": "Microsoft Excel",
+      "file": "Coursera MG3RNM55QYYC.pdf",
+      "provider": "Coursera",
+      "field": "Excel",
+      "skills": [
+        "Excel",
+        "Python",
+        "Data Visualization"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Training in core Excel operations including data handling, pivot tables, formulas, data cleaning, and integrating Python for automation and visualization tasks.",
+      "featured": false,
+      "originalName": "Microsoft Excel"
+    },
+    {
+      "name": "Data Science Capstone",
+      "file": "Data Science Capstone.pdf",
+      "provider": "Simplilearn",
+      "field": "Data Science",
+      "skills": [
+        "Data Science",
+        "Capstone",
+        "Python",
+        "Machine Learning",
+        "Statistics",
+        "Programming",
+        "Data Visualization"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Real-world capstone project using full-stack data science workflow. Included problem formulation, data acquisition, EDA, feature engineering, model building, and performance evaluation.",
+      "featured": false,
+      "originalName": "Data Science Capstone"
+    },
+    {
+      "name": "IBM Python",
+      "file": "IBM PY0101EN Certificate _ Simplilearn.pdf",
+      "provider": "IBM",
+      "field": "Python",
+      "skills": [
+        "Python",
+        "IBM",
+        "Programming",
+        "OOPs",
+        "Data Visualization"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Introduction to Python programming from IBM. Covered variables, data types, control structures, OOPs, file operations, and Python libraries used in analytics and data visualization.",
+      "featured": false,
+      "originalName": "IBM Python"
+    },
+    {
+      "name": "IBM deep Learning",
+      "file": "IBM deep Learning.pdf",
+      "provider": "IBM",
+      "field": "Deep Learning",
+      "skills": [
+        "Deep Learning",
+        "IBM"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Focused course on foundational deep learning principles, model development, optimization, and usage in real-world applications using IBM tools and frameworks.",
+      "featured": false,
+      "originalName": "IBM deep Learning"
+    },
+    {
+      "name": "Industry Master Simplilearn",
+      "file": "Industry Master SimplilEarn.pdf",
+      "provider": "Simplilearn",
+      "field": "Industry",
+      "skills": [
+        "Industry"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Summarizes completion of core modules across data science and industry-focused training, signifying readiness for practical, job-oriented roles.",
+      "featured": false,
+      "originalName": "Industry Master SimplilEarn"
+    },
+    {
+      "name": "Simplilearn MySQL",
+      "file": "MySQL.pdf",
+      "provider": "Simplilearn",
+      "field": "Databases",
+      "skills": [
+        "SQL",
+        "MySQL",
+        "Databases",
+        "DBMS",
+        "RDBMS",
+        "Data Management"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Course covering MySQL fundamentals: schema design, CRUD operations, joins, indexing, normalization, and query optimization for relational databases.",
+      "featured": false,
+      "originalName": "SimpliLearn MySQL"
+    },
+    {
+      "name": "Simplilearn Certificates Data Scientist",
+      "file": "Simplearn Certificates Data Scientist.pdf",
+      "provider": "Simplilearn",
+      "field": "Data Science",
+      "skills": [
+        "Data Science",
+        "Data Analysis",
+        "Data Visualization",
+        "Data Management",
+        "Python",
+        "Statistics",
+        "Machine Learning"
+      ],
+      "issueDate": "2024-04-01",
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Bundled certificate representing completion of multiple in-depth modules in data science, ML, Python, statistics, and visualization — aligned with real-world applications.",
+      "featured": true,
+      "originalName": "Simplearn Certificates Data Scientist"
+    },
+    {
+      "name": "Simplilearn Data Science with R",
+      "file": "SimpliLearn Data Science with R.pdf",
+      "provider": "Simplilearn",
+      "field": "Data Science",
+      "skills": [
+        "Data Science",
+        "R",
+        "GGplot",
+        "Statistics",
+        "Statistical Modelling",
+        "Machine Learning"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Applied data science training using R language. Topics included data manipulation, visualization with ggplot2, statistical inference, and machine learning models.",
+      "featured": false,
+      "originalName": "SimpliLearn Data Science with R"
+    },
+    {
+      "name": "Simplilearn ML",
+      "file": "SimpliLearn ML.pdf",
+      "provider": "Simplilearn",
+      "field": "Machine Learning",
+      "skills": [
+        "Machine Learning"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Covers core ML concepts: supervised and unsupervised algorithms, SVM, KNN, decision trees, random forests, model evaluation, and bias-variance tradeoff.",
+      "featured": false,
+      "originalName": "SimpliLearn ML"
+    },
+    {
+      "name": "Maths Refresher",
+      "file": "SimpliLearn Maths Refresher Certificate.pdf",
+      "provider": "Simplilearn",
+      "field": "Mathematics",
+      "skills": [
+        "Mathematics"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "A refresher course on key mathematical concepts essential for ML and data science, including algebra, matrices, probability, and statistics.",
+      "featured": false,
+      "originalName": "Maths Refresher"
+    },
+    {
+      "name": "Python for data sciences",
+      "file": "SimpliLearn Python for data sciences Certificate.pdf",
+      "provider": "Simplilearn",
+      "field": "Python",
+      "skills": [
+        "Python",
+        "Data Science"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Focuses on using Python for data exploration, preprocessing, analysis, and basic model building in a data science context.",
+      "featured": false,
+      "originalName": "Python for data sciences"
+    },
+    {
+      "name": "Statistical Essentials",
+      "file": "SimpliLearn Statisitical EssentialsCertificate.pdf",
+      "provider": "Simplilearn",
+      "field": "Statistics",
+      "skills": [
+        "Statistics"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Provides a foundation in descriptive and inferential statistics, hypothesis testing, distributions, and statistical reasoning.",
+      "featured": false,
+      "originalName": "Statisitical Essentials"
+    },
+    {
+      "name": "Tableau",
+      "file": "SimpliLearn Tableau.pdf",
+      "provider": "Simplilearn",
+      "field": "Data Visualization",
+      "skills": [
+        "Tableau",
+        "Data Visualization"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Hands-on Tableau training covering dashboards, calculated fields, filters, charts, and visual storytelling to communicate insights.",
+      "featured": false,
+      "originalName": "Tableau"
+    },
+    {
+      "name": "SQL Basic",
+      "file": "sql_basic certificate.pdf",
+      "provider": "HackerRank",
+      "field": "Databases",
+      "skills": [
+        "SQL",
+        "Databases"
+      ],
+      "issueDate": null,
+      "expiryDate": null,
+      "credentialId": null,
+      "credentialUrl": null,
+      "description": "Validates foundational SQL knowledge including SELECT queries, filtering, ordering, and basic joins.",
+      "featured": false,
+      "originalName": "SQL Basic"
+    }
+  ]
+}

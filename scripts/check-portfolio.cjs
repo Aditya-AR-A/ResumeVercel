@@ -1,0 +1,28 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const ts = require('typescript');
+const content = require('../data/portfolio.json');
+const exportsObject = {};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('utils/experience.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText, { exports: exportsObject, Date });
+const { calendarMonths, formatDuration, totalExperience, jobDuration } = exportsObject;
+let checks = 0;
+function check(name, fn) { fn(); checks++; console.log(`PASS ${name}`); }
+const now = new Date('2026-11-13T00:00:00Z');
+check('current employment uses completed calendar months', () => assert.equal(jobDuration({startDate:'2024-09-25', isCurrent:true}, now), '2 years 1 month'));
+check('completed employment ignores present date', () => assert.equal(jobDuration({startDate:'2024-06-01', endDate:'2024-09-15', isCurrent:false}, now), '3 months'));
+check('anniversary boundary', () => assert.equal(calendarMonths(new Date('2024-09-25'), new Date('2026-09-25')), 24));
+check('before anniversary boundary', () => assert.equal(calendarMonths(new Date('2024-09-25'), new Date('2026-09-24')), 23));
+check('same month is not inflated to a month', () => assert.equal(formatDuration(new Date('2026-11-01'), now), 'Less than 1 month'));
+check('missing dates do not produce NaN', () => assert.equal(jobDuration({startDate:'2024-01-01', isCurrent:false}, now), 'Dates unavailable'));
+check('invalid range is explicit', () => assert.equal(formatDuration(now, new Date('2020-01-01')), 'Dates unavailable'));
+check('overlapping roles are counted once', () => assert.equal(totalExperience([{startDate:'2024-01-01', endDate:'2024-07-01'}, {startDate:'2024-04-01', endDate:'2025-01-01'}]), '1 year'));
+check('employment gaps are excluded', () => assert.equal(totalExperience([{startDate:'2024-01-01', endDate:'2024-04-01'}, {startDate:'2024-10-01', endDate:'2025-01-01'}]), '6 months'));
+check('current role titles align with agreed positioning', () => assert.equal(content.intro.title, 'AI / Python Developer & Data Analyst'));
+check('project identifiers are unique', () => assert.equal(new Set(content.projects.map(p=>p.id)).size, content.projects.length));
+check('placeholder URLs are excluded', () => assert.doesNotMatch(JSON.stringify(content), /https?:[^"\s]*(?:example\.com|github\.com\/username\/)/));
+check('impact metrics await measurement evidence', () => assert(content.projects.every(p => !p.metrics || Object.keys(p.metrics).length === 0)));
+check('skills have no case duplicates per record', () => assert([...content.projects,...content.jobs,...content.certificates].every(r=>new Set(r.skills.map(s=>s.toLowerCase())).size === r.skills.length)));
+check('employer links point to listed records', () => assert(content.projects.every(p=>!p.jobId || content.jobs.some(j=>j.id===p.jobId))));
+check('certificate aliases preserve old links', () => assert(content.certificates.every(c=>c.originalName)));
+console.log(`${checks} checks passed.`);

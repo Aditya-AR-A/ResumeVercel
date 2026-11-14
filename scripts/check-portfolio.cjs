@@ -25,4 +25,12 @@ check('impact metrics await measurement evidence', () => assert(content.projects
 check('skills have no case duplicates per record', () => assert([...content.projects,...content.jobs,...content.certificates].every(r=>new Set(r.skills.map(s=>s.toLowerCase())).size === r.skills.length)));
 check('employer links point to listed records', () => assert(content.projects.every(p=>!p.jobId || content.jobs.some(j=>j.id===p.jobId))));
 check('certificate aliases preserve old links', () => assert(content.certificates.every(c=>c.originalName)));
+check('SSHD is the single current role with resume month precision', () => {
+  const current = content.jobs.filter(j=>j.isCurrent);
+  assert.equal(current.length, 1); assert.equal(current[0].company, 'SSHD Technologies'); assert.equal(current[0].startDate, '2026-02');
+});
+check('Addmin ends before SSHD begins', () => { const role = content.jobs.find(j=>j.company.includes('Addmin')); assert.equal(role.endDate, '2026-01'); assert.equal(role.isCurrent, false); });
+check('month-only end dates include the completed end month', () => assert.equal(jobDuration({startDate:'2024-09', endDate:'2026-01', isCurrent:false}, now), '1 year 4 months'));
+check('all walkthroughs have useful steps and contribution boundaries', () => assert(content.projects.filter(p=>p.caseStudy).every(p=>p.caseStudy.steps.length > 1 && p.caseStudy.steps.every(s=>s.title && s.description) && p.caseStudy.contribution && p.caseStudy.boundary)));
+check('unconfirmed employer mappings stay unassigned', () => assert.equal(content.projects.find(p=>p.id==='workaholic-backend').jobId, undefined));
 console.log(`${checks} checks passed.`);

@@ -341,10 +341,10 @@
     },
     {
       "id": "qlik-powerbi-suite",
-      "name": "Performance Pro \u2014 HR Data Processing",
+      "name": "Performance Pro \u2014 HR Dashboard & Reporting",
       "type": "analytics-platform",
-      "description": "Worked on Qlik Enterprise dashboard scripts for Performance Pro, cleaning and processing incoming HR data for another team member to build the dashboard. Contributed to GDPR-related data-handling controls and encryption. Built a supporting utility for quick conversion of partial data during remote-server development.",
-      "shortDescription": "Qlik Enterprise scripts and HR data preparation, with GDPR and encryption work.",
+      "description": "Worked on enterprise HR analytics and reporting infrastructure for Performance Pro, a performance management platform supporting appraisals, goals, competencies, employee engagement, recognition and workflow tracking. Developed and maintained Qlik Sense reporting and QVS load scripts for multi-client reporting environments, managed QVD-based incremental loading, and built SQL-based ETL and relational transformations in Microsoft SQL Server. Investigated reporting mismatches across data layers, validated KPI calculations against source HR datasets, and supported REST API integrations and reporting performance improvements.",
+      "shortDescription": "Qlik Sense HR reporting, QVS load scripts, QVD incremental pipelines and SQL Server ETL, with KPI reconciliation.",
       "thumbnail": null,
       "category": "Data & Analytics",
       "featured": false,
@@ -352,7 +352,15 @@
       "endDate": null,
       "status": "Project work",
       "skills": [
-        "Qlik Enterprise",
+        "Qlik Sense",
+        "Qlik Load Scripts (QVS)",
+        "QVD",
+        "Incremental Data Loading",
+        "Microsoft SQL Server",
+        "SQL",
+        "ETL",
+        "REST APIs",
+        "KPI Validation",
         "Data Cleaning",
         "Data Processing",
         "Data Encryption"
@@ -365,35 +373,39 @@
       "demoUrl": null,
       "githubUrl": "https://github.com/Aditya-AR-A/qlik_data_request_api",
       "highlights": [
-        "Cleaned and processed incoming HR data for downstream dashboard development.",
-        "Worked on Qlik Enterprise scripts.",
+        "Developed and maintained Qlik Sense HR reporting across appraisals, goals, competencies, engagement, recognition and workflow tracking.",
+        "Created and optimised QVS load scripts for multi-client reporting environments.",
+        "Managed QVD-based incremental data-loading pipelines.",
+        "Designed SQL-based ETL workflows and relational transformations in Microsoft SQL Server.",
+        "Investigated reporting mismatches and reconciled KPI calculations against source HR datasets.",
+        "Worked with REST API data integrations and supported reporting and workflow performance improvements.",
         "Contributed to GDPR-related data-handling controls and encryption.",
-        "Built a testing utility for partial-data conversion during remote deployment delays."
+        "Built a supporting testing utility for quick partial-data conversion during remote-server development."
       ],
       "metrics": {},
       "assets": null,
       "caseStudy": {
-        "challenge": "Prepare incoming HR data for a downstream dashboard developer.",
-        "contribution": "Qlik Enterprise scripts, cleaning/processing, and contributions to GDPR-related controls and encryption.",
+        "challenge": "Keep multi-client HR reporting consistent from source datasets through ETL and loading to executive KPIs.",
+        "contribution": "Qlik Sense reporting and QVS load scripting, QVD incremental pipelines, SQL Server transformations, REST integration, and KPI/data reconciliation.",
         "steps": [
           {
-            "title": "Receive",
-            "description": "Inspect incoming data and the expected downstream format."
+            "title": "Integrate",
+            "description": "Work with source HR datasets and REST API integrations for enterprise SaaS reporting."
           },
           {
             "title": "Transform",
-            "description": "Clean and process the data in Qlik Enterprise dashboard scripts."
+            "description": "Prepare relational reporting data through SQL-based ETL in Microsoft SQL Server."
           },
           {
-            "title": "Protect",
-            "description": "Contribute to project-specific data-handling and encryption work."
+            "title": "Load",
+            "description": "Maintain QVS load scripts and QVD-based incremental pipelines for multi-client Qlik Sense reporting."
           },
           {
-            "title": "Handoff",
-            "description": "Provide prepared data for the next person to build dashboard visuals."
+            "title": "Reconcile",
+            "description": "Validate KPI calculations against source records, investigate mismatches across reporting layers and support reporting optimisation."
           }
         ],
-        "boundary": "My contribution was the preparation and scripting layer. The repository is a supporting trial utility, not the full production system."
+        "boundary": "The linked repository is a supporting data-conversion trial utility. It does not contain the full Performance Pro production reporting system."
       }
     },
     {

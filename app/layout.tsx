@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
 import Navbar from '@/components/Navbar'
+import PortfolioGuide from '@/components/PortfolioGuide'
 import { ThemeProvider } from '@/components/ThemeProvider'
 
 import { ReactNode } from 'react'
@@ -142,6 +143,7 @@ export default async function RootLayout({
           <VantaFog className="fixed inset-0 -z-10" />
           <Navbar />
           <Sidebar socialLinks={socialLinks} />
+          <PortfolioGuide />
           <a href="#main-content" className="skip-link">Skip to content</a>
           <main id="main-content" className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-24" style={{ zIndex: 10 }}>
             {children}

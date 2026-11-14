@@ -14,12 +14,21 @@ export function formatDuration(start: Date, end: Date): string {
   if (!Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime()) || end < start) return 'Dates unavailable';
   return formatMonths(calendarMonths(start, end));
 }
+// Month-only resume dates keep their precision. Completed end months include
+// that calendar month; exact-day source dates retain their exact boundaries.
+function employmentDate(value: string, end = false): Date {
+  if (/^\d{4}-\d{2}$/.test(value)) {
+    const [year, month] = value.split('-').map(Number);
+    return new Date(Date.UTC(year, month - (end ? 0 : 1), end ? 0 : 1));
+  }
+  return new Date(value);
+}
 export function jobDuration(job: Pick<Job, 'startDate' | 'endDate' | 'isCurrent'>, now = new Date()): string {
-  return formatDuration(new Date(job.startDate), job.isCurrent ? now : new Date(job.endDate ?? ''));
+  return formatDuration(employmentDate(job.startDate), job.isCurrent ? now : employmentDate(job.endDate ?? '', true));
 }
 // Merge overlapping employment periods before counting; do not count gaps as work.
 export function totalExperience(jobs: Job[], now = new Date()): string {
-  const ranges = jobs.map(j => [new Date(j.startDate), j.isCurrent ? now : new Date(j.endDate ?? '')])
+  const ranges = jobs.map(j => [employmentDate(j.startDate), j.isCurrent ? now : employmentDate(j.endDate ?? '', true)])
     .filter(([start, end]) => Number.isFinite(start.getTime()) && Number.isFinite(end.getTime()) && end >= start)
     .sort((a, b) => a[0].getTime() - b[0].getTime());
   const merged: Date[][] = [];

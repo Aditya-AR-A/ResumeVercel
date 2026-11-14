@@ -143,11 +143,11 @@ export default function JobCard({
             <p className="text-xl accent-cert font-semibold mb-1">
               {company}
             </p>
-            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-              <span className="text-sm">{location}</span>
-              <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-              <span className="text-sm">{position}</span>
-            </div>
+            {(location || position) && <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              {location && <span className="text-sm">{location}</span>}
+              {location && position && <span className="w-1 h-1 bg-gray-400 rounded-full" />}
+              {position && <span className="text-sm">{position}</span>}
+            </div>}
           </div>
         </div>
         

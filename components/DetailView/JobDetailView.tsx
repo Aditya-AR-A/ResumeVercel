@@ -65,7 +65,7 @@ export default function JobDetailView({ job, projects = [] }: JobDetailProps) {
         eyebrow="Experience"
         title={job.title}
         description={job.description}
-        stats={heroStats}
+        stats={heroStats.filter(stat => stat.label !== 'Location' || Boolean(stat.value))}
         actions={(
           <>
             <Button className="btn-secondary" href="/experience">

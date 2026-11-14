@@ -16,6 +16,11 @@ export interface PortfolioAsset {
 export type AssetCollection = Record<string, PortfolioAsset[]>;
 
 export interface Project {
+  showcase?: {
+    title: string;
+    description: string;
+    items: { title: string; label: string; description: string; image: string; width: number; height: number }[];
+  };
   caseStudy?: {
     challenge: string;
     contribution: string;

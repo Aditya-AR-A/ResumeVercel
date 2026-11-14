@@ -1,3 +1,4 @@
+import ProjectShowcase from '@/components/ProjectShowcase'
 import { WorkflowWalkthrough } from '@/components/PortfolioExperience'
 import Image from 'next/image'
 import SkillTag from '@/components/SkillTag'
@@ -92,6 +93,8 @@ export default function ProjectDetailView({ project, relatedJob }: ProjectDetail
       />
 
       <Section background="default" containerClassName="max-w-5xl space-y-10">
+        {project.showcase && <ProjectShowcase showcase={project.showcase} />}
+
         {heroThumbnail && (
           <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/5">
             <div className="absolute inset-0 z-0 bg-gradient-to-tr from-slate-900/35 via-transparent to-transparent" aria-hidden="true" />

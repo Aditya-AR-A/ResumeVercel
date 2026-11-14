@@ -70,46 +70,82 @@
     {
       "id": "talentpool-powerbi",
       "name": "Talent Program Executive Dashboard \u2014 Power BI",
-      "shortDescription": "An independently delivered talent dashboard with DAX, Power Query, and Deneb visuals.",
-      "description": "Independently built the Talent Program Executive Dashboard in Power BI. The TalentPool base file includes DAX measures, Power Query definitions, model relationships, and Deneb visuals. This represents applied project work; the base-file inspection does not establish refresh or production performance.",
+      "shortDescription": "A client mockup translated into a Power BI recruitment dashboard, with a star schema and custom Deneb / Vega-Lite visuals.",
+      "description": "Developed the Talent Program Executive Dashboard from scratch in Power BI at SSHD Technologies, translating the client\u2019s sample mockups into a functional recruitment control panel. Built a star schema data model, prepared source data with Power Query, and created DAX measures and bespoke interactive visuals with Deneb and Vega-Lite, including a custom conversion funnel. The report brings recruitment stages, cohort trends, geographic coverage and applicant profiles into one executive view.",
       "skills": [
         "Power BI",
         "DAX",
         "Power Query",
+        "Star Schema",
         "Data Modeling",
-        "Deneb"
+        "Deneb",
+        "Vega-Lite",
+        "Data Visualization"
       ],
       "highlights": [
-        "Owned the Power BI dashboard project.",
-        "Created measures, data queries, model relationships, and custom Deneb visuals."
+        "Owned the Power BI dashboard from client mockup interpretation through report implementation.",
+        "Built a star schema data model and prepared reporting data in Power Query.",
+        "Created DAX measures for recruitment pipeline and executive KPI reporting.",
+        "Built custom interactive Deneb / Vega-Lite visuals, including the applicant-to-trainee-to-hire conversion funnel.",
+        "Combined cohort, geography, candidate profile, mentoring investment and recruitment-stage views in one report."
       ],
       "category": "Data & Analytics",
       "featured": true,
       "caseStudy": {
-        "challenge": "Turn talent-program data into an understandable, interactive report.",
-        "contribution": "Full ownership of the Power BI dashboard, including measures, preparation, relationships, and custom visuals.",
+        "challenge": "Translate the client\u2019s visual brief into a usable executive view of the recruitment pipeline.",
+        "contribution": "End-to-end Power BI implementation: mockup translation, star schema modeling, Power Query preparation, DAX measures and custom Deneb / Vega-Lite visuals.",
         "steps": [
           {
-            "title": "Prepare",
-            "description": "Use Power Query joins and type conversions to prepare the Excel source."
+            "title": "Interpret",
+            "description": "Translate the client\u2019s sample mockups into report layout, KPI hierarchy and visual requirements."
           },
           {
             "title": "Model",
-            "description": "Connect fact and dimension data through model relationships."
+            "description": "Prepare source data in Power Query and build a star schema for recruitment analysis."
           },
           {
             "title": "Measure",
-            "description": "Use DAX measures for applicants, hiring, conversion, and mentoring metrics."
+            "description": "Create DAX measures for recruitment stages, conversions and executive KPIs."
           },
           {
-            "title": "Present",
-            "description": "Configure Power BI and Deneb visuals for exploration."
+            "title": "Visualise",
+            "description": "Build bespoke Deneb / Vega-Lite visuals, including the conversion funnel, and bring the report together in Power BI."
           }
         ],
-        "boundary": "The inspected TalentPool file is a base artifact. Refresh behaviour and delivery outcomes have not been remeasured."
+        "boundary": "The gallery distinguishes the implemented report from supplied design references. Report values are the supplied snapshot; refresh scheduling and live service behaviour are not demonstrated here."
       },
       "status": "Project work",
-      "jobId": "ai-python-sshd-2026"
+      "jobId": "ai-python-sshd-2026",
+      "showcase": {
+        "title": "From visual brief to working report",
+        "description": "Explore the Power BI implementation alongside the supplied visual references.",
+        "items": [
+          {
+            "title": "Power BI report",
+            "label": "Implementation",
+            "description": "Implemented Talent Program Executive Dashboard. This supplied screenshot shows the report layout, cohort filters, recruitment KPIs, geographic coverage and custom conversion funnel.",
+            "image": "/talentpool-report.png",
+            "width": 914,
+            "height": 520
+          },
+          {
+            "title": "Design reference",
+            "label": "Reference",
+            "description": "Supplied visual reference for the dashboard presentation. Shown separately from the implemented report.",
+            "image": "/talentpool-design-reference.jpg",
+            "width": 1200,
+            "height": 896
+          },
+          {
+            "title": "Concept artwork",
+            "label": "Concept",
+            "description": "Supplied presentation artwork. Its AI, predictive and real-time labels are part of the concept and are not claimed as implemented dashboard capabilities.",
+            "image": "/talentpool-concept-reference.jpg",
+            "width": 2048,
+            "height": 1529
+          }
+        ]
+      }
     },
     {
       "id": "slicer-overlay",
@@ -607,7 +643,7 @@
       "description": "Built the chatbot available on sshdtechnologies.in, the Power BI talent dashboard, the Slicer script and Slicer Analytics Dashboard, alongside Node.js backend contributions.",
       "responsibilities": [
         "Built the website chatbot available on sshdtechnologies.in.",
-        "Independently built the Power BI Talent Program Executive Dashboard, including data preparation, DAX measures, model relationships and Deneb visuals.",
+        "Independently built the Power BI Talent Program Executive Dashboard, translating client mockups with a star schema, Power Query, DAX and custom Deneb / Vega-Lite visuals, including a conversion funnel.",
         "Built the Slicer script for video segmentation and native clip workflow integration.",
         "Built the Slicer Analytics Dashboard for assignments, submissions, rework and settlement reporting.",
         "Contributed to backend development using Node.js."
@@ -626,7 +662,9 @@
         "Deneb",
         "openpyxl",
         "API Integration",
-        "Chatbot Development"
+        "Chatbot Development",
+        "Star Schema",
+        "Vega-Lite"
       ],
       "featured": true,
       "projectIds": [

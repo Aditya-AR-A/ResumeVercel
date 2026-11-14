@@ -1,3 +1,4 @@
+import { WorkflowWalkthrough } from '@/components/PortfolioExperience'
 import Image from 'next/image'
 import SkillTag from '@/components/SkillTag'
 import FeaturedBadge from '@/components/FeaturedBadge'
@@ -124,6 +125,14 @@ export default function ProjectDetailView({ project, relatedJob }: ProjectDetail
             </p>
           </div>
         </div>
+
+        {project.caseStudy && (
+          <div className="portfolio-experience project-deep-dive">
+            <div className="deep-dive-story"><div><p className="work-label">The problem</p><h2>{project.caseStudy.challenge}</h2></div><div><p className="work-label">My contribution</p><p>{project.caseStudy.contribution}</p></div></div>
+            <WorkflowWalkthrough project={project} />
+            <p className="interaction-note">{project.caseStudy.boundary}</p>
+          </div>
+        )}
 
         {highlightList.length > 0 && (
           <div className="rounded-3xl border border-white/10 bg-white/10 p-6 dark:border-white/10 dark:bg-slate-900/40">

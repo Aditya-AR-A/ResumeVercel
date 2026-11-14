@@ -10,7 +10,7 @@ const links = ['Projects', 'Experience', 'Certificates', 'About', 'Contact'];
 export default function Navbar() {
   const pathname = usePathname(), router = useRouter();
   const palette = useRef<HTMLDialogElement>(null);
-  const open = () => { window.dispatchEvent(new Event('sidebar:close')); palette.current?.showModal(); palette.current?.querySelector('input')?.focus(); };
+  const open = () => { window.dispatchEvent(new Event('portfolio-guide:close')); window.dispatchEvent(new Event('sidebar:close')); palette.current?.showModal(); palette.current?.querySelector('input')?.focus(); };
   const close = () => palette.current?.close();
   useEffect(() => { close(); }, [pathname]);
   useEffect(() => {

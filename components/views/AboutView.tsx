@@ -12,8 +12,8 @@ interface AboutViewProps {
 }
 const focusAreas = [
   { title: 'AI & Python', description: 'Recruitment workflows, conversational prompts, and voice integrations.', skills: ['Python', 'LLMs', 'Prompt Engineering', 'LiveKit / Twilio'] },
-  { title: 'Data & analytics', description: 'Operational reporting, HR data preparation, and business intelligence.', skills: ['Power BI', 'Qlik Enterprise', 'MongoDB', 'Data Cleaning'] },
-  { title: 'Backend & workflows', description: 'APIs, data processing, and tools that connect business workflows.', skills: ['FastAPI', 'REST APIs', 'JavaScript', 'Automation'] },
+  { title: 'Data & analytics', description: 'Operational reporting, HR data preparation, and business intelligence.', skills: ['Power BI / DAX', 'Dash / Plotly', 'Pandas / openpyxl', 'Qlik Enterprise'] },
+  { title: 'Backend & workflows', description: 'APIs, data processing, and tools that connect business workflows.', skills: ['Django / DRF', 'FastAPI', 'MongoDB', 'REST APIs'] },
 ];
 export default function AboutView({ introData, projects, jobs, certificates, skillsAggregation, compact = false }: AboutViewProps) {
   const groups = useMemo(() => {
@@ -47,7 +47,7 @@ export default function AboutView({ introData, projects, jobs, certificates, ski
         <p className="text-sm text-textMuted">{totalExperience(jobs)} across the listed employment periods. Earlier ML explorations and certificates are included as background; current work centres on AI/Python development and data analysis.</p>
         <details className="rounded-2xl border border-[var(--color-border)] bg-surface p-5 sm:p-6">
           <summary className="cursor-pointer font-semibold text-textStrong">Explore all technologies & study topics</summary>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-textMuted">Collected from project, employment, and certificate records. A certificate or a mention indicates exposure, rather than a proficiency rating. Django and DRF are current learning priorities.</p>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-textMuted">Collected from project, employment, and certificate records. A certificate or a mention indicates exposure, rather than a proficiency rating. Django and DRF appear in my backend project work and remain current learning priorities.</p>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{groups.map(([category, skills]) => <div key={category}>
             <h3 className="mb-3 text-sm font-semibold text-textStrong">{category}</h3>
             <div className="flex flex-wrap gap-2">{Array.from(skills).sort().map(skill => <span key={skill} className="rounded-md bg-surfaceAlt px-2 py-1 text-xs text-text">{skill}</span>)}</div>

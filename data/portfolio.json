@@ -22,19 +22,49 @@
       "description": "Built an analytics dashboard around Slicer operations, covering completed work, assignments, pending work, rework batches, and settlement periods. Worked on MongoDB-backed reporting, date filtering, and admin tools for user mappings and settlement management.",
       "skills": [
         "Python",
+        "Pandas",
+        "Dash",
+        "Plotly",
         "MongoDB",
-        "Data Analysis",
-        "Data Visualization",
-        "REST APIs"
+        "SQL",
+        "openpyxl",
+        "Data Validation"
       ],
       "highlights": [
         "Built reporting for assignments, submissions, pending work, and rework.",
         "Worked on settlement-period filters and user-ID mappings.",
-        "Implemented batch rework rules and investigated reporting consistency."
+        "Implemented batch rework rules and investigated reporting consistency.",
+        "Created individual and periodic Excel reports with openpyxl.",
+        "Worked on batch aggregation checks to reconcile fresh and rework durations."
       ],
       "category": "Data & Analytics",
       "featured": true,
-      "demoUrl": "https://sshd-slicer-dashboard.vercel.app"
+      "demoUrl": "https://sshd-slicer-dashboard.vercel.app",
+      "githubUrl": "https://github.com/Aditya-AR-A/SSHDSlicerDashboard",
+      "caseStudy": {
+        "challenge": "Keep operational reporting consistent across assignments, rework, and settlement periods.",
+        "contribution": "Dashboard components, reporting workflows, date/user filters, and batch-level reconciliation.",
+        "steps": [
+          {
+            "title": "Collect",
+            "description": "Bring together assignment and submission records from the operational workflow."
+          },
+          {
+            "title": "Reconcile",
+            "description": "Separate fresh work and rework, then check that durations reconcile with totals."
+          },
+          {
+            "title": "Explore",
+            "description": "Use user and settlement-period filters for the reporting question at hand."
+          },
+          {
+            "title": "Report",
+            "description": "Produce individual and periodic Excel workbooks with openpyxl."
+          }
+        ],
+        "boundary": "The batch-rule demo below uses fictional clips. It illustrates the confirmed rule, not live company data."
+      },
+      "status": "Project work"
     },
     {
       "id": "talentpool-powerbi",
@@ -53,7 +83,31 @@
         "Created measures, data queries, model relationships, and custom Deneb visuals."
       ],
       "category": "Data & Analytics",
-      "featured": true
+      "featured": true,
+      "caseStudy": {
+        "challenge": "Turn talent-program data into an understandable, interactive report.",
+        "contribution": "Full ownership of the Power BI dashboard, including measures, preparation, relationships, and custom visuals.",
+        "steps": [
+          {
+            "title": "Prepare",
+            "description": "Use Power Query joins and type conversions to prepare the Excel source."
+          },
+          {
+            "title": "Model",
+            "description": "Connect fact and dimension data through model relationships."
+          },
+          {
+            "title": "Measure",
+            "description": "Use DAX measures for applicants, hiring, conversion, and mentoring metrics."
+          },
+          {
+            "title": "Present",
+            "description": "Configure Power BI and Deneb visuals for exploration."
+          }
+        ],
+        "boundary": "The inspected TalentPool file is a base artifact. Refresh behaviour and delivery outcomes have not been remeasured."
+      },
+      "status": "Project work"
     },
     {
       "id": "slicer-overlay",
@@ -71,7 +125,31 @@
         "Defined splitting, selection-aware deletion, and segment-loop behaviour."
       ],
       "category": "Python & Web Workflows",
-      "featured": true
+      "featured": true,
+      "caseStudy": {
+        "challenge": "Make clip boundaries and editing actions easier to control over a native video workflow.",
+        "contribution": "Custom overlay controls and segment operations synchronised with native clips.",
+        "steps": [
+          {
+            "title": "Locate",
+            "description": "Identify the segment containing the playhead."
+          },
+          {
+            "title": "Split",
+            "description": "Replace that segment with its left and right pieces at the playhead."
+          },
+          {
+            "title": "Control",
+            "description": "Give the selected segment priority for deletion and segment-loop actions."
+          },
+          {
+            "title": "Relay",
+            "description": "Synchronise segment operations with the native clip/submission workflow."
+          }
+        ],
+        "boundary": "The interactive timeline is a standalone boundary demo. It does not edit a real video or call the native Slicer platform."
+      },
+      "status": "Project work"
     },
     {
       "id": "llm-agent-integration",
@@ -113,10 +191,14 @@
       "featured": true,
       "startDate": "2024-09-01",
       "endDate": null,
-      "status": "active",
+      "status": "Project work",
       "skills": [
         "Python",
+        "Django",
         "LLMs",
+        "Embeddings",
+        "ChromaDB",
+        "MongoDB",
         "LiveKit",
         "Twilio",
         "REST APIs"
@@ -125,14 +207,81 @@
       "relatedJobIds": [],
       "links": {},
       "demoUrl": null,
-      "githubUrl": null,
+      "githubUrl": "https://github.com/Aditya-AR-A/Django-Interviewer",
       "highlights": [
         "Personally implemented LiveKit / Twilio plumbing for recruitment voice interactions.",
         "Worked on AI-assisted candidate screening and interview workflows.",
         "Worked on token-use optimisation; no measured reduction is claimed."
       ],
       "metrics": {},
-      "assets": null
+      "assets": null,
+      "caseStudy": {
+        "challenge": "Connect candidate screening with a structured recruitment workflow.",
+        "contribution": "Recruitment workflow work and personally implemented LiveKit / Twilio voice integrations.",
+        "steps": [
+          {
+            "title": "Match",
+            "description": "Use embeddings and semantic comparison to support candidate matching."
+          },
+          {
+            "title": "Validate",
+            "description": "Use LLM-assisted validation for ambiguous matches in the inspected project flow."
+          },
+          {
+            "title": "Connect",
+            "description": "Integrate LiveKit / Twilio for the recruitment voice workflow."
+          },
+          {
+            "title": "Review",
+            "description": "Keep screening outputs structured for the next recruitment step."
+          }
+        ],
+        "boundary": "This is a workflow walkthrough; it does not place calls, score real people, or claim measured hiring outcomes."
+      }
+    },
+    {
+      "id": "workaholic-backend",
+      "name": "Workaholic — Django / DRF Backend",
+      "shortDescription": "Company and project membership, relational models, and API permission rules.",
+      "description": "A Django / Django REST Framework backend project with company and project membership models, migrations, permission classes, membership constraints, and schema tests. Presented as project experience, separately from employer attribution.",
+      "category": "Python & Web Workflows",
+      "featured": false,
+      "skills": [
+        "Python",
+        "Django",
+        "Django REST Framework",
+        "Relational Modeling",
+        "API Permissions",
+        "Testing"
+      ],
+      "githubUrl": "https://github.com/Aditya-AR-A/Workaholic",
+      "highlights": [
+        "Company and project membership models with relational constraints.",
+        "DRF permission classes and schema tests in the project code."
+      ],
+      "caseStudy": {
+        "challenge": "Represent company and project membership clearly in a backend.",
+        "contribution": "Project work with Django/DRF models, membership rules, permissions, and tests.",
+        "steps": [
+          {
+            "title": "Model",
+            "description": "Represent company, project, and member relationships."
+          },
+          {
+            "title": "Constrain",
+            "description": "Keep membership rules explicit in model constraints."
+          },
+          {
+            "title": "Authorize",
+            "description": "Apply API permission classes at the request boundary."
+          },
+          {
+            "title": "Check",
+            "description": "Exercise model/schema behaviour through tests."
+          }
+        ],
+        "boundary": "This does not establish production tenant-isolation guarantees or that this repository is the separately discussed Employee Management System."
+      }
     },
     {
       "id": "qlik-powerbi-suite",
@@ -140,12 +289,12 @@
       "type": "analytics-platform",
       "description": "Worked on Qlik Enterprise dashboard scripts for Performance Pro, cleaning and processing incoming HR data for another team member to build the dashboard. Contributed to GDPR-related data-handling controls and encryption. Built a supporting utility for quick conversion of partial data during remote-server development.",
       "shortDescription": "Qlik Enterprise scripts and HR data preparation, with GDPR and encryption work.",
-      "thumbnail": "/projects/qlik-powerbi/thumbnail.svg",
+      "thumbnail": null,
       "category": "Data & Analytics",
       "featured": false,
       "startDate": null,
       "endDate": null,
-      "status": "completed",
+      "status": "Project work",
       "skills": [
         "Qlik Enterprise",
         "Data Cleaning",
@@ -154,9 +303,11 @@
       ],
       "jobId": null,
       "relatedJobIds": [],
-      "links": {},
+      "links": {
+        "Supporting data-conversion utility": "https://github.com/Aditya-AR-A/qlik_data_request_api"
+      },
       "demoUrl": null,
-      "githubUrl": null,
+      "githubUrl": "https://github.com/Aditya-AR-A/qlik_data_request_api",
       "highlights": [
         "Cleaned and processed incoming HR data for downstream dashboard development.",
         "Worked on Qlik Enterprise scripts.",
@@ -164,7 +315,30 @@
         "Built a testing utility for partial-data conversion during remote deployment delays."
       ],
       "metrics": {},
-      "assets": null
+      "assets": null,
+      "caseStudy": {
+        "challenge": "Prepare incoming HR data for a downstream dashboard developer.",
+        "contribution": "Qlik Enterprise scripts, cleaning/processing, and contributions to GDPR-related controls and encryption.",
+        "steps": [
+          {
+            "title": "Receive",
+            "description": "Inspect incoming data and the expected downstream format."
+          },
+          {
+            "title": "Transform",
+            "description": "Clean and process the data in Qlik Enterprise dashboard scripts."
+          },
+          {
+            "title": "Protect",
+            "description": "Contribute to project-specific data-handling and encryption work."
+          },
+          {
+            "title": "Handoff",
+            "description": "Provide prepared data for the next person to build dashboard visuals."
+          }
+        ],
+        "boundary": "My contribution was the preparation and scripting layer. The repository is a supporting trial utility, not the full production system."
+      }
     },
     {
       "id": "fatality-claims-analytics",
@@ -403,14 +577,36 @@
   ],
   "jobs": [
     {
+      "id": "ai-python-sshd-2026",
+      "title": "AI / Python Developer",
+      "company": "SSHD Technologies",
+      "position": "",
+      "location": "",
+      "startDate": "2026-02",
+      "isCurrent": true,
+      "description": "Build Python services and MongoDB-backed workflows that connect business requirements with application behaviour.",
+      "responsibilities": [
+        "Develop Python services and API-connected workflows.",
+        "Work with MongoDB-backed application data and business requirements."
+      ],
+      "skills": [
+        "Python",
+        "MongoDB",
+        "REST APIs",
+        "API Integration"
+      ],
+      "featured": true,
+      "projectIds": []
+    },
+    {
       "id": "ai-python-dev-2024",
       "title": "AI Engineer / Python Developer",
       "company": "Addmin Web World",
       "position": "Full-time",
       "location": "Chandigarh, India",
-      "startDate": "2024-09-25",
-      "endDate": null,
-      "isCurrent": true,
+      "startDate": "2024-09",
+      "endDate": "2026-01",
+      "isCurrent": false,
       "description": "Deliver end-to-end AI automation solutions for client-facing business workflows.",
       "responsibilities": [
         "Deliver end-to-end AI automation solutions for client-facing business workflows.",
@@ -446,8 +642,8 @@
       "company": "Coding Pro (Planto.AI)",
       "position": "Internship",
       "location": "Remote",
-      "startDate": "2024-06-01",
-      "endDate": "2024-09-15",
+      "startDate": "2024-06",
+      "endDate": "2024-09",
       "isCurrent": false,
       "description": "Built core components of an early-stage AI copilot MVP for developer workflow automation.",
       "responsibilities": [
@@ -484,7 +680,7 @@
         "Programming",
         "OOPs",
         "Data Visualization",
-        "Numpy",
+        "NumPy",
         "Pandas",
         "Matplotlib",
         "Seaborn",

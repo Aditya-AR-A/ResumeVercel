@@ -6,7 +6,7 @@ import CommandInterface from './CommandInterface';
 import type { ViewType } from './DynamicContentManager';
 import { getAssetUrl } from '@/utils/assets';
 
-const links = ['Projects', 'Experience', 'About', 'Contact'];
+const links = ['Projects', 'Experience', 'Certificates', 'About', 'Contact'];
 export default function Navbar() {
   const pathname = usePathname(), router = useRouter();
   const palette = useRef<HTMLDialogElement>(null);
@@ -27,10 +27,10 @@ export default function Navbar() {
           <button onClick={() => window.dispatchEvent(new Event('sidebar:toggle'))} aria-label="Open navigation menu" aria-haspopup="dialog" className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--color-border)] hover:bg-surfaceAlt"><svg aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeWidth="1.5" d="M4 7h16M4 12h16M4 17h16" /></svg></button>
           <Link href="/" className="whitespace-nowrap font-semibold text-textStrong sm:text-xl">Aditya Raj<span className="text-blue-500">.</span></Link>
         </div>
-        <div className="hidden items-center gap-6 lg:flex">{links.map(label => { const href = `/${label.toLowerCase()}`; return <Link key={href} href={href} aria-current={pathname.startsWith(href) ? 'page' : undefined} className={`text-sm ${pathname.startsWith(href) ? 'text-blue-600 dark:text-blue-400' : 'text-textMuted hover:text-textStrong'}`}>{label}</Link>; })}</div>
+        <div className="hidden items-center gap-4 lg:flex">{links.map(label => { const href = `/${label.toLowerCase()}`; return <Link key={href} href={href} aria-current={pathname.startsWith(href) ? 'page' : undefined} className={`text-sm ${pathname.startsWith(href) ? 'text-blue-600 dark:text-blue-400' : 'text-textMuted hover:text-textStrong'}`}>{label}</Link>; })}</div>
         <div className="flex items-center gap-2">
           <button onClick={open} aria-label="Search or navigate" aria-haspopup="dialog" className="inline-flex h-11 items-center gap-2 rounded-xl border border-[var(--color-border)] px-3 text-sm hover:bg-surfaceAlt"><svg aria-hidden="true" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6" /><path d="m15 15 5 5" /></svg><span className="hidden sm:inline">Search</span><kbd className="hidden xl:inline text-xs text-textMuted">⌘ / Ctrl K</kbd></button>
-          <a href={getAssetUrl('resume.pdf')} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 items-center rounded-xl bg-blue-600 px-3 text-sm font-semibold text-white hover:bg-blue-700 sm:px-4">Résumé ↗</a>
+          <a href={getAssetUrl('resume.pdf')} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 items-center rounded-xl bg-blue-600 px-3 text-sm font-semibold text-white hover:bg-blue-700 sm:px-4">Résumé</a>
         </div>
       </div>
     </nav>

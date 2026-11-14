@@ -65,7 +65,21 @@
         "boundary": "The batch-rule demo below uses fictional clips. It illustrates the confirmed rule, not live company data."
       },
       "status": "Project work",
-      "jobId": "ai-python-sshd-2026"
+      "jobId": "ai-python-sshd-2026",
+      "showcase": {
+        "title": "Slicer operations at a glance",
+        "description": "A screenshot of the SSHD Slicing Performance & Settlement dashboard.",
+        "items": [
+          {
+            "title": "Slicer Analytics Dashboard",
+            "label": "Application screenshot",
+            "description": "KPI cards, date and settlement controls, work and approvals, batch-rework distribution, completed hours and pending-review queues. Values reflect the supplied screenshot. Open the full image to inspect the details.",
+            "image": "/slicer-analytics-dashboard.png",
+            "width": 2047,
+            "height": 1042
+          }
+        ]
+      }
     },
     {
       "id": "talentpool-powerbi",

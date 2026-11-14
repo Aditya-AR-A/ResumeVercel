@@ -64,11 +64,12 @@
         ],
         "boundary": "The batch-rule demo below uses fictional clips. It illustrates the confirmed rule, not live company data."
       },
-      "status": "Project work"
+      "status": "Project work",
+      "jobId": "ai-python-sshd-2026"
     },
     {
       "id": "talentpool-powerbi",
-      "name": "Talent Program Executive Dashboard — Power BI",
+      "name": "Talent Program Executive Dashboard \u2014 Power BI",
       "shortDescription": "An independently delivered talent dashboard with DAX, Power Query, and Deneb visuals.",
       "description": "Independently built the Talent Program Executive Dashboard in Power BI. The TalentPool base file includes DAX measures, Power Query definitions, model relationships, and Deneb visuals. This represents applied project work; the base-file inspection does not establish refresh or production performance.",
       "skills": [
@@ -107,13 +108,14 @@
         ],
         "boundary": "The inspected TalentPool file is a base artifact. Refresh behaviour and delivery outcomes have not been remeasured."
       },
-      "status": "Project work"
+      "status": "Project work",
+      "jobId": "ai-python-sshd-2026"
     },
     {
       "id": "slicer-overlay",
       "name": "Video Segmentation Overlay",
-      "shortDescription": "Custom playback and segmentation controls over a native video workflow.",
-      "description": "Worked on a custom video overlay with independent playback and segmentation controls, synchronising segment operations with the native clip workflow. The work includes split boundaries, deletion priority, selected-segment looping, and native submission integration.",
+      "shortDescription": "Slicer script with custom playback, segmentation controls and native clip workflow integration.",
+      "description": "Built the Slicer script at SSHD Technologies, including a custom video overlay with independent playback and segmentation controls synchronised with the native clip workflow. The work includes split boundaries, deletion priority, selected-segment looping, and native submission integration.",
       "skills": [
         "JavaScript",
         "HTML",
@@ -149,7 +151,25 @@
         ],
         "boundary": "The interactive timeline is a standalone boundary demo. It does not edit a real video or call the native Slicer platform."
       },
-      "status": "Project work"
+      "status": "Project work",
+      "jobId": "ai-python-sshd-2026"
+    },
+    {
+      "id": "sshd-website-chatbot",
+      "name": "SSHD Technologies Website Chatbot",
+      "shortDescription": "Website chatbot built for SSHD Technologies, available on the company website.",
+      "description": "Built the chatbot available on sshdtechnologies.in as part of my AI / Python Developer role at SSHD Technologies.",
+      "skills": [
+        "Chatbot Development"
+      ],
+      "highlights": [
+        "Built the chatbot for the SSHD Technologies website."
+      ],
+      "category": "AI & Automation",
+      "featured": false,
+      "demoUrl": "https://sshdtechnologies.in/",
+      "jobId": "ai-python-sshd-2026",
+      "status": "Live on company website"
     },
     {
       "id": "llm-agent-integration",
@@ -241,7 +261,7 @@
     },
     {
       "id": "workaholic-backend",
-      "name": "Workaholic — Django / DRF Backend",
+      "name": "Workaholic \u2014 Django / DRF Backend",
       "shortDescription": "Company and project membership, relational models, and API permission rules.",
       "description": "A Django / Django REST Framework backend project with company and project membership models, migrations, permission classes, membership constraints, and schema tests. Presented as project experience, separately from employer attribution.",
       "category": "Python & Web Workflows",
@@ -285,7 +305,7 @@
     },
     {
       "id": "qlik-powerbi-suite",
-      "name": "Performance Pro — HR Data Processing",
+      "name": "Performance Pro \u2014 HR Data Processing",
       "type": "analytics-platform",
       "description": "Worked on Qlik Enterprise dashboard scripts for Performance Pro, cleaning and processing incoming HR data for another team member to build the dashboard. Contributed to GDPR-related data-handling controls and encryption. Built a supporting utility for quick conversion of partial data during remote-server development.",
       "shortDescription": "Qlik Enterprise scripts and HR data preparation, with GDPR and encryption work.",
@@ -584,19 +604,37 @@
       "location": "",
       "startDate": "2026-02",
       "isCurrent": true,
-      "description": "Build Python services and MongoDB-backed workflows that connect business requirements with application behaviour.",
+      "description": "Built the chatbot available on sshdtechnologies.in, the Power BI talent dashboard, the Slicer script and Slicer Analytics Dashboard, alongside Node.js backend contributions.",
       "responsibilities": [
-        "Develop Python services and API-connected workflows.",
-        "Work with MongoDB-backed application data and business requirements."
+        "Built the website chatbot available on sshdtechnologies.in.",
+        "Independently built the Power BI Talent Program Executive Dashboard, including data preparation, DAX measures, model relationships and Deneb visuals.",
+        "Built the Slicer script for video segmentation and native clip workflow integration.",
+        "Built the Slicer Analytics Dashboard for assignments, submissions, rework and settlement reporting.",
+        "Contributed to backend development using Node.js."
       ],
       "skills": [
         "Python",
+        "Power BI",
+        "JavaScript",
+        "Node.js",
+        "Dash",
+        "Plotly",
+        "Pandas",
         "MongoDB",
-        "REST APIs",
-        "API Integration"
+        "DAX",
+        "Power Query",
+        "Deneb",
+        "openpyxl",
+        "API Integration",
+        "Chatbot Development"
       ],
       "featured": true,
-      "projectIds": []
+      "projectIds": [
+        "sshd-website-chatbot",
+        "talentpool-powerbi",
+        "slicer-overlay",
+        "slicer-analytics"
+      ]
     },
     {
       "id": "ai-python-dev-2024",
@@ -724,7 +762,7 @@
       "expiryDate": null,
       "credentialId": null,
       "credentialUrl": null,
-      "description": "Focused on Python’s application in data science. Covered data types, control flow, OOPs, statistical concepts, linear regression, clustering, and basic data visualization techniques.",
+      "description": "Focused on Python\u2019s application in data science. Covered data types, control flow, OOPs, statistical concepts, linear regression, clustering, and basic data visualization techniques.",
       "featured": false,
       "originalName": "Data Science with Python"
     },
@@ -953,7 +991,7 @@
       "expiryDate": null,
       "credentialId": null,
       "credentialUrl": null,
-      "description": "Bundled certificate representing completion of multiple in-depth modules in data science, ML, Python, statistics, and visualization — aligned with real-world applications.",
+      "description": "Bundled certificate representing completion of multiple in-depth modules in data science, ML, Python, statistics, and visualization \u2014 aligned with real-world applications.",
       "featured": true,
       "originalName": "Simplearn Certificates Data Scientist"
     },

@@ -14,9 +14,9 @@ export default function ProjectShowcase({ showcase }: { showcase: NonNullable<Pr
       <p className="text-xs font-semibold uppercase tracking-[.2em] text-indigo-600 dark:text-indigo-300">Project gallery</p>
       <h2 className="mt-2 text-2xl font-semibold tracking-tight text-textStrong">{showcase.title}</h2>
       <p className="mt-2 text-sm leading-6 text-textMuted">{showcase.description}</p>
-      <div className="mt-5 flex flex-wrap gap-2" aria-label="Choose a project image">
+      {showcase.items.length > 1 && <div className="mt-5 flex flex-wrap gap-2" aria-label="Choose a project image">
         {showcase.items.map((item, index) => <button key={item.image} type="button" aria-pressed={index === selected} onClick={() => setSelected(index)} className={`min-h-11 rounded-xl border px-4 py-2 text-sm font-medium transition-colors ${index === selected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-[var(--color-border)] bg-surfaceAlt text-text hover:border-indigo-400'}`}>{item.title}</button>)}
-      </div>
+      </div>}
     </div>
     <figure>
       <div className="flex aspect-[16/10] items-center justify-center border-y border-[var(--color-border)] bg-slate-100 p-2 dark:bg-slate-950 sm:p-4">

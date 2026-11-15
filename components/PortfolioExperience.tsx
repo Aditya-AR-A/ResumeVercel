@@ -69,10 +69,32 @@ function TimelineDemo() {
   </div>;
 }
 
+function ProjectVisual({ project }: { project: Project }) {
+  const screenshot = project.showcase?.items[0];
+  const artwork = project.id === 'recruitment-automation-platform' ? {
+    image: '/recruitment-voice-concept.webp',
+    width: 1280,
+    height: 720,
+    title: 'Voice-assisted recruitment',
+    label: 'Concept illustration',
+  } : undefined;
+  const visual = screenshot ?? artwork;
+  if (!visual) return null;
+
+  return <figure className={`workbench-visual${artwork && !screenshot ? ' workbench-artwork' : ''}`}>
+    <a className="workbench-image-link" href={visual.image} target="_blank" rel="noopener noreferrer" aria-label={`Open full image: ${visual.title}`}>
+      <Image src={visual.image} alt={screenshot ? `${project.name} — ${visual.label}` : 'Concept artwork: an indigo microphone and soundwave beside abstract candidate cards'} width={visual.width} height={visual.height} sizes="(max-width: 900px) 90vw, 550px" className="workbench-image" />
+      <span className="workbench-image-action" aria-hidden="true">View full image <Arrow /></span>
+    </a>
+    <figcaption><span>{visual.label}</span><span>{screenshot ? 'Supplied project screenshot' : 'Illustrative artwork · not the application UI'}</span></figcaption>
+  </figure>;
+}
+
 function ProjectPanel({ project }: { project: Project }) {
   return <div className="project-panel experience-enter">
     <div className="project-story"><div className="story-eyebrow"><span className="work-label">{project.category}</span><span className="story-index">A closer look</span></div>
       <h3>{project.name}</h3><p className="story-challenge">{project.caseStudy?.challenge ?? project.shortDescription}</p>
+      <ProjectVisual project={project} />
       <div className="contribution-box"><p className="work-label">My contribution</p><p>{project.caseStudy?.contribution ?? project.description}</p></div>
       <div className="story-tags">{project.skills.slice(0, 6).map(skill => <Link href={`/search?query=${encodeURIComponent(skill)}`} key={skill}>{skill}</Link>)}</div>
       <Link href={`/projects/${project.id}`} className="story-link">Open the full project <Arrow /></Link>

@@ -94,12 +94,13 @@ function ProjectPanel({ project }: { project: Project }) {
   return <div className="project-panel experience-enter">
     <div className="project-story"><div className="story-eyebrow"><span className="work-label">{project.category}</span><span className="story-index">A closer look</span></div>
       <h3>{project.name}</h3><p className="story-challenge">{project.caseStudy?.challenge ?? project.shortDescription}</p>
-      <ProjectVisual project={project} />
+      {project.id === 'slicer-analytics' && <ProjectVisual project={project} />}
       <div className="contribution-box"><p className="work-label">My contribution</p><p>{project.caseStudy?.contribution ?? project.description}</p></div>
       <div className="story-tags">{project.skills.slice(0, 6).map(skill => <Link href={`/search?query=${encodeURIComponent(skill)}`} key={skill}>{skill}</Link>)}</div>
       <Link href={`/projects/${project.id}`} className="story-link">Open the full project <Arrow /></Link>
     </div>
     <div className="project-interaction"><WorkflowWalkthrough key={project.id} project={project} />
+      {project.id !== 'slicer-analytics' && <ProjectVisual project={project} />}
       {project.id === 'slicer-analytics' && <BatchDemo />}
       {project.id === 'slicer-overlay' && <TimelineDemo />}
       <p className="interaction-note">{project.caseStudy?.boundary}</p>

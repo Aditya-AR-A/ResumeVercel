@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Aditya Raj</title>
+  <defs>
+    <linearGradient id="indigo" x1="8" y1="0" x2="56" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#4338CA"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#indigo)"/>
+  <rect x=".75" y=".75" width="62.5" height="62.5" rx="15.25" stroke="white" stroke-opacity=".16" stroke-width="1.5"/>
+  <g stroke="white" stroke-width="4.3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9.5 45 19.5 19 29.5 45M13.5 35h12"/>
+    <path d="M36 45V19h7.5a7 7 0 0 1 0 14H36m8-0 9.5 12"/>
+  </g>
+</svg>

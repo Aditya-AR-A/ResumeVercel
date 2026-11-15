@@ -411,6 +411,15 @@ html:has(dialog[open]) { overflow: hidden; }
 .story-index {font: .65rem ui-monospace,monospace;color:var(--color-text-muted);}
 .project-story h3 {font-size:clamp(1.6rem,2.4vw,2rem);font-weight:600;line-height:1.25;letter-spacing:-.03em;color:var(--work-ink);margin-top:2rem;}
 .story-challenge {font-size:.95rem;line-height:1.8;color:var(--color-text-muted);margin-top:1rem;}
+.workbench-visual {overflow:hidden;margin-top:1.5rem;border:1px solid var(--color-border);border-radius:.9rem;background:var(--color-surface-alt);}
+.workbench-image-link {position:relative;display:block;aspect-ratio:16/9;background:#fff;}
+.workbench-image {display:block;width:100%;height:100%;object-fit:contain;}
+.workbench-artwork .workbench-image-link {background:#f4f1fb;}
+.workbench-image-action {position:absolute;right:.6rem;bottom:.6rem;display:inline-flex;align-items:center;gap:.4rem;min-height:36px;padding:.4rem .65rem;border:1px solid #ffffff45;border-radius:.5rem;background:#111827e8;color:#fff;font-size:.62rem;box-shadow:0 3px 12px #0002;transition:background .2s;}
+.workbench-image-action svg {width:14px;height:14px;}
+.workbench-image-link:hover .workbench-image-action,.workbench-image-link:focus-visible .workbench-image-action {background:#4338ca;}
+.workbench-visual figcaption {display:flex;flex-wrap:wrap;justify-content:space-between;gap:.3rem .8rem;padding:.65rem .8rem;font-size:.6rem;line-height:1.7;color:var(--color-text-muted);}
+.workbench-visual figcaption>span:first-child {font-weight:600;color:var(--work-ink);}
 .contribution-box {margin:1.8rem 0;padding:1rem 1.1rem;border-left:2px solid var(--work-accent);background:var(--color-surface-alt);border-radius:0 .7rem .7rem 0;}
 .contribution-box>p:last-child {font-size:.85rem;line-height:1.8;margin-top:.5rem;}
 .story-tags {display:flex;flex-wrap:wrap;gap:.4rem;}
